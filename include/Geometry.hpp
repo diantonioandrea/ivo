@@ -15,4 +15,7 @@
 #include "./Geometry/Point21.hpp"
 #include "./Geometry/Methods/Point21.hpp"
 
+// Edges.
+#include "./Geometry/Edge21.hpp"
+
 #endif
