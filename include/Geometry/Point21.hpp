@@ -29,24 +29,25 @@ namespace ivo {
              * @brief Point's x.
              * 
              */
-            Real _x = 0.0L;
+            Real _x;
 
             /**
              * @brief Point's y.
              * 
              */
-            Real _y = 0.0L;
+            Real _y;
 
             /**
              * @brief Point's t.
              * 
              */
-            Real _t = 0.0L;
+            Real _t;
 
         public:
 
             // Constructors and copy operators.
 
+            Point21();
             Point21(const Real &, const Real &);
             Point21(const Real &, const Real &, const Real &);
             Point21(const Point21 &);

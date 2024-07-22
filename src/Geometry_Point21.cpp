@@ -13,12 +13,18 @@
 namespace ivo {
 
     /**
+     * @brief Zero constructor.
+     * 
+     */
+    Point21::Point21(): _x{0.0L}, _y{0.0L}, _t{0.0L} {}
+
+    /**
      * @brief Space constructor.
      * 
      * @param x Point's x.
      * @param y Point's y.
      */
-    Point21::Point21(const Real &x, const Real &y): _x{x}, _y{y} {}
+    Point21::Point21(const Real &x, const Real &y): _x{x}, _y{y}, _t{0.0L} {}
 
     /**
      * @brief Space-time constructor.
