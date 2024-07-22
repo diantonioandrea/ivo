@@ -102,7 +102,6 @@ namespace ivo {
         #endif
     }
 
-
     // Output.
     
     /**
