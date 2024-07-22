@@ -21,5 +21,9 @@
 
 // Lines.
 #include "./Geometry/Line21.hpp"
+#include "./Geometry/Methods/Line21.hpp"
+
+// Polygons.
+#include "./Geometry/Polygon21.hpp"
 
 #endif
