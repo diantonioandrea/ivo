@@ -16,6 +16,8 @@
 
 namespace ivo {
 
+    // Distances.
+
     Real distance(const Point21 &, const Point21 &);
 
 }
