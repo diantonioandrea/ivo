@@ -11,9 +11,14 @@
 #ifndef BASE_TOLERANCES
 #define BASE_TOLERANCES
 
-// Zero tolerance.
+// Base zero tolerance.
 #ifndef NUMERICAL_ZERO
 #define NUMERICAL_ZERO 1E-16
+#endif
+
+// Geometrical zero tolerance.
+#ifndef GEOMETRICAL_ZERO
+#define GEOMETRICAL_ZERO 1E-12
 #endif
 
 #endif
