@@ -19,7 +19,8 @@ HEADERS += ./include/Algebra/Methods/*.hpp
 EXECS = $(subst src/,executables/,$(subst .cpp,.out,$(shell find src -name "Test_*.cpp")))
 
 # Source.
-OBJECTS = $(subst src/,objects/,$(subst .cpp,.o,$(shell find src -name "*.cpp")))
+T_OBJECTS = $(subst src/,objects/,$(subst .cpp,.o,$(shell find src -name "Test_*")))
+OBJECTS = $(subst src/,objects/,$(subst .cpp,.o,$(shell find src -name "*.cpp" -not -name "Test_*")))
 
 # Directories.
 DIRECTORIES = ./output ./objects ./executables
@@ -28,9 +29,13 @@ DIRECTORIES = ./output ./objects ./executables
 all: $(DIRECTORIES) $(EXECS)
 	@echo "Compiled everything!"
 
-$(EXECS): executables/%.out: objects/%.o $(OBJECTS) 
+$(EXECS): executables/Test_%.out: objects/Test_%.o $(OBJECTS) 
 	@if [ "$(LDFLAGS) $(LDLIBS)" = " " ]; then echo "Linking to $@"; else echo "Linking to $@ with: $(LDFLAGS) $(LDLIBS)"; fi
 	@$(CXX) $(LDFLAGS) $(LDLIBS) $^ -o $@
+
+$(T_OBJECTS): objects/%.o: src/%.cpp $(HEADERS)
+	@echo "Compiling $< using $(CXX) with: $(CXXFLAGS) $(CPPFLAGS)"
+	@$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(OBJECTS): objects/%.o: src/%.cpp $(HEADERS)
 	@echo "Compiling $< using $(CXX) with: $(CXXFLAGS) $(CPPFLAGS)"
