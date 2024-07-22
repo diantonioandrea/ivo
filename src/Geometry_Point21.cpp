@@ -321,6 +321,13 @@ namespace ivo {
 
     // Output.
 
+    /**
+     * @brief Point output.
+     * 
+     * @param ost 
+     * @param point Point.
+     * @return std::ostream& 
+     */
     std::ostream &operator <<(std::ostream &ost, const Point21 &point) {
         return ost << "(" << point._x << ", " << point._y << "; " << point._t << ")" << std::flush;
     }
