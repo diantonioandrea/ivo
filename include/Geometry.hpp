@@ -13,5 +13,6 @@
 
 // Points.
 #include "./Geometry/Point21.hpp"
+#include "./Geometry/Methods/Point21.hpp"
 
 #endif
