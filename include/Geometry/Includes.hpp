@@ -11,6 +11,12 @@
 #ifndef GEOMETRY_INCLUDES
 #define GEOMETRY_INCLUDES
 
+// Containers.
+#include <vector>
+
+// Algorithms (copy, ...).
+#include <algorithm>
+
 // Output.
 #include <iostream>
 
