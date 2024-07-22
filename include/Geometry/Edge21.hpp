@@ -1,7 +1,7 @@
 /**
  * @file Edge21.hpp
  * @author Andrea Di Antonio (github.com/diantonioandrea)
- * @brief 
+ * @brief 2 + 1 Edges.
  * @date 2024-07-22
  * 
  * @copyright Copyright (c) 2024
