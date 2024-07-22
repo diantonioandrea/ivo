@@ -49,6 +49,30 @@ namespace ivo {
         return *this;
     }
 
+    // Comparison.
+
+    /**
+     * @brief Point == point.
+     * 
+     * @param point Point.
+     * @return true 
+     * @return false 
+     */
+    bool Point21::operator ==(const Point21 &point) const {
+        return distance(*this, point) <= GEOMETRICAL_ZERO;
+    }
+
+    /**
+     * @brief Point != point.
+     * 
+     * @param point Point.
+     * @return true 
+     * @return false 
+     */
+    bool Point21::operator !=(const Point21 &point) const {
+        return distance(*this, point) > GEOMETRICAL_ZERO;
+    }
+
     // Subscript operator, legacy scalar access (C++23).
 
     #if __cplusplus > 202002L

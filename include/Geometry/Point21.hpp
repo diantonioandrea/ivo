@@ -43,7 +43,7 @@ namespace ivo {
              */
             Real _t = 0.0L;
 
-        private:
+        public:
 
             // Constructors and copy operators.
 
@@ -51,6 +51,11 @@ namespace ivo {
             Point21(const Real &, const Real &, const Real &);
             Point21(const Point21 &);
             Point21 &operator =(const Point21 &);
+
+            // Comparison.
+
+            bool operator ==(const Point21 &) const;
+            bool operator !=(const Point21 &) const;
 
             // Subscript operator, legacy scalar access (C++23).
 
