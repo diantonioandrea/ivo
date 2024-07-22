@@ -19,6 +19,9 @@ HEADERS += ./include/Algebra/Methods/*.hpp
 EXECS = $(subst test/,executables/,$(subst .cpp,.out,$(shell find test -name "*.cpp")))
 OBJECTS = $(subst test/,objects/,$(subst .cpp,.o,$(shell find test -name "*.cpp")))
 
+# Source.
+OBJECTS += $(subst src/,objects/,$(subst .cpp,.o,$(shell find src -name "*.cpp")))
+
 # Directories.
 DIRECTORIES = ./output ./objects ./executables
 
@@ -30,7 +33,7 @@ $(EXECS): executables/%.out: objects/%.o $(OBJECTS)
 	@if [ "$(LDFLAGS) $(LDLIBS)" = " " ]; then echo "Linking $(subst objects/,,$<) and base objects to $@"; else echo "Linking $(subst objects/,,$<) and base objects to $@ with: $(LDFLAGS) $(LDLIBS)"; fi
 	@$(CXX) $(LDFLAGS) $(LDLIBS) $^ -o $@
 
-$(OBJECTS): objects/%.o: test/%.cpp $(HEADERS)
+$(OBJECTS): objects/%.o: src/%.cpp $(HEADERS)
 	@echo "Compiling $< using $(CXX) with: $(CXXFLAGS) $(CPPFLAGS)"
 	@$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 
