@@ -39,6 +39,30 @@ namespace ivo {
         return *this;
     }
 
+    // Comparison.
+
+    /**
+     * @brief Edge == edge.
+     * 
+     * @param edge Edge.
+     * @return true 
+     * @return false 
+     */
+    bool Edge21::operator ==(const Edge21 &edge) const {
+        return ((this->_a == edge._a) && (this->_b == edge._b)) || ((this->_a == edge._b) && (this->_b == edge._a));
+    }
+
+    /**
+     * @brief Edge != edge.
+     * 
+     * @param edge Edge.
+     * @return true 
+     * @return false 
+     */
+    bool Edge21::operator !=(const Edge21 &edge) const {
+        return ((this->_a != edge._a) || (this->_b != edge._b)) && ((this->_a != edge._b) || (this->_b != edge._a));
+    }
+    
     // Subscript operator, legacy scalar access (C++23).
 
     #if __cplusplus > 202002L

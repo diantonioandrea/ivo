@@ -46,6 +46,11 @@ namespace ivo {
             Edge21(const Edge21 &);
             Edge21 &operator =(const Edge21 &);
 
+            // Comparison.
+
+            bool operator ==(const Edge21 &) const;
+            bool operator !=(const Edge21 &) const;
+
             // Subscript operator, legacy scalar access (C++23).
 
             #if __cplusplus > 202002L
