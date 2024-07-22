@@ -1,7 +1,7 @@
 /**
  * @file Vector.hpp
  * @author Andrea Di Antonio (github.com/diantonioandrea)
- * @brief Vectorial methods.
+ * @brief Vector related methods.
  * @date 2024-07-19
  * 
  * @copyright Copyright (c) 2024
