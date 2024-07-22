@@ -16,11 +16,10 @@ HEADERS += ./include/Algebra/*.hpp
 HEADERS += ./include/Algebra/Methods/*.hpp
 
 # Tests.
-EXECS = $(subst test/,executables/,$(subst .cpp,.out,$(shell find test -name "*.cpp")))
-OBJECTS = $(subst test/,objects/,$(subst .cpp,.o,$(shell find test -name "*.cpp")))
+EXECS = $(subst src/,executables/,$(subst .cpp,.out,$(shell find src -name "Test_*.cpp")))
 
 # Source.
-OBJECTS += $(subst src/,objects/,$(subst .cpp,.o,$(shell find src -name "*.cpp")))
+OBJECTS = $(subst src/,objects/,$(subst .cpp,.o,$(shell find src -name "*.cpp")))
 
 # Directories.
 DIRECTORIES = ./output ./objects ./executables
