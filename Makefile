@@ -29,7 +29,7 @@ all: $(DIRECTORIES) $(EXECS)
 	@echo "Compiled everything!"
 
 $(EXECS): executables/%.out: objects/%.o $(OBJECTS) 
-	@if [ "$(LDFLAGS) $(LDLIBS)" = " " ]; then echo "Linking $(subst objects/,,$<) and base objects to $@"; else echo "Linking $(subst objects/,,$<) and base objects to $@ with: $(LDFLAGS) $(LDLIBS)"; fi
+	@if [ "$(LDFLAGS) $(LDLIBS)" = " " ]; then echo "Linking to $@"; else echo "Linking to $@ with: $(LDFLAGS) $(LDLIBS)"; fi
 	@$(CXX) $(LDFLAGS) $(LDLIBS) $^ -o $@
 
 $(OBJECTS): objects/%.o: src/%.cpp $(HEADERS)
