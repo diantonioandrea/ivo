@@ -38,7 +38,7 @@ namespace ivo {
              */
             Point21 _b;
 
-        private:
+        public:
 
             // Constructors and copy operators.
 
