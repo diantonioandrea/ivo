@@ -1,0 +1,9 @@
+# VSCode
+.vscode
+
+# C++
+**/*.o
+**/*.out
+
+# Executables' output.
+**/output
