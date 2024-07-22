@@ -8,20 +8,20 @@
  * 
  */
 
-#include <Algebra.hpp>
+#include <Ivo.hpp>
 
 int main(int argc, char **argv) {
 
     // Vectors.
-    ivo::Vector<Real> v_0{{1, 2}};
-    ivo::Vector<Real> v_1{{3, 4}};
+    ivo::Vector<ivo::Real> v_0{{1, 2}};
+    ivo::Vector<ivo::Real> v_1{{3, 4}};
 
     // Matrices.
-    ivo::Matrix<Real> m_0{2, 2, {1, 2, 3, 4}};
-    ivo::Matrix<Real> m_1{2, 3, {1, 2, 3, 4, 5, 6}};
+    ivo::Matrix<ivo::Real> m_0{2, 2, {1, 2, 3, 4}};
+    ivo::Matrix<ivo::Real> m_1{2, 3, {1, 2, 3, 4, 5, 6}};
 
     // Sparse matrices.
-    ivo::Sparse<Real> s_0{2, 2};
+    ivo::Sparse<ivo::Real> s_0{2, 2};
 
     s_0(0, 0, 1.0L);
     s_0(0, 1, 2.0L);

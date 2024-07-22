@@ -14,56 +14,60 @@
 #include "./Includes.hpp"
 #include "./Primitives.hpp"
 
-// Numerical objects.
+namespace ivo {
 
-/**
- * @brief Summable objects.
- * 
- * @tparam T 
- */
-template<typename T>
-concept Summable = requires(T x, T y) {
-    {x += y} -> std::convertible_to<T>;
-    {x -= y} -> std::convertible_to<T>;
-};
+    // Numerical objects.
 
-/**
- * @brief Multipliable objects.
- * 
- * @tparam T 
- */
-template<typename T>
-concept Multipliable = requires(T x, T y) {
-    {x *= y} -> std::convertible_to<T>;
-    {x /= y} -> std::convertible_to<T>;
-};
+    /**
+     * @brief Summable objects.
+     * 
+     * @tparam T 
+     */
+    template<typename T>
+    concept Summable = requires(T x, T y) {
+        {x += y} -> std::convertible_to<T>;
+        {x -= y} -> std::convertible_to<T>;
+    };
 
-/**
- * @brief "Normable" objects.
- * 
- * @tparam T 
- */
-template<typename T>
-concept Normable = requires(T x) {
-    {std::abs(x)} -> std::convertible_to<Real>;
-};
+    /**
+     * @brief Multipliable objects.
+     * 
+     * @tparam T 
+     */
+    template<typename T>
+    concept Multipliable = requires(T x, T y) {
+        {x *= y} -> std::convertible_to<T>;
+        {x /= y} -> std::convertible_to<T>;
+    };
 
-/**
- * @brief Conjugable objects.
- * 
- * @tparam T 
- */
-template<typename T>
-concept Conjugable = requires(T x) {
-    {std::conj(x)} -> std::convertible_to<std::complex<T>>;
-};
+    /**
+     * @brief "Normable" objects.
+     * 
+     * @tparam T 
+     */
+    template<typename T>
+    concept Normable = requires(T x) {
+        {std::abs(x)} -> std::convertible_to<Real>;
+    };
 
-/**
- * @brief Numerical object.
- * 
- * @tparam T 
- */
-template<typename T>
-concept Numerical = Summable<T> && Multipliable<T> && Normable<T> && Conjugable<T> && std::convertible_to<T, Real>;
+    /**
+     * @brief Conjugable objects.
+     * 
+     * @tparam T 
+     */
+    template<typename T>
+    concept Conjugable = requires(T x) {
+        {std::conj(x)} -> std::convertible_to<std::complex<T>>;
+    };
+
+    /**
+     * @brief Numerical object.
+     * 
+     * @tparam T 
+     */
+    template<typename T>
+    concept Numerical = Summable<T> && Multipliable<T> && Normable<T> && Conjugable<T> && std::convertible_to<T, Real>;
+
+}
 
 #endif

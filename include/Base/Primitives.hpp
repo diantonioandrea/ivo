@@ -13,24 +13,28 @@
 
 #include "./Includes.hpp"
 
-// Primitives.
+namespace ivo {
 
-/**
- * @brief Natural alias.
- * 
- */
-using Natural = std::size_t;
+    // Primitives.
 
-/**
- * @brief Integer alias.
- * 
- */
-using Integer = ptrdiff_t;
+    /**
+     * @brief Natural alias.
+     * 
+     */
+    using Natural = std::size_t;
 
-/**
- * @brief Real alias.
- * 
- */
-using Real = long double;
+    /**
+     * @brief Integer alias.
+     * 
+     */
+    using Integer = ptrdiff_t;
+
+    /**
+     * @brief Real alias.
+     * 
+     */
+    using Real = long double;
+
+}
 
 #endif
