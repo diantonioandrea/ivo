@@ -1,7 +1,7 @@
 /**
  * @file Point.hpp
  * @author Andrea Di Antonio (github.com/diantonioandrea)
- * @brief 
+ * @brief 2 + 1 Points.
  * @date 2024-07-22
  * 
  * @copyright Copyright (c) 2024
@@ -45,10 +45,12 @@ namespace ivo {
 
         private:
 
-            // Constructors.
+            // Constructors and copy operators.
 
             Point21(const Real &, const Real &);
             Point21(const Real &, const Real &, const Real &);
+            Point21(const Point21 &);
+            Point21 &operator =(const Point21 &);
 
             // Subscript operator, legacy scalar access (C++23).
 
@@ -68,25 +70,25 @@ namespace ivo {
 
             Point21 operator +(const Real &) const;
             friend Point21 operator +(const Real &, const Point21 &);
-            Point21 operator +=(const Real &) const;
+            Point21 &operator +=(const Real &);
 
             Point21 operator -(const Real &) const;
             friend Point21 operator -(const Real &, const Point21 &);
-            Point21 operator -=(const Real &) const;
+            Point21 &operator -=(const Real &);
 
             Point21 operator *(const Real &) const;
             friend Point21 operator *(const Real &, const Point21 &);
-            Point21 operator *=(const Real &) const;
+            Point21 &operator *=(const Real &);
 
             Point21 operator /(const Real &) const;
             friend Point21 operator /(const Real &, const Point21 &);
-            Point21 operator /=(const Real &) const;
+            Point21 &operator /=(const Real &);
 
             Point21 operator +(const Point21 &) const;
-            Point21 operator +=(const Point21 &) const;
+            Point21 &operator +=(const Point21 &);
 
             Point21 operator -(const Point21 &) const;
-            Point21 operator -=(const Point21 &) const;
+            Point21 &operator -=(const Point21 &);
 
             // Output.
             

@@ -11,6 +11,9 @@
 #ifndef GEOMETRY_INCLUDES
 #define GEOMETRY_INCLUDES
 
+// Output.
+#include <iostream>
+
 // Base.
 #include "../Base.hpp"
 
