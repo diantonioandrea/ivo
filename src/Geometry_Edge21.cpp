@@ -14,6 +14,12 @@ namespace ivo {
 
     // Constructors and copy operators.
 
+    /**
+     * @brief Points constructor.
+     * 
+     * @param a Edge's a.
+     * @param b Edge's b.
+     */
     Edge21::Edge21(const Point21 &a, const Point21 &b): _a{a}, _b{b} {
         #ifndef NDEBUG // Integrity check.
         assert(a != b);
