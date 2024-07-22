@@ -1,5 +1,5 @@
 /**
- * @file test_algebra.cpp
+ * @file Test_Algebra.cpp
  * @author Andrea Di Antonio (github.com/diantonioandrea)
  * @brief Simple algebra testing.
  * @date 2024-07-20
