@@ -1,7 +1,7 @@
 /**
  * @file Line21.hpp
  * @author Andrea Di Antonio (github.com/diantonioandrea)
- * @brief 2 + 1 Lines.
+ * @brief 2 + 1 lines.
  * @date 2024-07-22
  * 
  * @copyright Copyright (c) 2024

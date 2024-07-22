@@ -1,7 +1,7 @@
 /**
  * @file Point.hpp
  * @author Andrea Di Antonio (github.com/diantonioandrea)
- * @brief 2 + 1 Points.
+ * @brief 2 + 1 points.
  * @date 2024-07-22
  * 
  * @copyright Copyright (c) 2024
