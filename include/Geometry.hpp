@@ -17,5 +17,9 @@
 
 // Edges.
 #include "./Geometry/Edge21.hpp"
+#include "./Geometry/Methods/Edge21.hpp"
+
+// Lines.
+#include "./Geometry/Line21.hpp"
 
 #endif
