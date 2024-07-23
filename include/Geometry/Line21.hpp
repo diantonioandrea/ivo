@@ -18,7 +18,7 @@
 namespace ivo {
 
     /**
-     * @brief Line21. ax + by + ct = d.
+     * @brief Line21. (x, y, t) = (a, b, c) u + (x0, y0, z0).
      * 
      */
     class Line21 {
