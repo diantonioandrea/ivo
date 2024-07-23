@@ -338,4 +338,30 @@ namespace ivo {
         return ost << "(" << point._x << ", " << point._y << "; " << point._t << ")" << std::flush;
     }
 
+    // Literals.
+
+    /**
+     * @brief x-only point.
+     * 
+     * @param x Coordinate.
+     * @return Point21 
+     */
+    Point21 operator ""_x(const Real x) { return Point21{x, 0.0L, 0.0L}; }
+
+    /**
+     * @brief y-only point.
+     * 
+     * @param y Coordinate.
+     * @return Point21 
+     */
+    Point21 operator ""_y(const Real y) { return Point21{0.0L, y, 0.0L}; }
+
+    /**
+     * @brief t-only point.
+     * 
+     * @param t Coordinate.
+     * @return Point21 
+     */
+    Point21 operator ""_t(const Real t) { return Point21{0.0L, 0.0L, t}; }
+
 }

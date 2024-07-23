@@ -101,6 +101,12 @@ namespace ivo {
             friend std::ostream &operator <<(std::ostream &, const Point21 &);
     };
 
+    // Literals.
+
+    Point21 operator ""_x(const Real);
+    Point21 operator ""_y(const Real);
+    Point21 operator ""_t(const Real);
+
 }
 
 #endif
