@@ -23,7 +23,8 @@
 // Output.
 #include <iostream>
 
-// Base.
+// Base and Algebra.
 #include "../Base.hpp"
+#include "../Algebra.hpp"
 
 #endif
