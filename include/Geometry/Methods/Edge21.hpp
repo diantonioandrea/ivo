@@ -23,7 +23,6 @@ namespace ivo {
     // Distances.
 
     Real distance(const Edge21 &, const Point21 &);
-    Real distance(const Edge21 &, const Edge21 &);
 
     // Containment.
 
