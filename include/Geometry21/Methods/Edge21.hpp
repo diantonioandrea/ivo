@@ -29,6 +29,10 @@ namespace ivo {
     bool contains(const Edge21 &, const Point21 &);
     bool contains(const Edge21 &, const Edge21 &);
 
+    // Checks.
+
+    bool spatial(const Edge21 &);
+
 }
 
 #endif

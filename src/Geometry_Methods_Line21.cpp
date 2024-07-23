@@ -13,6 +13,35 @@
 namespace ivo {
 
     // Intersections.
+    
+    /**
+     * @brief Intersections(line, polygon).
+     * 
+     * @param line 
+     * @param polygon
+     * @return std::set<Point21> 
+     */
+    std::vector<Point21> intersections(const Line21 &line, const Polygon21 &polygon) {
+        std::vector<Point21> points;
+        
+        for(const auto &edge: polygon.edges()) {
+            std::optional<Point21> intersection = intersections(line, edge);
+
+            if(!intersection.has_value())
+                continue;
+
+            // Unique intersections only.
+            bool flag = true;
+            for(const auto &point: points)
+                if(point == intersection)
+                    flag = false;
+
+            if(flag)
+                points.emplace_back(intersection.value());
+        }
+
+        return points;
+    }
 
     /**
      * @brief Intersections(line, edge).
@@ -219,5 +248,16 @@ namespace ivo {
      * @return false 
      */
     bool contains(const Line21 &line, const Edge21 &edge) { return contains(line, edge(0)) && contains(line, edge(1)); }
+
+    // Checks.
+
+    /**
+     * @brief Spatial(line).
+     * 
+     * @param line Line.
+     * @return true 
+     * @return false 
+     */
+    bool spatial(const Line21 &line) { return std::abs(line(2, 0)) <= GEOMETRICAL_ZERO; }
 
 }

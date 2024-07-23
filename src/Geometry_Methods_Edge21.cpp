@@ -98,4 +98,17 @@ namespace ivo {
         return contains(ab, cd(0)) && contains(ab, cd(1));
     }
 
+    // Checks.
+
+    /**
+     * @brief Spatial(edge).
+     * 
+     * @param edge Edge.
+     * @return true 
+     * @return false 
+     */
+    bool spatial(const Edge21 &edge) {
+        return std::abs(edge(0)(2) - edge(1)(2)) <= GEOMETRICAL_ZERO;
+    }
+
 }

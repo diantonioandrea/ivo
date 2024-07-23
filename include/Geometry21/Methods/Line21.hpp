@@ -13,11 +13,13 @@
 
 #include "../Includes.hpp"
 #include "../Line21.hpp"
+#include "../Polygon21.hpp"
 
 namespace ivo {
 
     // Intersections.
 
+    std::vector<Point21> intersections(const Line21 &, const Polygon21 &);
     std::optional<Point21> intersections(const Line21 &, const Edge21 &);
     std::optional<Point21> intersections(const Line21 &, const Line21 &);
 
@@ -31,6 +33,10 @@ namespace ivo {
 
     bool contains(const Line21 &, const Point21 &);
     bool contains(const Line21 &, const Edge21 &);
+
+    // Checks.
+
+    bool spatial(const Line21 &);
 
 }
 

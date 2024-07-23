@@ -12,6 +12,7 @@
 #define GEOMETRY_POLYGON21
 
 #include "./Includes.hpp"
+#include "./Edge21.hpp"
 #include "./Point21.hpp"
 
 namespace ivo {
@@ -34,6 +35,11 @@ namespace ivo {
             std::vector<Point21> _points;
 
         public:
+
+            // Attributes access.
+
+            std::vector<Point21> points() const;
+            std::vector<Edge21> edges() const;
 
             // Constructors and copy operators.
 

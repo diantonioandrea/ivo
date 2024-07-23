@@ -12,6 +12,29 @@
 
 namespace ivo {
 
+    // Attributes access.
+
+    /**
+     * @brief Polygon's points.
+     * 
+     * @return std::vector<Point21> 
+     */
+    std::vector<Point21> Polygon21::points() const { return this->_points; }
+
+    /**
+     * @brief Polygon's edges.
+     * 
+     * @return std::vector<Edge21> 
+     */
+    std::vector<Edge21> Polygon21::edges() const {
+        std::vector<Edge21> edges;
+        for(Natural j = 0; j < this->_points.size() - 1; ++j)
+            edges.emplace_back(this->_points[j], this->_points[j + 1]);
+
+        edges.emplace_back(*--this->_points.end(), this->_points[0]);
+        return edges;
+    }
+
     // Constructors and copy operators.
 
     /**
