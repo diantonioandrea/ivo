@@ -16,11 +16,6 @@
 
 namespace ivo {
 
-    // Line methods.
-
-    std::optional<Line21> normal(const Edge21 &, const Point21 &);
-    Line21 normal(const Line21 &, const Point21 &);
-
     // Intersections.
 
     std::optional<Point21> intersections(const Line21 &, const Edge21 &);

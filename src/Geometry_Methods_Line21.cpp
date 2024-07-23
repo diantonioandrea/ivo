@@ -12,54 +12,6 @@
 
 namespace ivo {
 
-    // Line methods.
-
-    /**
-     * @brief Normal(edge, point).
-     * 
-     * @param edge Edge.
-     * @param point Point.
-     * @return std::optional<Line21> 
-     */
-    std::optional<Line21> normal(const Edge21 &edge, const Point21 &point) {
-        Line21 line = normal(Line21{edge}, point);
-
-        if(intersections(line, edge).has_value())
-            return line;
-
-        return {};
-    }
-
-    /**
-     * @brief Normal(line, point).
-     * 
-     * @param line Line.
-     * @param point Point.
-     * @return Line21 
-     */
-    Line21 normal(const Line21 &line, const Point21 &point) {
-
-        // [!]
-
-    }
-
-    /**
-     * @brief Bisector2(p, q).
-     * Space bisector.
-     * 
-     * @param p Point.
-     * @param q Point.
-     * @return Line21 
-     */
-    Line21 bisector2(const Point21 &p, const Point21 &q) {
-        #ifndef NDEBUG
-        assert(p != q);
-        assert(std::abs(p(2) - q(2)) < GEOMETRICAL_ZERO);
-        #endif
-
-        // [!]
-    }
-
     // Intersections.
 
     /**
@@ -79,7 +31,47 @@ namespace ivo {
         return {};
     }
 
-    std::optional<Point21> intersections(const Line21 &, const Line21 &);
+    /**
+     * @brief Intersections(line, line).
+     * 
+     * @param r Line.
+     * @param s Line.
+     * @return std::optional<Point21> 
+     */
+    std::optional<Point21> intersections(const Line21 &r, const Line21 &s) {
+        if(distance(r, s) > GEOMETRICAL_ZERO)
+            return {};
+
+        Natural rj = 0, sj = 0;
+        for(Natural j = 0; j < 3; ++j) {
+            if(std::abs(r(j, 0)) > GEOMETRICAL_ZERO)
+                for(Natural k = 0; k < 3; ++k) {
+                    if(j == k)
+                        continue;
+                    
+                    if((std::abs(s(k, 0)) > GEOMETRICAL_ZERO) && (std::abs(s(k, 0) * r(j, 0) - s(j, 0) * r(k, 0)) > GEOMETRICAL_ZERO))
+                        rj = j;
+                        sj = k;
+                        break;
+                }
+
+            if(rj != sj)
+                break;
+        }
+
+        if(rj == sj) // [?]
+            return {};
+
+        // r's parameter.
+        Real t; 
+
+        if(std::abs(s(rj, 0)) > GEOMETRICAL_ZERO)
+            t = (s(sj, 0) * (s(rj, 1) - r(rj, 1)) - s(rj, 0) * (s(sj, 1) - r(sj, 1))) / (s(sj, 0) * r(rj, 0) - s(rj, 0) * r(sj, 0));
+        else
+            t = (s(rj, 1) - r(rj, 1)) / r(rj, 0);
+
+        return r(t);
+    }
 
     // Distances.
 
@@ -92,21 +84,64 @@ namespace ivo {
      */
     Real distance(const Line21 &line, const Point21 &point) {
 
-        // [!]
+        // Point vector.
+        Vector<Real> p{{point(0), point(1), point(2)}};
 
+        // Line parameters and reference point.
+        Vector<Real> rv{{line(0, 0), line(1, 0), line(2, 0)}};
+        Vector<Real> p0{{line(0, 1), line(1, 1), line(2, 1)}};
+
+        // Line's parameter.
+        Real t = dot(rv, p - p0) / dot(rv, rv);
+
+        return distance(line(t), point);
     }
 
     /**
      * @brief Distance(line, edge).
+     * Code-wise redundant with respect to distance(line, line).
      * 
      * @param line Line.
      * @param edge Edge.
      * @return Real 
      */
     Real distance(const Line21 &line, const Edge21 &edge) {
-        
-        // [!]
 
+        // Naming.
+        Line21 r{line}, s{edge};
+
+        // r's parameters and reference point.
+        Vector<Real> rv{{r(0, 0), r(1, 0), r(2, 0)}};
+        Vector<Real> p0{{r(0, 1), r(1, 1), r(2, 1)}};
+
+        // s's parameters and reference point.
+        Vector<Real> sv{{s(0, 0), s(1, 0), s(2, 0)}};
+        Vector<Real> q0{{s(0, 1), s(1, 1), s(2, 1)}};
+
+        // Reference points difference.
+        Vector<Real> pq = p0 - q0;
+
+        // Some products.
+        Real rv_2 = dot(rv, rv);
+        Real sv_2 = dot(sv, sv);
+        Real rv_pq = dot(rv, pq);
+        Real sv_pq = dot(sv, pq);
+        Real rv_sv = dot(rv, sv);
+
+        // Parallelism.
+        if(std::abs(rv_2 * sv_2 - rv_sv * rv_sv) <= GEOMETRICAL_ZERO)
+            return distance(r, edge(0));
+
+        // Parameters.
+        Real t = (rv_sv * sv_pq - sv_2 * rv_pq) / (rv_2 * sv_2 - rv_sv * rv_sv);
+        Real u = (rv_2 * sv_pq - rv_sv * rv_pq) / (rv_2 * sv_2 - rv_sv * rv_sv);
+
+        if(contains(edge, s(u)))
+            return distance(r(t), s(u));
+
+        // Distances.
+        std::vector<Real> distances{distance(r, edge(0)), distance(r, edge(1))};
+        return *std::min_element(distances.begin(), distances.end());
     }
 
     /**
@@ -118,8 +153,33 @@ namespace ivo {
      */
     Real distance(const Line21 &r, const Line21 &s) {
 
-        // [!]
+        // r's parameters and reference point.
+        Vector<Real> rv{{r(0, 0), r(1, 0), r(2, 0)}};
+        Vector<Real> p0{{r(0, 1), r(1, 1), r(2, 1)}};
 
+        // s's parameters and reference point.
+        Vector<Real> sv{{s(0, 0), s(1, 0), s(2, 0)}};
+        Vector<Real> q0{{s(0, 1), s(1, 1), s(2, 1)}};
+
+        // Reference points difference.
+        Vector<Real> pq = p0 - q0;
+
+        // Some products.
+        Real rv_2 = dot(rv, rv);
+        Real sv_2 = dot(sv, sv);
+        Real rv_pq = dot(rv, pq);
+        Real sv_pq = dot(sv, pq);
+        Real rv_sv = dot(rv, sv);
+
+        // Parallelism.
+        if(std::abs(rv_2 * sv_2 - rv_sv * rv_sv) <= GEOMETRICAL_ZERO)
+            return distance(r, s(0.0L));
+
+        // Parameters.
+        Real t = (rv_sv * sv_pq - sv_2 * rv_pq) / (rv_2 * sv_2 - rv_sv * rv_sv);
+        Real u = (rv_2 * sv_pq - rv_sv * rv_pq) / (rv_2 * sv_2 - rv_sv * rv_sv);
+
+        return distance(r(t), s(u));
     }
 
     // Containment.
