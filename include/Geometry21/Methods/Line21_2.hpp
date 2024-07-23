@@ -1,7 +1,7 @@
 /**
  * @file Line21_2.hpp
  * @author Andrea Di Antonio (github.com/diantonioandrea)
- * @brief 
+ * @brief Line21 related methods. Space only.
  * @date 2024-07-23
  * 
  * @copyright Copyright (c) 2024
