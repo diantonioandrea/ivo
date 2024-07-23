@@ -14,6 +14,9 @@
 // Containers.
 #include <vector>
 
+// Optionals.
+#include <optional>
+
 // Algorithms (copy, ...).
 #include <algorithm>
 

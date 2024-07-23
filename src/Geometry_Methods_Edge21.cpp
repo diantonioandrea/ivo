@@ -12,16 +12,39 @@
 
 namespace ivo {
 
+    // Intersections.
+
+    /**
+     * @brief Intersections(edge, edge).
+     * 
+     * @param ab Edge.
+     * @param cd Edge.
+     * @return std::optional<Point21> 
+     */
+    std::optional<Point21> intersections(const Edge21 &ab, const Edge21 &cd) {
+        std::optional<Point21> intersection = intersections(Line21{ab}, Line21{cd});
+
+        if(intersection.has_value())
+            if(contains(ab, intersection.value()) && contains(cd, intersection.value()))
+                return intersection.value();
+
+        return {};
+    }
+
     // Distances.
 
     /**
      * @brief Distance(edge, point).
      * 
-     * @param ab Edge.
-     * @param p Point.
+     * @param edge Edge.
+     * @param point Point.
      * @return Real 
      */
-    Real distance(const Edge21 &ab, const Point21 &p);
+    Real distance(const Edge21 &edge, const Point21 &point) {
+
+        // [!]
+
+    }
 
     /**
      * @brief Distance(edge, edge).
@@ -30,7 +53,11 @@ namespace ivo {
      * @param cd 
      * @return Real 
      */
-    Real distance(const Edge21 &ab, const Edge21 &cd);
+    Real distance(const Edge21 &ab, const Edge21 &cd) {
+
+        // [!]
+
+    }
 
     // Containment.
 

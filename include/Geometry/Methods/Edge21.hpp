@@ -8,13 +8,17 @@
  * 
  */
 
-#ifndef GEOMETRY_METHOD_EDGE21
-#define GEOMETRY_METHOD_EDGE21
+#ifndef GEOMETRY_METHODS_EDGE21
+#define GEOMETRY_METHODS_EDGE21
 
 #include "../Includes.hpp"
 #include "../Edge21.hpp"
 
 namespace ivo {
+
+    // Intersections.
+
+    std::optional<Point21> intersections(const Edge21 &, const Edge21 &);
 
     // Distances.
 
