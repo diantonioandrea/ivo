@@ -17,7 +17,7 @@
 // Algebra.
 #include "./Algebra.hpp"
 
-// Geometry.
+// Geometry21.
 #include "./Geometry21.hpp"
 
 #endif
