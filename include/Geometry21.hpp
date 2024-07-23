@@ -26,6 +26,7 @@
 
 // Polygons.
 #include "./Geometry21/Polygon21.hpp"
+#include "./Geometry21/Methods/Polygon21.hpp"
 #include "./Geometry21/Methods/Polygon21_2.hpp"
 
 #endif

@@ -12,6 +12,7 @@
 #define GEOMETRY_POLYGON21
 
 #include "./Includes.hpp"
+#include "./Line21.hpp"
 #include "./Edge21.hpp"
 #include "./Point21.hpp"
 
