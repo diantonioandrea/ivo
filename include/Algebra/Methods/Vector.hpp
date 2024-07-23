@@ -29,7 +29,10 @@ namespace ivo {
         std::vector<T> x_entries = x.entries();
         std::vector<T> y_entries = y.entries();
 
-        return std::transform_reduce(x_entries.begin(), x_entries.end(), y_entries.begin(), static_cast<T>(0), std::plus{}, [](const T &x_entry, const T &y_entry){ return x_entry * std::conj(y_entry); });
+        if constexpr (Conjugable<T>)
+            return std::transform_reduce(x_entries.begin(), x_entries.end(), y_entries.begin(), static_cast<T>(0), std::plus{}, [](const T &x_entry, const T &y_entry){ return x_entry * std::conj(y_entry); });
+
+        return std::transform_reduce(x_entries.begin(), x_entries.end(), y_entries.begin(), static_cast<T>(0), std::plus{}, [](const T &x_entry, const T &y_entry){ return x_entry * y_entry; });
     }
 
     /**

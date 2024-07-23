@@ -51,22 +51,24 @@ namespace ivo {
     };
 
     /**
+     * @brief Numerical object.
+     * 
+     * @tparam T 
+     */
+    template<typename T>
+    concept Numerical = Summable<T> && Multipliable<T> && Normable<T> && std::convertible_to<T, Real>;
+
+    // Other concepts.
+
+    /**
      * @brief Conjugable objects.
      * 
      * @tparam T 
      */
     template<typename T>
     concept Conjugable = requires(T x) {
-        {std::conj(x)} -> std::convertible_to<std::complex<T>>;
+        {std::conj(x)} -> std::convertible_to<T>;
     };
-
-    /**
-     * @brief Numerical object.
-     * 
-     * @tparam T 
-     */
-    template<typename T>
-    concept Numerical = Summable<T> && Multipliable<T> && Normable<T> && Conjugable<T> && std::convertible_to<T, Real>;
 
 }
 
