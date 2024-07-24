@@ -16,7 +16,10 @@
 
 namespace ivo {
 
-    
+    // Line methods.
+
+    Line21 bisector2(const Edge21 &);
+    Line21 bisector2(const Point21 &, const Point21 &);
 
 }
 

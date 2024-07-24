@@ -65,6 +65,8 @@ int main(int argc, char **argv) {
     std::cout << ivo::contains2(abc, d) << std::endl << std::endl;
     std::cout << ivo::contains2(abc, e) << std::endl << std::endl;
 
+    std::cout << ivo::bisector2(a, b) << std::endl << std::endl;
+
     for(const auto &point: ivo::intersections(ivo::Line21{b, d}, abc))
         std::cout << point << std::endl;
 
