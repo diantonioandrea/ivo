@@ -11,6 +11,9 @@
 #ifndef GEOMETRY21
 #define GEOMETRY21
 
+// Base.
+#include "./Base.hpp"
+
 // Points.
 #include "./Geometry21/Point21.hpp"
 #include "./Geometry21/Methods/Point21.hpp"
