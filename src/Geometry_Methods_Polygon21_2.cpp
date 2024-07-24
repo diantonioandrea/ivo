@@ -12,6 +12,37 @@
 
 namespace ivo {
 
+    // Polygon methods.
+
+    /**
+     * @brief Polygon's bounding box.
+     * 
+     * @param polygon Polygon.
+     * @return std::array<Point21, 2> 
+     */
+    std::array<Point21, 2> box(const Polygon21 &polygon) {
+        #ifndef NDEBUG // Integrity check.
+        assert(spatial(polygon));
+        #endif
+
+        // Points.
+        std::vector<Point21> points = polygon.points();
+
+        // Coordinates.
+        Real min_x = points[0](0), min_y = points[0](1);
+        Real max_x = points[0](0), max_y = points[0](1);
+        Real t = points[0](2);
+
+        for(const auto &point: polygon.points()) {
+            min_x = (point(0) < min_x) ? point(0) : min_x;
+            min_y = (point(1) < min_y) ? point(1) : min_y;
+            max_x = (point(0) > max_x) ? point(0) : max_x;
+            max_y = (point(1) > max_y) ? point(1) : max_y;
+        }
+
+        return {Point21{min_x, min_y, t}, Point21{max_x, max_y, t}};
+    }
+
     // Containment.
 
     /**

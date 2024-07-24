@@ -16,6 +16,10 @@
 
 namespace ivo {
 
+    // Polygon methods.
+
+    std::array<Point21, 2> box(const Polygon21 &);
+
     // Containment.
 
     bool contains2(const Polygon21 &, const Point21 &);
