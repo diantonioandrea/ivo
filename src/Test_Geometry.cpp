@@ -18,6 +18,7 @@ int main(int argc, char **argv) {
     ivo::Point21 c{1, 1, 0};
 
     ivo::Point21 d{0, 1, 0};
+    ivo::Point21 e{0.75, 0.25, 0};
 
     // Edges.
     ivo::Edge21 ab{a, b};
@@ -49,17 +50,23 @@ int main(int argc, char **argv) {
 
     std::cout << abc << std::endl << std::endl;
 
-    std::cout << distance(a, b) << std::endl << std::endl;
-    std::cout << distance(b, c) << std::endl << std::endl;
-    std::cout << distance(c, a) << std::endl << std::endl;
+    std::cout << ivo::distance(a, b) << std::endl << std::endl;
+    std::cout << ivo::distance(b, c) << std::endl << std::endl;
+    std::cout << ivo::distance(c, a) << std::endl << std::endl;
 
-    std::cout << distance(abl, c) << std::endl << std::endl;
-    std::cout << distance(bcl, a) << std::endl << std::endl;
-    std::cout << distance(cal, b) << std::endl << std::endl;
+    std::cout << ivo::distance(abl, c) << std::endl << std::endl;
+    std::cout << ivo::distance(bcl, a) << std::endl << std::endl;
+    std::cout << ivo::distance(cal, b) << std::endl << std::endl;
 
-    std::cout << distance(abl, bcl) << std::endl << std::endl;
-    std::cout << distance(abl, cal) << std::endl << std::endl;
-    std::cout << distance(abl, cdl) << std::endl;
+    std::cout << ivo::distance(abl, bcl) << std::endl << std::endl;
+    std::cout << ivo::distance(abl, cal) << std::endl << std::endl;
+    std::cout << ivo::distance(abl, cdl) << std::endl << std::endl;
+
+    std::cout << ivo::contains2(abc, d) << std::endl << std::endl;
+    std::cout << ivo::contains2(abc, e) << std::endl << std::endl;
+
+    for(const auto &point: ivo::intersections(ivo::Line21{b, d}, abc))
+        std::cout << point << std::endl;
 
     return 0;
 }

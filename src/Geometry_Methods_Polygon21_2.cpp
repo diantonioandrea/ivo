@@ -34,7 +34,7 @@ namespace ivo {
             return false;
 
         // Second check.
-        Line21 line{point, points[0]};
+        Line21 line{Point21{point(0), 0.0L, 0.0L}, Point21{point(0) + 1.0L, 0.0L, 0.0L}};
         Natural counter = 0;
 
         for(const auto &intersection: intersections(line, polygon))
