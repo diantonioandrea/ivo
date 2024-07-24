@@ -8,8 +8,8 @@
  * 
  */
 
-#ifndef GEOMETRY_METHODS_LINE21
-#define GEOMETRY_METHODS_LINE21
+#ifndef GEOMETRY21_METHODS_LINE21
+#define GEOMETRY21_METHODS_LINE21
 
 #include "../Includes.hpp"
 #include "../Line21.hpp"

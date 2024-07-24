@@ -8,8 +8,8 @@
  * 
  */
 
-#ifndef GEOMETRY_POINT21
-#define GEOMETRY_POINT21
+#ifndef GEOMETRY21_POINT21
+#define GEOMETRY21_POINT21
 
 #include "./Includes.hpp"
 

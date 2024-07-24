@@ -8,8 +8,8 @@
  * 
  */
 
-#ifndef GEOMETRY_METHODS_POLYGON21
-#define GEOMETRY_METHODS_POLYGON21
+#ifndef GEOMETRY21_METHODS_POLYGON21
+#define GEOMETRY21_METHODS_POLYGON21
 
 #include "../Includes.hpp"
 #include "../Polygon21.hpp"

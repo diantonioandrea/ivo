@@ -8,8 +8,8 @@
  * 
  */
 
-#ifndef GEOMETRY_POLYGON21
-#define GEOMETRY_POLYGON21
+#ifndef GEOMETRY21_POLYGON21
+#define GEOMETRY21_POLYGON21
 
 #include "./Includes.hpp"
 #include "./Line21.hpp"

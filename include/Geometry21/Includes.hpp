@@ -8,8 +8,8 @@
  * 
  */
 
-#ifndef GEOMETRY_INCLUDES
-#define GEOMETRY_INCLUDES
+#ifndef GEOMETRY21_INCLUDES
+#define GEOMETRY21_INCLUDES
 
 // Containers.
 #include <vector>

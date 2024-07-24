@@ -1,5 +1,5 @@
 /**
- * @file Geometry_Polygon21.cpp
+ * @file Geometry21_Polygon21.cpp
  * @author Andrea Di Antonio (github.com/diantonioandrea)
  * @brief Geometry/Polygon21.hpp implementation.
  * @date 2024-07-22
