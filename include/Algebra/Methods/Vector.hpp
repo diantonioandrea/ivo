@@ -8,8 +8,8 @@
  * 
  */
 
-#ifndef ALGEBRA_VECTOR_METHODS
-#define ALGEBRA_VECTOR_METHODS
+#ifndef ALGEBRA_METHODS_VECTOR
+#define ALGEBRA_METHODS_VECTOR
 
 #include "../Includes.hpp"
 #include "../Vector.hpp"
