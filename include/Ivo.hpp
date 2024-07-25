@@ -20,4 +20,7 @@
 // Geometry21.
 #include "./Geometry21.hpp"
 
+// Mesh.
+#include "./Mesh.hpp"
+
 #endif
