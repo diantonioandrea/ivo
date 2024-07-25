@@ -157,7 +157,13 @@ namespace ivo {
         return points;
     }
 
-    
+    /**
+     * @brief Returns the Voronoi diagram of a given set of points inside a polygon.
+     * 
+     * @param polygon Polygon.
+     * @param points Points.
+     * @return std::vector<Polygon21> 
+     */
     std::vector<Polygon21> voronoi2(const Polygon21 &polygon, const std::vector<Point21> &points) {
         #ifndef NDEBUG // Integrity check.
         assert(spatial(polygon));
@@ -168,6 +174,10 @@ namespace ivo {
 
         for(Natural j = 0; j < points.size(); ++j) {
             Polygon21 cell{polygon};
+
+            #ifndef NDEBUG // Integrity check.
+            assert(contains2(polygon, points[j]));
+            #endif
 
             // Reductions.
             for(Natural k = 0; k < points.size(); ++k) {
