@@ -14,7 +14,4 @@
 // Base.
 #include "../Base.hpp"
 
-// Voronoi.
-#include "./Mesh2/Voronoi2.hpp"
-
 #endif

@@ -12,59 +12,6 @@
 
 namespace ivo {
 
-    // Random points.
-
-    /**
-     * @brief Generates random points in a polygon
-     * 
-     * @param polygon Polygon.
-     * @param number Number.
-     * @return std::vector<Point21> 
-     */
-    std::vector<Point21> random2(const Polygon21 &polygon, const Natural &number) {
-
-        // Seeding.
-        std::srand(std::time(nullptr));
-
-        #ifndef NDEBUG // integrity check.
-        assert(number > 0);
-        assert(spatial(polygon));
-        #endif
-
-        // Random points.
-        std::vector<Point21> points(number, Point21{});
-
-        // Boundaries.
-        auto [min_xy, max_xy] = box2(polygon);
-        Real t = min_xy(2);
-
-        // Generation.
-        for(Natural j = 0; j < number; ++j) {
-            bool generation = true;
-
-            while(generation) {
-                Real x = min_xy(0) + (max_xy(0) - min_xy(0)) * (static_cast<Real>(std::rand()) / static_cast<Real>(RAND_MAX));
-                Real y = min_xy(1) + (max_xy(1) - min_xy(1)) * (static_cast<Real>(std::rand()) / static_cast<Real>(RAND_MAX));
-                Point21 point{x, y, t};
-
-                if(!contains2(polygon, point))
-                    continue;
-                
-                generation = false;
-                for(Natural k = 0; k < j; ++k)
-                    if(point == points[k]) {
-                        generation = true;
-                        break;
-                    }
-
-                if(!generation)
-                    points[j] = point;
-            }
-        }
-
-        return points;
-    }
-
     // (Meshing) polygon methods.
 
     /**
@@ -159,6 +106,90 @@ namespace ivo {
         return B;
     }
 
+    /**
+     * @brief Generates random points in a polygon
+     * 
+     * @param polygon Polygon.
+     * @param number Number.
+     * @return std::vector<Point21> 
+     */
+    std::vector<Point21> random2(const Polygon21 &polygon, const Natural &number) {
+
+        // Seeding.
+        std::srand(std::time(nullptr));
+
+        #ifndef NDEBUG // integrity check.
+        assert(number > 0);
+        assert(spatial(polygon));
+        #endif
+
+        // Random points.
+        std::vector<Point21> points(number, Point21{});
+
+        // Boundaries.
+        auto [min_xy, max_xy] = box2(polygon);
+        Real t = min_xy(2);
+
+        // Generation.
+        for(Natural j = 0; j < number; ++j) {
+            bool generation = true;
+
+            while(generation) {
+                Real x = min_xy(0) + (max_xy(0) - min_xy(0)) * (static_cast<Real>(std::rand()) / static_cast<Real>(RAND_MAX));
+                Real y = min_xy(1) + (max_xy(1) - min_xy(1)) * (static_cast<Real>(std::rand()) / static_cast<Real>(RAND_MAX));
+                Point21 point{x, y, t};
+
+                if(!contains2(polygon, point))
+                    continue;
+                
+                generation = false;
+                for(Natural k = 0; k < j; ++k)
+                    if(point == points[k]) {
+                        generation = true;
+                        break;
+                    }
+
+                if(!generation)
+                    points[j] = point;
+            }
+        }
+
+        return points;
+    }
+
+    /**
+     * @brief Returns the Voronoi diagram of a random set of points inside a polygon.
+     * 
+     * @param polygon Polygon.
+     * @param number Number.
+     * @return std::vector<Polygon21> 
+     */
+    std::vector<Polygon21> voronoi2(const Polygon21 &polygon, const Natural &number) {
+        #ifndef NDEBUG // Integrity check.
+        assert(spatial(polygon));
+        #endif
+
+        // Points and cells.
+        std::vector<Point21> points = random2(polygon, number);
+        std::vector<Polygon21> cells;
+
+        for(Natural j = 0; j < number; ++j) {
+            Polygon21 cell{polygon};
+
+            // Reductions.
+            for(Natural k = 0; k < number; ++k) {
+                if(j == k)
+                    continue;
+                    
+                cell = reduce2(cell, bisector2(points[j], points[k]), points[j]);
+            }
+
+            cells.emplace_back(cell);
+        }
+
+        return cells;
+    }
+
     // Polygon methods.
 
     /**
@@ -213,7 +244,7 @@ namespace ivo {
             return false;
 
         // Second check.
-        Line21 line{Point21{point(0), 0.0L, 0.0L}, Point21{point(0) + 1.0L, 0.0L, 0.0L}};
+        Line21 line{point, point + 1.0_x};
         Natural counter = 0;
 
         for(const auto &intersection: intersections(line, polygon))
