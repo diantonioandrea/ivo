@@ -8,8 +8,8 @@
  * 
  */
 
-#ifndef MESH_MESH2_INCLUDES
-#define MESH_MESH2_INCLUDES
+#ifndef MESH21_INCLUDES
+#define MESH21_INCLUDES
 
 // Containers.
 #include <vector>
@@ -20,8 +20,9 @@
 // Output.
 #include <iostream>
 
-// Base and Geometry.
-#include "../../Base.hpp"
-#include "../../Geometry21.hpp"
+// Base, Algebra and Geometry21.
+#include "../Base.hpp"
+#include "../Algebra.hpp"
+#include "../Geometry21.hpp"
 
 #endif
