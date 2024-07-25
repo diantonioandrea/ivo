@@ -16,9 +16,13 @@
 
 namespace ivo {
 
+    // (Meshing) polygon methods.
+
+    Polygon21 reduce2(const Polygon21 &, const Line21 &, const Point21 &);
+
     // Polygon methods.
 
-    std::array<Point21, 2> box(const Polygon21 &);
+    std::array<Point21, 2> box2(const Polygon21 &);
 
     // Containment.
 
