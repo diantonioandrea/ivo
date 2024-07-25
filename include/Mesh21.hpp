@@ -20,4 +20,7 @@
 // Elements.
 #include "./Mesh21/Element21.hpp"
 
+// Neighbours.
+#include "./Mesh21/Neighbour21.hpp"
+
 #endif
