@@ -12,13 +12,12 @@
 #define MESH_MESH2_VORONOI2
 
 #include "./Includes.hpp"
-#include "./Random2.hpp"
 
 namespace ivo {
 
     // Random Voronoi.
 
-    std::vector<Polygon21> __voronoi2(const Polygon21 &, const Natural &);
+    std::vector<Polygon21> voronoi2(const Polygon21 &, const Natural &);
 
 }
 

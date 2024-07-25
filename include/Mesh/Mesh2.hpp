@@ -14,9 +14,6 @@
 // Base.
 #include "../Base.hpp"
 
-// Random.
-#include "./Mesh2/Random2.hpp"
-
 // Voronoi.
 #include "./Mesh2/Voronoi2.hpp"
 

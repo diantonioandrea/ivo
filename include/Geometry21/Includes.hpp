@@ -14,6 +14,10 @@
 // Containers.
 #include <vector>
 
+// Random.
+#include <cstdlib>
+#include <ctime>
+
 // Optionals.
 #include <optional>
 

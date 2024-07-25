@@ -16,6 +16,10 @@
 
 namespace ivo {
 
+    // Random points.
+
+    std::vector<Point21> random2(const Polygon21 &, const Natural &);
+
     // (Meshing) polygon methods.
 
     Polygon21 reduce2(const Polygon21 &, const Line21 &, const Point21 &);
