@@ -15,13 +15,6 @@ namespace ivo {
     // Attributes access.
 
     /**
-     * @brief Polygon's points.
-     * 
-     * @return std::vector<Point21> 
-     */
-    std::vector<Point21> Polygon21::points() const { return this->_points; }
-
-    /**
      * @brief Polygon's edges.
      * 
      * @return std::vector<Edge21> 

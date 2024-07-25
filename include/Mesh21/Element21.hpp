@@ -59,21 +59,21 @@ namespace ivo {
              * 
              * @return Real 
              */
-            Real height() const { return this->_height; }
+            constexpr Real height() const { return this->_height; }
 
             /**
              * @brief Element's space degree.
              * 
              * @return Natural 
              */
-            Natural p() const { return this->_p; }
+            constexpr Natural p() const { return this->_p; }
 
             /**
              * @brief Element's time degree.
              * 
              * @return Natural 
              */
-            Natural q() const { return this->_q; }
+            constexpr Natural q() const { return this->_q; }
 
             // Constructors.
 
