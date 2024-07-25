@@ -157,27 +157,20 @@ namespace ivo {
         return points;
     }
 
-    /**
-     * @brief Returns the Voronoi diagram of a random set of points inside a polygon.
-     * 
-     * @param polygon Polygon.
-     * @param number Number.
-     * @return std::vector<Polygon21> 
-     */
-    std::vector<Polygon21> voronoi2(const Polygon21 &polygon, const Natural &number) {
+    
+    std::vector<Polygon21> voronoi2(const Polygon21 &polygon, const std::vector<Point21> &points) {
         #ifndef NDEBUG // Integrity check.
         assert(spatial(polygon));
         #endif
 
-        // Points and cells.
-        std::vector<Point21> points = random2(polygon, number);
+        // Cells.
         std::vector<Polygon21> cells;
 
-        for(Natural j = 0; j < number; ++j) {
+        for(Natural j = 0; j < points.size(); ++j) {
             Polygon21 cell{polygon};
 
             // Reductions.
-            for(Natural k = 0; k < number; ++k) {
+            for(Natural k = 0; k < points.size(); ++k) {
                 if(j == k)
                     continue;
                     
@@ -188,6 +181,17 @@ namespace ivo {
         }
 
         return cells;
+    }
+
+    /**
+     * @brief Returns the Voronoi diagram of a random set of points inside a polygon.
+     * 
+     * @param polygon Polygon.
+     * @param number Number.
+     * @return std::vector<Polygon21> 
+     */
+    std::vector<Polygon21> voronoi2(const Polygon21 &polygon, const Natural &number) {
+        return voronoi2(polygon, random2(polygon, number));
     }
 
     // Polygon methods.

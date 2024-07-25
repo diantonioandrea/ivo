@@ -20,6 +20,8 @@ namespace ivo {
 
     Polygon21 reduce2(const Polygon21 &, const Line21 &, const Point21 &);
     std::vector<Point21> random2(const Polygon21 &, const Natural &);
+
+    std::vector<Polygon21> voronoi2(const Polygon21 &, const std::vector<Point21> &);
     std::vector<Polygon21> voronoi2(const Polygon21 &, const Natural &);
 
     // Polygon methods.
