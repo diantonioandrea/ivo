@@ -53,6 +53,10 @@ namespace ivo {
             Point21(const Point21 &);
             Point21 &operator =(const Point21 &);
 
+            // Conversions.
+
+            operator Vector<Real>() const;
+
             // Comparison.
 
             bool operator ==(const Point21 &) const;

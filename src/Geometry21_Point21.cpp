@@ -55,6 +55,15 @@ namespace ivo {
         return *this;
     }
 
+    // Conversions.
+
+    /**
+     * @brief Vector conversion.
+     * 
+     * @return Vector<Real> 
+     */
+    Point21::operator Vector<Real>() const { return Vector<Real>{{this->_x, this->_y, this->_t}}; }
+
     // Comparison.
 
     /**
