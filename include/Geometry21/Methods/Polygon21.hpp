@@ -16,6 +16,13 @@
 
 namespace ivo {
 
+    // Polygon methods.
+
+    Real area(const Polygon21 &);
+
+    Point21 centre(const Polygon21 &);
+    Point21 centroid(const Polygon21 &);
+
     // Checks.
 
     bool spatial(const Polygon21 &);

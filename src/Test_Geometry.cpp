@@ -34,6 +34,7 @@ int main(int argc, char **argv) {
 
     // Polygon.
     ivo::Polygon21 abc{{a, b, c}};
+    ivo::Polygon21 abcd{{a, b, c, d}};
 
     // Output.
     std::cout << a << std::endl << std::endl;
@@ -68,6 +69,10 @@ int main(int argc, char **argv) {
     std::cout << ivo::bisector2(a, b) << std::endl << std::endl;
 
     std::cout << ivo::reduce2(abc, ivo::bisector2(b, c), e) << std::endl << std::endl;
+
+    std::cout << area(abcd) << std::endl << std::endl;
+
+    std::cout << centroid(abcd) << std::endl << std::endl;
 
     for(const auto &polygon: ivo::voronoi2(abc, 3))
         std::cout << polygon << std::endl;
