@@ -23,7 +23,7 @@ HEADERS += ./include/Geometry21/Methods/*.hpp
 HEADERS += ./include/Mesh21/*.hpp
 
 # Tests.
-EXECS = $(subst src/,executables/,$(subst .cpp,.out,$(shell find src -name "Test_*.cpp")))
+TESTS = $(subst src/,executables/,$(subst .cpp,.out,$(shell find src -name "Test_*.cpp")))
 
 # Source.
 T_OBJECTS = $(subst src/,objects/,$(subst .cpp,.o,$(shell find src -name "Test_*")))
@@ -33,10 +33,10 @@ OBJECTS = $(subst src/,objects/,$(subst .cpp,.o,$(shell find src -name "*.cpp" -
 DIRECTORIES = ./output ./objects ./executables
 
 # All.
-all: $(DIRECTORIES) $(EXECS)
+all: $(DIRECTORIES) $(TESTS)
 	@echo "Compiled everything!"
 
-$(EXECS): executables/Test_%.out: objects/Test_%.o $(OBJECTS) 
+$(TESTS): executables/Test_%.out: objects/Test_%.o $(OBJECTS) 
 	@if [ "$(LDFLAGS) $(LDLIBS)" = " " ]; then echo "Linking to $@"; else echo "Linking to $@ with: $(LDFLAGS) $(LDLIBS)"; fi
 	@$(CXX) $(LDFLAGS) $(LDLIBS) $^ -o $@
 
