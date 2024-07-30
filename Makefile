@@ -8,12 +8,19 @@ endif
 # Headers, recompilation purposes.
 HEADERS = ./include/*.hpp
 
-# Base.
+# Headers, Base.
 HEADERS += ./include/Base/*.hpp
 
-# Algebra.
+# Headers, Algebra.
 HEADERS += ./include/Algebra/*.hpp
 HEADERS += ./include/Algebra/Methods/*.hpp
+
+# Headers, Geometry21.
+HEADERS += ./include/Geometry21/*.hpp
+HEADERS += ./include/Geometry21/Methods/*.hpp
+
+# Headers, Mesh2121.
+HEADERS += ./include/Mesh21/*.hpp
 
 # Tests.
 EXECS = $(subst src/,executables/,$(subst .cpp,.out,$(shell find src -name "Test_*.cpp")))
