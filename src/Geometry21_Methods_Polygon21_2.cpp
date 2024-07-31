@@ -12,6 +12,30 @@
 
 namespace ivo {
 
+    // Polygon meshing.
+
+    /**
+     * @brief Returns a polygonal diagram over a spatial polygonal domain.
+     * 
+     * @param polygon Polygon.
+     * @param number Number.
+     * @return Polygon21 
+     */
+    std::vector<Polygon21> mesher2(const Polygon21 &polygon, const Natural &number) {
+
+        // Initial diagram.
+        std::vector<Polygon21> diagram = voronoi2(polygon, number);
+
+        // Relaxation.
+        lloyd2(polygon, diagram);
+
+        // Postprocessing.
+        collapse2(polygon, diagram);
+
+        // Final diagram.
+        return diagram;
+    }
+
     // (Meshing) polygon methods.
 
     /**
@@ -255,6 +279,7 @@ namespace ivo {
             // j-th cell.
             Polygon21 cell_j = diagram[j];
             std::vector<Edge21> edges_j = cell_j.edges();
+            std::vector<Point21> points_j = cell_j.points();
 
             // j-th size.
             Real size_j = 0.0L;
@@ -267,10 +292,24 @@ namespace ivo {
                 if(edges_j[ej].size() > COLLAPSE * size_j)
                     continue;
 
-                // Edge to be collapsed and midpoint.
+                // Edge to be collapsed.
                 Edge21 edge_j = edges_j[ej];
-                Point21 midpoint = (edge_j(0) + edge_j(1)) / 2.0L;
 
+                // Collapse target.
+                Point21 target = (edge_j(0) + edge_j(1)) / 2.0L;
+
+                for(const auto &edge: polygon.edges()) {
+                    if(contains(edge, edge_j(0)) && contains(edge, edge_j(1)))
+                        break;
+
+                    if(contains(edge, edge_j(0)))
+                        target = edge_j(0);
+
+                    if(contains(edge, edge_j(1)))
+                        target = edge_j(1);
+                }
+
+                // Neighbouring collapse.
                 for(Natural k = 0; k < diagram.size(); ++k) {
                     if(j == k)
                         continue;
@@ -288,10 +327,10 @@ namespace ivo {
                         if(edges_k[ek] == edge_j) {
                             if(ek < edges_k.size() - 1) {
                                 points_k.erase(points_k.begin() + ek + 1);
-                                points_k[ek] = midpoint;
+                                points_k[ek] = target;
                             } else {
                                 points_k.pop_back();
-                                points_k[0] = midpoint;
+                                points_k[0] = target;
                             }
 
                             diagram[k] = Polygon21(points_k);
@@ -306,10 +345,21 @@ namespace ivo {
                     // Looks for common points.
                     for(Natural pk = 0; pk < points_k.size(); ++pk)
                         if((points_k[pk] == edge_j(0)) || (points_k[pk] == edge_j(1))) {
-                            diagram[k](pk, midpoint);
+                            diagram[k](pk, target);
                             break;
                         }
                 }
+
+                // Collapse.
+                if(ej < edges_j.size() - 1) {
+                    points_j.erase(points_j.begin() + ej + 1);
+                    points_j[ej] = target;
+                } else {
+                    points_j.pop_back();
+                    points_j[0] = target;
+                }
+
+                diagram[j] = Polygon21(points_j);
             }
         }
     }
