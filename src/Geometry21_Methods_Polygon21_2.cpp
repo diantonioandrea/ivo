@@ -283,7 +283,7 @@ namespace ivo {
                     std::vector<Edge21> edges_k = cell_k.edges();
                     std::vector<Point21> points_k = cell_k.points();
 
-                    // Looks for edges.
+                    // Looks for common edges.
                     for(Natural ek = 0; ek < edges_k.size(); ++ek) {
                         if(edges_k[ek] == edge_j) {
                             if(ek < edges_k.size() - 1) {
@@ -303,7 +303,7 @@ namespace ivo {
                     if(collapse)
                         continue;
 
-                    // Looks for points.
+                    // Looks for common points.
                     for(Natural pk = 0; pk < points_k.size(); ++pk)
                         if((points_k[pk] == edge_j(0)) || (points_k[pk] == edge_j(1))) {
                             diagram[k](pk, midpoint);
