@@ -62,6 +62,10 @@ namespace ivo {
             Point21 operator ()(const Natural &) const;
             void operator ()(const Natural &, const Point21 &);
 
+            // Methods.
+
+            inline Real size() const { return distance(this->_a, this->_b); }
+
             // Output.
             
             friend std::ostream &operator <<(std::ostream &, const Edge21 &);
