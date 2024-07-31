@@ -204,12 +204,13 @@ namespace ivo {
         return voronoi2(polygon, random2(polygon, number));
     }
 
+    // (Meshing) diagram postprocessing.
+
     /**
      * @brief Lloyd's relaxation process.
      * 
      * @param polygon Polygon.
      * @param diagram Polygons.
-     * @return std::vector<Polygon21> 
      */
     void lloyd2(const Polygon21 &polygon, std::vector<Polygon21> &diagram) {
 
@@ -234,11 +235,82 @@ namespace ivo {
                 centroids[k] = centroid(diagram[k]);
             }
 
-            if(residual <= LLOYD_STOP * diagram.size());
+            if(residual <= LLOYD_STOP * diagram.size())
                 return;
 
             // Diagram update.
             diagram = voronoi2(polygon, centroids);
+        }
+    }
+
+    /**
+     * @brief Diagram collapser.
+     * 
+     * @param polygon Polygon.
+     * @param diagram Polygons.
+     */
+    void collapse2(const Polygon21 &polygon, std::vector<Polygon21> &diagram) {
+        for(Natural j = 0; j < diagram.size(); ++j) {
+
+            // j-th cell.
+            Polygon21 cell_j = diagram[j];
+            std::vector<Edge21> edges_j = cell_j.edges();
+
+            // j-th size.
+            Real size_j = 0.0L;
+
+            for(const auto &edge_j: edges_j)
+                if(edge_j.size() > size_j)
+                    size_j = edge_j.size();
+
+            for(Natural ej = 0; ej < edges_j.size(); ++ej) {
+                if(edges_j[ej].size() > COLLAPSE * size_j)
+                    continue;
+
+                // Edge to be collapsed and midpoint.
+                Edge21 edge_j = edges_j[ej];
+                Point21 midpoint = (edge_j(0) + edge_j(1)) / 2.0L;
+
+                for(Natural k = 0; k < diagram.size(); ++k) {
+                    if(j == k)
+                        continue;
+                    
+                    // Collapse flag.
+                    bool collapse = false;
+                    
+                    // k-th cell.
+                    Polygon21 cell_k = diagram[k];
+                    std::vector<Edge21> edges_k = cell_k.edges();
+                    std::vector<Point21> points_k = cell_k.points();
+
+                    // Looks for edges.
+                    for(Natural ek = 0; ek < edges_k.size(); ++ek) {
+                        if(edges_k[ek] == edge_j) {
+                            if(ek < edges_k.size() - 1) {
+                                points_k.erase(points_k.begin() + ek + 1);
+                                points_k[ek] = midpoint;
+                            } else {
+                                points_k.pop_back();
+                                points_k[0] = midpoint;
+                            }
+
+                            diagram[k] = Polygon21(points_k);
+                            collapse = true;
+                            break;
+                        }
+                    }
+
+                    if(collapse)
+                        continue;
+
+                    // Looks for points.
+                    for(Natural pk = 0; pk < points_k.size(); ++pk)
+                        if((points_k[pk] == edge_j(0)) || (points_k[pk] == edge_j(1))) {
+                            diagram[k](pk, midpoint);
+                            break;
+                        }
+                }
+            }
         }
     }
 
