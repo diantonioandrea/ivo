@@ -25,6 +25,11 @@ namespace ivo {
     std::vector<Polygon21> voronoi2(const Polygon21 &, const std::vector<Point21> &);
     std::vector<Polygon21> voronoi2(const Polygon21 &, const Natural &);
 
+    // (Meshing) diagram postprocessing.
+
+    void lloyd2(const Polygon21 &, std::vector<Polygon21> &);
+    void collapse2(const Polygon21 &, std::vector<Polygon21> &);
+
     // Polygon methods.
 
     std::array<Point21, 2> box2(const Polygon21 &);

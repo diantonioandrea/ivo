@@ -21,4 +21,14 @@
 #define GEOMETRICAL_ZERO 1E-12
 #endif
 
+// Lloyd stopping multiplier.
+#ifndef LLOYD_STOP
+#define LLOYD_STOP 1E-6
+#endif
+
+// Collapse multiplier.
+#ifndef COLLAPSE
+#define COLLAPSE 1E-1
+#endif
+
 #endif

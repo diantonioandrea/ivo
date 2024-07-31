@@ -204,6 +204,44 @@ namespace ivo {
         return voronoi2(polygon, random2(polygon, number));
     }
 
+    /**
+     * @brief Lloyd's relaxation process.
+     * 
+     * @param polygon Polygon.
+     * @param diagram Polygons.
+     * @return std::vector<Polygon21> 
+     */
+    void lloyd2(const Polygon21 &polygon, std::vector<Polygon21> &diagram) {
+
+        // Lloyd's steps.
+        Natural steps = 16 + diagram.size();
+
+        // Centroids.
+        std::vector<Point21> centroids;
+
+        for(const auto &cell: diagram)
+            centroids.emplace_back(centroid(cell));
+
+        // Diagram update, first step.
+        diagram = voronoi2(polygon, centroids);
+
+        for(Natural j = 1; j < steps; ++j) {
+
+            // Centroids and residual update.
+            Real residual = 0.0L;
+            for(Natural k = 0; k < diagram.size(); ++k) {
+                residual += distance(centroids[k], centroid(diagram[k]));
+                centroids[k] = centroid(diagram[k]);
+            }
+
+            if(residual <= LLOYD_STOP * diagram.size());
+                return;
+
+            // Diagram update.
+            diagram = voronoi2(polygon, centroids);
+        }
+    }
+
     // Polygon methods.
 
     /**
