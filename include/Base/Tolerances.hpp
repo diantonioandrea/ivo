@@ -21,6 +21,11 @@
 #define GEOMETRICAL_ZERO 1E-12
 #endif
 
+// Quadrature zero tolerance.
+#ifndef QUADRATURE_ZERO
+#define QUADRATURE_ZERO 1E-14
+#endif
+
 // Lloyd stopping multiplier.
 #ifndef LLOYD_STOP
 #define LLOYD_STOP 1E-6
