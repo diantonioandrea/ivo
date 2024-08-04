@@ -70,6 +70,50 @@ namespace ivo {
         return std::sqrt(std::transform_reduce(x_entries.begin(), x_entries.end(), static_cast<T>(0), std::plus{}, [](const T &entry){ return std::abs(entry) * std::abs(entry); }));
     }
 
+    /**
+     * @brief Return a flipped vector.
+     * 
+     * @tparam T Numerical type.
+     * @param x Vector.
+     * @return Vector<T> 
+     */
+    template<Numerical T>
+    Vector<T> flipped(const Vector<T> &x) {
+        Vector<T> _flipped{x.size()};
+
+        for(Natural j = 0; j < x.size(); ++j)
+            _flipped(j, x(x.size() - j - 1));
+
+        return _flipped;
+    }
+
+    /**
+     * @brief Stepped vector [a, a + step, ..., b].
+     * 
+     * @tparam T Numerical type.
+     * @param a Start.
+     * @param b End.
+     * @param step Step.
+     * @return Vector<Real> 
+     */
+    template<Numerical T>
+    Vector<T> stepped(const T &a, const T &b, const T &step = static_cast<T>(1)) {
+        #ifndef NDEBUG // Integrity check.
+        assert(((a < b) && (step > NUMERICAL_ZERO)) || ((a > b) && (step < -NUMERICAL_ZERO)));
+        #endif
+
+        std::vector<T> _stepped;
+
+        if(step > NUMERICAL_ZERO)
+            for(T j = a; j <= b + NUMERICAL_ZERO; j += step)
+                _stepped.emplace_back(j);
+        else
+            for(T j = a; j >= b - NUMERICAL_ZERO; j += step)
+                _stepped.emplace_back(j);
+
+        return Vector{_stepped};
+    }
+
 }
 
 #endif
