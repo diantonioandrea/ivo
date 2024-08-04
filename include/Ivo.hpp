@@ -23,4 +23,7 @@
 // Mesh.
 #include "./Mesh21.hpp"
 
+// Fem.
+#include "./Fem.hpp"
+
 #endif
