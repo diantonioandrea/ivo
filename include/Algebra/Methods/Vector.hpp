@@ -114,6 +114,27 @@ namespace ivo {
         return Vector{_stepped};
     }
 
+    // Vectorial functions.
+    
+    /**
+     * @brief Vectorizes a single-argument function.
+     * 
+     * @tparam T Numerical type.
+     * @param function Function.
+     * @return std::function<Vector<T>(Vector<T>)> 
+     */
+    template<Numerical T>
+    std::function<Vector<T>(Vector<T>)> vectorize(const std::function<T(T)> &function) {
+        return [function](const Vector<T> &vector){
+            Vector<T> result{vector.size()};
+
+            for(Natural j = 0; j < vector.size(); ++j)
+                result(j, function(vector(j)));
+
+            return result;
+        };
+    }
+
 }
 
 #endif

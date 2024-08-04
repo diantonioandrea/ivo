@@ -24,6 +24,9 @@
 #include <algorithm>
 #include <numeric>
 
+// Functions.
+#include <functional>
+
 // Math.
 #include <complex>
 
