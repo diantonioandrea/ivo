@@ -22,7 +22,7 @@ namespace ivo {
      * @return Natural 
      */
     Natural __binomial(const Natural &n, const Natural &k) {
-        #ifndef NDEBUG
+        #ifndef NDEBUG // Integrity check.
         assert(n >= k);
         #endif
 
