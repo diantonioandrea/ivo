@@ -31,16 +31,17 @@ namespace ivo {
         // Constructors and copy operators.
 
         /**
-         * @brief Zero constructor.
+         * @brief Bool constructor.
          * 
          * @param size Mask's size.
+         * @param value Mask's value.
          */
-        Mask(const Natural &size): _size{size} {
+        Mask(const Natural &size, const bool &value = false): _size{size} {
             #ifndef NDEBUG // Integrity check.
             assert(size > 0);
             #endif
 
-            this->_entries.resize(size, false);
+            this->_entries.resize(size, value);
         }
 
         /**
