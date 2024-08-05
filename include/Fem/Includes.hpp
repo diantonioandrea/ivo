@@ -11,6 +11,9 @@
 #ifndef FEM_INCLUDES
 #define FEM_INCLUDES
 
+// Containers.
+#include <array>
+
 // Base and Algebra.
 #include "../Base.hpp"
 #include "../Algebra.hpp"

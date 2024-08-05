@@ -17,4 +17,7 @@
 // Legendre.
 #include "./Fem/Legendre.hpp"
 
+// Quadrature.
+#include "./Fem/Quadrature.hpp"
+
 #endif
