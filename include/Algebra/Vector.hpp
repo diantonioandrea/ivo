@@ -200,14 +200,9 @@ namespace ivo {
 
                 std::vector<T> vector;
 
-                /**
-                 * m_it Mask's iterator.
-                 * t_it this's iterator.
-                 * 
-                 */
-                for(auto [m_it, t_it] = std::tuple{M._entries.begin(), this->_entries.begin()}; m_it < M._entries.end(); ++m_it, ++t_it)
-                    if(*m_it)
-                        vector.emplace_back(*t_it);
+                for(Natural j = 0; j < this->_size; ++j)
+                    if(M(j))
+                        vector.emplace_back(this->_entries[j]);
 
                 return vector;
             }
@@ -416,7 +411,7 @@ namespace ivo {
              */
             Vector operator -() const {
                 Vector result{this->_size};
-                std::transform(this->_entries.begin(), this->_entries.end(), result._entries.end(), [](const T &entry){ return -entry; });
+                std::transform(this->_entries.begin(), this->_entries.end(), result._entries.begin(), [](const T &entry){ return -entry; });
                 return result;
             }
 
