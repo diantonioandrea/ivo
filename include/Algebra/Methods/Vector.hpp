@@ -17,7 +17,7 @@
 namespace ivo {
 
     /**
-     * @brief Vectorial dot product.
+     * @brief Dot product.
      * 
      * @tparam T Numerical type.
      * @param x vector.
@@ -40,7 +40,7 @@ namespace ivo {
     }
 
     /**
-     * @brief 
+     * @brief Cross product.
      * 
      * @tparam T Numerical type.
      * @param x First vector.
@@ -62,16 +62,42 @@ namespace ivo {
      * 
      * @tparam T Numerical type.
      * @param x Vector.
-     * @return T 
+     * @return Real 
      */
     template<Numerical T>
     Real norm(const Vector<T> &x) {
         std::vector<T> x_entries = x.entries();
         return std::sqrt(std::transform_reduce(x_entries.begin(), x_entries.end(), static_cast<T>(0), std::plus{}, [](const T &entry){ return std::abs(entry) * std::abs(entry); }));
     }
+    
+    /**
+     * @brief Min{vector}.
+     * 
+     * @tparam T Numerical type.
+     * @param x Vector.
+     * @return T 
+     */
+    template<Numerical T>
+    T min(const Vector<T> &x) {
+        std::vector<T> x_entries = x.entries();
+        return *std::min_element(x_entries.begin(), x_entries.end());
+    }
 
     /**
-     * @brief Return a flipped vector.
+     * @brief Max{vector}.
+     * 
+     * @tparam T Numerical type.
+     * @param x Vector.
+     * @return T 
+     */
+    template<Numerical T>
+    T max(const Vector<T> &x) {
+        std::vector<T> x_entries = x.entries();
+        return *std::max_element(x_entries.begin(), x_entries.end());
+    }
+
+    /**
+     * @brief Flips a vector.
      * 
      * @tparam T Numerical type.
      * @param x Vector.
@@ -85,6 +111,27 @@ namespace ivo {
             _flipped(j, x(x.size() - j - 1));
 
         return _flipped;
+    }
+
+    /**
+     * @brief Stacks two vectors.
+     * 
+     * @tparam T Numerical type.
+     * @param x First vector.
+     * @param y Second vector.
+     * @return Vector<T> 
+     */
+    template<Numerical T>
+    Vector<T> stacked(const Vector<T> &x, const Vector<T> &y) {
+        Vector<T> _stacked{x.size() + y.size()};
+
+        for(Natural j = 0; j < x.size(); ++j)
+            _stacked(j, x(j));
+        
+        for(Natural j = 0; j < y.size(); ++j)
+            _stacked(x.size() + j, y(j));
+
+        return _stacked;
     }
 
     /**
@@ -112,6 +159,27 @@ namespace ivo {
                 _stepped.emplace_back(j);
 
         return Vector{_stepped};
+    }
+
+}
+
+namespace std {
+
+    /**
+     * @brief Vectorial std::abs.
+     * 
+     * @tparam T Numerical type.
+     * @param x Vector.
+     * @return Vector<T> 
+     */
+    template<ivo::Numerical T>
+    ivo::Vector<T> abs(const ivo::Vector<T> &x) {
+        ivo::Vector<T> result(x.size());
+
+        for(ivo::Natural j = 0; j < x.size(); ++j)
+            result(j, std::abs(x(j)));
+
+        return result;
     }
 
 }
