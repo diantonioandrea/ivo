@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     ivo::Polygon21 abcd{{a, b, c, d}};
 
     // Space diagram.
-    std::vector<ivo::Polygon21> space = ivo::mesher2(abcd, 25);
+    std::vector<ivo::Polygon21> space = ivo::mesher2(abcd, 10);
 
     // Time "diagram" (intervals).
     std::vector<ivo::Real> time{0.0L, 0.25L, 0.5L, 0.75L, 1.0L};
