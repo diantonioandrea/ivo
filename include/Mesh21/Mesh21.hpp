@@ -136,6 +136,10 @@ namespace ivo {
                 return this->_neighbours[j + k * _time];
             }
 
+            // Output.
+
+            friend std::ostream &operator <<(std::ostream &, const Mesh21 &);
+
     };
 
 }

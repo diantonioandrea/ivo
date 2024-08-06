@@ -83,4 +83,21 @@ namespace ivo {
         }
     }
 
+    // Output.
+
+    /**
+     * @brief Mesh output. CSV format.
+     * 
+     * @param ost 
+     * @param mesh Mesh.
+     * @return std::ostream& 
+     */
+    std::ostream &operator <<(std::ostream &ost, const Mesh21 &mesh) {
+        for(auto it = mesh._elements.begin(); it < mesh._elements.end() - 1; ++it)
+            ost << *it << std::endl;
+        
+        return ost << *--mesh._elements.end() << std::flush;
+
+    }
+
 }
