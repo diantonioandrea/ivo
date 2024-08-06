@@ -31,7 +31,6 @@ namespace ivo {
                     point += intervals[k] * 1.0_t;
 
                 this->_elements.emplace_back(Element21{Polygon21{points}, intervals[k + 1] - intervals[k]});
-
             }
 
         // Neighbours.
