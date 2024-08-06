@@ -92,6 +92,10 @@ namespace ivo {
             std::vector<Edge21> t_edges() const;
 
             std::vector<Polygon21> faces() const;
+
+            // Output.
+
+            friend std::ostream &operator <<(std::ostream &, const Element21 &);
     };
 
 }

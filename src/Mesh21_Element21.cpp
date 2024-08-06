@@ -112,4 +112,20 @@ namespace ivo {
         return faces;
     }
 
+    // Output.
+    
+    /**
+     * @brief Element output. CSV format.
+     * 
+     * @param ost 
+     * @param element Element.
+     * @return std::ostream& 
+     */
+    std::ostream &operator <<(std::ostream &ost, const Element21 &element) {
+        for(const auto &point: element._base.points())
+            ost << point(0) << "," << point(1) << "," << point(2) << ",";
+
+        return ost << element._height << std::flush;
+    }
+
 }
