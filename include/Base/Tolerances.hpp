@@ -28,7 +28,7 @@
 
 // Lloyd stopping multiplier.
 #ifndef LLOYD_STOP
-#define LLOYD_STOP 1E-6
+#define LLOYD_STOP 1E-8
 #endif
 
 // Collapse multiplier.
