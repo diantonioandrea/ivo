@@ -93,6 +93,8 @@ namespace ivo {
 
             std::vector<Polygon21> faces() const;
 
+            std::array<Real, 2> interval() const;
+
             // Output.
 
             friend std::ostream &operator <<(std::ostream &, const Element21 &);

@@ -112,6 +112,16 @@ namespace ivo {
         return faces;
     }
 
+    /**
+     * @brief Element's time interval.
+     * 
+     * @return std::array<Real, 2> 
+     */
+    std::array<Real, 2> Element21::interval() const {
+        Real start = this->_base.points()[0](2);
+        return {start, start + this->_height};
+    }
+
     // Output.
     
     /**
