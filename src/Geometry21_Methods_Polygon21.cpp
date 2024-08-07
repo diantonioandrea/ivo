@@ -71,6 +71,42 @@ namespace ivo {
         return _centroid / area(polygon);
     }
 
+    /**
+     * @brief Triangulate a polygon.
+     * 
+     * @param polygon Polygon.
+     * @return Polygon21 
+     */
+    std::vector<Polygon21> triangulate(const Polygon21 &polygon) {
+        std::vector<Polygon21> triangles;
+
+        std::vector<Edge21> edges = polygon.edges();
+        Point21 _centroid = centroid(polygon);
+
+        for(Natural j = 0; j < edges.size(); ++j) {
+            Edge21 edge = edges[j];
+            triangles.emplace_back(Polygon21{{edge(0), edge(1), _centroid}});
+        }
+
+        return triangles;
+    }
+    
+    /**
+     * @brief Triangulate many polygons.
+     * 
+     * @param polygons Polygons.
+     * @return std::vector<Polygon21> 
+     */
+    std::vector<Polygon21> triangulate(const std::vector<Polygon21> &polygons) {
+        std::vector<Polygon21> triangles;
+
+        for(const auto &polygon: polygons)
+            for(const auto &triangle: triangulate(polygon))
+                triangles.emplace_back(triangle);
+
+        return triangles;
+    }
+
     // Checks.
 
     /**

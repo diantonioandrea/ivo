@@ -23,6 +23,9 @@ namespace ivo {
     Point21 centre(const Polygon21 &);
     Point21 centroid(const Polygon21 &);
 
+    std::vector<Polygon21> triangulate(const Polygon21 &);
+    std::vector<Polygon21> triangulate(const std::vector<Polygon21> &);
+
     // Checks.
 
     bool spatial(const Polygon21 &);
