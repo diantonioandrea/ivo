@@ -26,4 +26,7 @@
 // Fem.
 #include "./Fem.hpp"
 
+// Problem.
+#include "./Problem.hpp"
+
 #endif
