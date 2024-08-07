@@ -20,6 +20,9 @@ namespace ivo {
 
     std::vector<Polygon21> mesher2(const Polygon21 &, const Natural &);
 
+    std::vector<Polygon21> triangulate(const Polygon21 &);
+    std::vector<Polygon21> triangulate(const std::vector<Polygon21> &);
+
     // (Meshing) polygon methods.
 
     Polygon21 reduce2(const Polygon21 &, const Line21 &, const Point21 &);
