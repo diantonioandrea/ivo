@@ -43,9 +43,9 @@ namespace ivo {
      * @brief Polygon's reduction with respect to a line and a point.
      * Space only.
      * 
-     * @param polygon 
-     * @param point 
-     * @param line 
+     * @param polygon Polygon.
+     * @param point Point.
+     * @param line Line.
      * @return Polygon21 
      */
     Polygon21 reduce2(const Polygon21 &polygon, const Line21 &line, const Point21 &point) {
