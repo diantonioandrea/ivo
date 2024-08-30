@@ -5,6 +5,9 @@
 **/*.o
 **/*.out
 
+# Library.
+lib
+
 # Executables' output.
 **/output
 
