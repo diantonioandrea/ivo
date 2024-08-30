@@ -1,5 +1,13 @@
 .PHONY: all distclean
-CXXFLAGS = -Wall -pedantic -Wno-pre-c++2b-compat -std=c++2b -march=native -O2 -fPIC -I./include -O2 -fno-unsafe-math-optimizations -fno-fast-math
+
+# C++ standard.
+ifneq ($(shell g++ --version | grep GCC),) # C++26, requires GCC 14+.
+CXXFLAGS = -std=c++2c
+else # C++23.
+CXXFLAGS = -std=c++2b
+endif
+
+CXXFLAGS += -Wall -pedantic -march=native -O2 -fPIC -I./include -O2 -fno-unsafe-math-optimizations -fno-fast-math
 
 ifeq ($(shell uname),Darwin) # Apple's clang.
 CXXFLAGS += -ffp-model=precise
