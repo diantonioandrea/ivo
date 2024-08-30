@@ -17,8 +17,8 @@
 // Algorithms (copy, ...).
 #include <algorithm>
 
-// Output.
-#include <iostream>
+// Coefficients.
+#include <functional>
 
 // Base, Algebra, Geometry21 and Mesh21.
 #include "../Base.hpp"

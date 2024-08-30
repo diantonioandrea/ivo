@@ -21,23 +21,6 @@ namespace ivo {
      * @param diffusion Diffusion coefficient.
      * @param reaction Reaction coefficient.
      */
-    Equation::Equation(const Real &convection, const Real &diffusion, const Real &reaction): _convection{convection}, _diffusion{diffusion}, _reaction{reaction} {
-        #ifndef NDEBUG // Integrity check.
-        assert(std::abs(convection) + std::abs(diffusion) + std::abs(reaction) > NUMERICAL_ZERO);
-        #endif
-    }
-
-    // Output.
-    
-    /**
-     * @brief Equation output.
-     * 
-     * @param ost 
-     * @param equation Equation.
-     * @return std::ostream& 
-     */
-    std::ostream &operator <<(std::ostream &ost, const Equation &equation) {
-        return ost << "(C: " << equation._convection << ", D: " << equation._diffusion << ", R: " << equation._reaction << ")" << std::flush;
-    }
+    Equation::Equation(const std::function<Real (Real)> &convection, const std::function<Real (Real)> &diffusion, const std::function<Real (Real)> &reaction): _convection{convection}, _diffusion{diffusion}, _reaction{reaction} {}
 
 }

@@ -29,52 +29,51 @@ namespace ivo {
              * @brief Convection coefficient.
              * 
              */
-            const Real _convection = 0.0L;
+            const std::function<Real (Real)> _convection;
 
             /**
              * @brief Diffusion coefficient.
              * 
              */
-            const Real _diffusion = 0.0L;
+            const std::function<Real (Real)> _diffusion;
 
             /**
              * @brief Reaction coefficient.
              * 
              */
-            const Real _reaction = 0.0L;
+            const std::function<Real (Real)> _reaction;
 
         public:
 
             // Attributes access.
 
             /**
-             * @brief Convection coefficient.
+             * @brief Convection coefficient
              * 
+             * @param t Time.
              * @return constexpr Real 
              */
-            constexpr Real convection() const { return this->_convection; }
+            constexpr Real convection(const Real &t) const { return this->_convection(t); }
 
             /**
-             * @brief Diffusion coefficient.
+             * @brief Diffusion coefficient
              * 
+             * @param t Time.
              * @return constexpr Real 
              */
-            constexpr Real diffusion() const { return this->_diffusion; }
+            constexpr Real diffusion(const Real &t) const { return this->_diffusion(t); }
 
             /**
-             * @brief Reaction coefficient.
+             * @brief Reaction coefficient
              * 
+             * @param t Time.
              * @return constexpr Real 
              */
-            constexpr Real reaction() const { return this->_reaction; }
+            constexpr Real reaction(const Real &t) const { return this->_reaction(t); }
 
             // Constructors.
 
-            Equation(const Real &, const Real &, const Real &);
-
-            // Output.
-
-            friend std::ostream &operator <<(std::ostream &, const Equation &);
+            Equation(const std::function<Real (Real)> &, const std::function<Real (Real)> &, const std::function<Real (Real)> &);
 
     };
 
