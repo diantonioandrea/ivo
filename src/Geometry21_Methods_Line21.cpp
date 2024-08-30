@@ -78,10 +78,11 @@ namespace ivo {
                     if(j == k)
                         continue;
                     
-                    if((std::abs(s(k, 0)) > GEOMETRICAL_ZERO) && (std::abs(s(k, 0) * r(j, 0) - s(j, 0) * r(k, 0)) > GEOMETRICAL_ZERO))
+                    if((std::abs(s(k, 0)) > GEOMETRICAL_ZERO) && (std::abs(s(k, 0) * r(j, 0) - s(j, 0) * r(k, 0)) > GEOMETRICAL_ZERO)) {
                         rj = j;
                         sj = k;
                         break;
+                    }
                 }
 
             if(rj != sj)
