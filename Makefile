@@ -14,21 +14,21 @@ CXXFLAGS += -ffp-model=precise
 endif
 
 # Headers, recompilation purposes.
-HEADERS = ./include/*.hpp
+HEADERS = ./include/Ivo/*.hpp
 
 # Headers, Base.
-HEADERS += ./include/Base/*.hpp
+HEADERS += ./include/Ivo/Base/*.hpp
 
 # Headers, Algebra.
-HEADERS += ./include/Algebra/*.hpp
-HEADERS += ./include/Algebra/Methods/*.hpp
+HEADERS += ./include/Ivo/Algebra/*.hpp
+HEADERS += ./include/Ivo/Algebra/Methods/*.hpp
 
 # Headers, Geometry21.
-HEADERS += ./include/Geometry21/*.hpp
-HEADERS += ./include/Geometry21/Methods/*.hpp
+HEADERS += ./include/Ivo/Geometry21/*.hpp
+HEADERS += ./include/Ivo/Geometry21/Methods/*.hpp
 
 # Headers, Mesh2121.
-HEADERS += ./include/Mesh21/*.hpp
+HEADERS += ./include/Ivo/Mesh21/*.hpp
 
 # Tests.
 TESTS = $(subst src/,executables/,$(subst .cpp,.out,$(shell find src -name "Test_*.cpp")))

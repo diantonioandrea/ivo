@@ -12,21 +12,21 @@
 #define IVO
 
 // Base.
-#include "./Base.hpp"
+#include "./Ivo/Base.hpp"
 
 // Algebra.
-#include "./Algebra.hpp"
+#include "./Ivo/Algebra.hpp"
 
 // Geometry21.
-#include "./Geometry21.hpp"
+#include "./Ivo/Geometry21.hpp"
 
 // Mesh.
-#include "./Mesh21.hpp"
+#include "./Ivo/Mesh21.hpp"
 
 // Fem.
-#include "./Fem.hpp"
+#include "./Ivo/Fem.hpp"
 
 // Problem.
-#include "./Problem.hpp"
+#include "./Ivo/Problem.hpp"
 
 #endif
