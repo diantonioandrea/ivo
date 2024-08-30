@@ -71,6 +71,16 @@ namespace ivo {
              */
             constexpr Real reaction(const Real &t) const { return this->_reaction(t); }
 
+            /**
+             * @brief Coefficients.
+             * 
+             * @param t Time.
+             * @return constexpr std::array<Real, 3> 
+             */
+            constexpr std::array<Real, 3> coefficients(const Real &t) const {
+                return {this->_convection(t), this->_diffusion(t), this->_reaction(t)};
+            }
+
             // Constructors.
 
             Equation(const std::function<Real (Real)> &, const std::function<Real (Real)> &, const std::function<Real (Real)> &);
