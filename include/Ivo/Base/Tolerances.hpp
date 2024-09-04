@@ -11,29 +11,44 @@
 #ifndef BASE_TOLERANCES
 #define BASE_TOLERANCES
 
-// Base zero tolerance.
-#ifndef NUMERICAL_ZERO
-#define NUMERICAL_ZERO 1E-16
-#endif
+#include "./Primitives.hpp"
 
-// Geometrical zero tolerance.
-#ifndef GEOMETRICAL_ZERO
-#define GEOMETRICAL_ZERO 1E-12
-#endif
+namespace ivo {
 
-// Quadrature zero tolerance.
-#ifndef QUADRATURE_ZERO
-#define QUADRATURE_ZERO 1E-14
-#endif
+    // Zeros.
 
-// Lloyd stopping multiplier.
-#ifndef LLOYD_STOP
-#define LLOYD_STOP 1E-8
-#endif
+    /**
+     * @brief Zero tolerance.
+     * 
+     */
+    constexpr Real ___zero = 1E-16;
 
-// Collapse multiplier.
-#ifndef COLLAPSE
-#define COLLAPSE 1E-1
-#endif
+    /**
+     * @brief Geometrical zero tolerance.
+     * 
+     */
+    constexpr Real ___geometrical_zero = 1E-12;
+    
+    /**
+     * @brief Quadrature zero tolerance.
+     * 
+     */
+    constexpr Real ___quadrature_zero = 1E-14;
+
+    // Diagrams.
+
+    /**
+     * @brief Lloyd stopping multiplier.
+     * 
+     */
+    constexpr Real ___diagram_stop = 1E-6;
+
+    /**
+     * @brief Collapse multiplier.
+     * 
+     */
+    constexpr Real ___diagram_collapse = 1E-1;
+
+}
 
 #endif

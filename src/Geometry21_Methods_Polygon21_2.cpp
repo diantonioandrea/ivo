@@ -56,7 +56,7 @@ namespace ivo {
         assert(spatial(polygon));
         assert(spatial(line));
         assert(contains2(polygon, point));
-        assert(std::abs(line(2, 1) - p_points[0](2)) <= GEOMETRICAL_ZERO);
+        assert(std::abs(line(2, 1) - p_points[0](2)) <= ___geometrical_zero);
         #endif
         
         // Not enough intersections.
@@ -260,7 +260,7 @@ namespace ivo {
                 centroids[k] = centroid(diagram[k]);
             }
 
-            if(residual <= LLOYD_STOP * diagram.size())
+            if(residual <= ___diagram_stop * diagram.size())
                 return;
 
             // Diagram update.
@@ -290,7 +290,7 @@ namespace ivo {
                     size_j = edge_j.size();
 
             for(Natural ej = 0; ej < edges_j.size(); ++ej) {
-                if(edges_j[ej].size() > COLLAPSE * size_j)
+                if(edges_j[ej].size() > ___diagram_collapse * size_j)
                     continue;
 
                 // Edge to be collapsed.
@@ -415,7 +415,7 @@ namespace ivo {
 
         // First check.
         std::vector<Point21> points = polygon.points();
-        if(std::abs(point(2) - points[0](2)) > GEOMETRICAL_ZERO)
+        if(std::abs(point(2) - points[0](2)) > ___geometrical_zero)
             return false;
 
         // Second check.

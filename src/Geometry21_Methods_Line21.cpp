@@ -68,17 +68,17 @@ namespace ivo {
      * @return std::optional<Point21> 
      */
     std::optional<Point21> intersections(const Line21 &r, const Line21 &s) {
-        if(distance(r, s) > GEOMETRICAL_ZERO)
+        if(distance(r, s) > ___geometrical_zero)
             return {};
 
         Natural rj = 0, sj = 0;
         for(Natural j = 0; j < 3; ++j) {
-            if(std::abs(r(j, 0)) > GEOMETRICAL_ZERO)
+            if(std::abs(r(j, 0)) > ___geometrical_zero)
                 for(Natural k = 0; k < 3; ++k) {
                     if(j == k)
                         continue;
                     
-                    if((std::abs(s(k, 0)) > GEOMETRICAL_ZERO) && (std::abs(s(k, 0) * r(j, 0) - s(j, 0) * r(k, 0)) > GEOMETRICAL_ZERO)) {
+                    if((std::abs(s(k, 0)) > ___geometrical_zero) && (std::abs(s(k, 0) * r(j, 0) - s(j, 0) * r(k, 0)) > ___geometrical_zero)) {
                         rj = j;
                         sj = k;
                         break;
@@ -95,7 +95,7 @@ namespace ivo {
         // r's parameter.
         Real t; 
 
-        if(std::abs(s(rj, 0)) > GEOMETRICAL_ZERO)
+        if(std::abs(s(rj, 0)) > ___geometrical_zero)
             t = (s(sj, 0) * (s(rj, 1) - r(rj, 1)) - s(rj, 0) * (s(sj, 1) - r(sj, 1))) / (s(sj, 0) * r(rj, 0) - s(rj, 0) * r(sj, 0));
         else
             t = (s(rj, 1) - r(rj, 1)) / r(rj, 0);
@@ -159,7 +159,7 @@ namespace ivo {
         Real rv_sv = dot(rv, sv);
 
         // Parallelism.
-        if(std::abs(rv_2 * sv_2 - rv_sv * rv_sv) <= GEOMETRICAL_ZERO)
+        if(std::abs(rv_2 * sv_2 - rv_sv * rv_sv) <= ___geometrical_zero)
             return distance(r, edge(0));
 
         // Parameters.
@@ -202,7 +202,7 @@ namespace ivo {
         Real rv_sv = dot(rv, sv);
 
         // Parallelism.
-        if(std::abs(rv_2 * sv_2 - rv_sv * rv_sv) <= GEOMETRICAL_ZERO)
+        if(std::abs(rv_2 * sv_2 - rv_sv * rv_sv) <= ___geometrical_zero)
             return distance(r, s(0.0L));
 
         // Parameters.
@@ -224,14 +224,14 @@ namespace ivo {
      */
     bool contains(const Line21 &line, const Point21 &point) {
         for(Natural j = 0; j < 3; ++j) {
-            if(std::abs(line(j, 0)) > GEOMETRICAL_ZERO) {
+            if(std::abs(line(j, 0)) > ___geometrical_zero) {
                 Real s = (point(j) - line(j, 1)) / line(j, 0);
 
                 for(Natural k = 0; k < 3; ++k) {
                     if(j == k)
                         continue;
 
-                    if(std::abs(point(k) - s * line(k, 0) - line(k, 1)) > GEOMETRICAL_ZERO)
+                    if(std::abs(point(k) - s * line(k, 0) - line(k, 1)) > ___geometrical_zero)
                         return false;
                 }
             }
@@ -259,6 +259,6 @@ namespace ivo {
      * @return true 
      * @return false 
      */
-    bool spatial(const Line21 &line) { return std::abs(line(2, 0)) <= GEOMETRICAL_ZERO; }
+    bool spatial(const Line21 &line) { return std::abs(line(2, 0)) <= ___geometrical_zero; }
 
 }

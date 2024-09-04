@@ -267,7 +267,7 @@ namespace ivo {
              */
             Mask operator ==(const T &scalar) const {
                 Mask comparison{this->_size};
-                std::transform(this->_entries.begin(), this->_entries.end(), comparison._entries.begin(), [scalar](const T &entry){ return std::abs(entry - scalar) <= NUMERICAL_ZERO; });
+                std::transform(this->_entries.begin(), this->_entries.end(), comparison._entries.begin(), [scalar](const T &entry){ return std::abs(entry - scalar) <= ___zero; });
                 return comparison;
             }
 
@@ -335,7 +335,7 @@ namespace ivo {
                 #endif
 
                 Mask comparison{this->_size};
-                std::transform(this->_entries.begin(), this->_entries.end(), vector._entries.begin(), comparison._entries.begin(), [](const T &t_entry, const T &v_entry){ return std::abs(t_entry - v_entry) <= NUMERICAL_ZERO; });
+                std::transform(this->_entries.begin(), this->_entries.end(), vector._entries.begin(), comparison._entries.begin(), [](const T &t_entry, const T &v_entry){ return std::abs(t_entry - v_entry) <= ___zero; });
                 return comparison;
             }
 

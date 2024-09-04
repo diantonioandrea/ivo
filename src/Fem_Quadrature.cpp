@@ -46,14 +46,14 @@ namespace ivo {
         Vector<Real> z = __vcos(M_PI * (stepped<Real>(1, m) - 0.25L) / (n + 0.5L));
 
         // Error.
-        Real error_scalar = 1.0L + QUADRATURE_ZERO;
+        Real error_scalar = 1.0L + ___quadrature_zero;
         Vector<Real> error_vector{m, error_scalar};
 
         // Temp vector.
         Vector<Real> temp{m};
 
         // Algorithm.
-        while(error_scalar > QUADRATURE_ZERO) {
+        while(error_scalar > ___quadrature_zero) {
 
             // Operation matrix.
             Matrix<Real> p{m, 3};
@@ -75,7 +75,7 @@ namespace ivo {
             Vector<Real> z_old{z};
             
             for(Natural j = 0; j < m; ++j)
-                if((error_vector(j) > QUADRATURE_ZERO) && (temp(j) > NUMERICAL_ZERO))
+                if((error_vector(j) > ___quadrature_zero) && (temp(j) > ___zero))
                     z(j, z_old(j) - p(j, 1) / temp(j));
 
             // Error update.
