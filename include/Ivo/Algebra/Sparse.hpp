@@ -344,7 +344,7 @@ namespace ivo {
                 this->_csr = false;
                 this->_csc = false;
 
-                if(std::abs(scalar) > ___zero)
+                if(std::abs(scalar) > constants::zero)
                     this->_entries[j * this->_columns + k] = scalar;
             }
 
@@ -370,7 +370,7 @@ namespace ivo {
 
                 for(Natural j = 0; j < J.size(); ++j)
                     for(Natural k = 0; k < K.size(); ++k)
-                        if(std::abs(matrix(j, k)) > ___zero)
+                        if(std::abs(matrix(j, k)) > constants::zero)
                             this->_entries[J[j] * this->_columns + K[k]] = matrix(j, k);
             }
 
@@ -715,7 +715,7 @@ namespace ivo {
                         continue;
                     }
 
-                    if(std::abs(result._entries[index] + value) <= ___zero) {
+                    if(std::abs(result._entries[index] + value) <= constants::zero) {
                         result._entries.erase(index);
                         continue;
                     }
@@ -746,7 +746,7 @@ namespace ivo {
                         continue;
                     }
 
-                    if(std::abs(this->_entries[index] + value) <= ___zero) {
+                    if(std::abs(this->_entries[index] + value) <= constants::zero) {
                         this->_entries.erase(index);
                         continue;
                     }
@@ -779,7 +779,7 @@ namespace ivo {
                         continue;
                     }
 
-                    if(std::abs(result._entries[index] - value) <= ___zero) {
+                    if(std::abs(result._entries[index] - value) <= constants::zero) {
                         result._entries.erase(index);
                         continue;
                     }
@@ -810,7 +810,7 @@ namespace ivo {
                         continue;
                     }
 
-                    if(std::abs(this->_entries[index] - value) <= ___zero) {
+                    if(std::abs(this->_entries[index] - value) <= constants::zero) {
                         this->_entries.erase(index);
                         continue;
                     }
@@ -947,7 +947,7 @@ namespace ivo {
                         if(index >= (j + 1) * this->_columns)
                             break;
 
-                        if(std::abs(entry) > ___zero) {
+                        if(std::abs(entry) > constants::zero) {
                             this->_csr_outer.emplace_back(index % this->_columns);
                             this->_csr_entries.emplace_back(entry);
                         }
@@ -974,7 +974,7 @@ namespace ivo {
                         if(index % this->_columns != k)
                             continue;
 
-                        if(std::abs(entry) > ___zero) {
+                        if(std::abs(entry) > constants::zero) {
                             this->_csc_outer.emplace_back(index / this->_columns);
                             this->_csc_entries.emplace_back(entry);
                         }

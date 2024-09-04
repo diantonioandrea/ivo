@@ -24,7 +24,7 @@ namespace ivo {
      */
     Element21::Element21(const Polygon21 &base, const Real &height, const Natural &p, const Natural &q): _base{base}, _height{height}, _p{p}, _q{q} {
         #ifndef NDEBUG // Integrity check.
-        assert(height > ___zero);
+        assert(height > constants::zero);
         #endif
     }
 
@@ -36,7 +36,7 @@ namespace ivo {
      */
     Element21::Element21(const Polygon21 &base, const Real &height): _base{base}, _height{height}, _p{1}, _q{1} {
         #ifndef NDEBUG // Integrity check.
-        assert(height > ___zero);
+        assert(height > constants::zero);
         #endif
     }
 

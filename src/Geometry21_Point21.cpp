@@ -74,7 +74,7 @@ namespace ivo {
      * @return false 
      */
     bool Point21::operator ==(const Point21 &point) const {
-        return distance(*this, point) <= ___geometrical_zero;
+        return distance(*this, point) <= constants::geometrical_zero;
     }
 
     /**
@@ -85,7 +85,7 @@ namespace ivo {
      * @return false 
      */
     bool Point21::operator !=(const Point21 &point) const {
-        return distance(*this, point) > ___geometrical_zero;
+        return distance(*this, point) > constants::geometrical_zero;
     }
 
     // Subscript operator, legacy scalar access (C++23).

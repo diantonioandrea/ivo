@@ -120,7 +120,7 @@ namespace ivo {
         std::vector<Point21> points = polygon.points();
 
         for(Natural j = 1; j < points.size(); ++j)
-            if(std::abs(points[j](2) - points[0](2)) > ___geometrical_zero)
+            if(std::abs(points[j](2) - points[0](2)) > constants::geometrical_zero)
                 return false;
 
         return true;

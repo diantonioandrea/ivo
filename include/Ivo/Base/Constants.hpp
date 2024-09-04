@@ -15,47 +15,51 @@
 
 namespace ivo {
 
-    // Zeros.
+    namespace constants {
 
-    /**
-     * @brief Zero tolerance.
-     * 
-     */
-    constexpr Real ___zero = 1E-16;
+        // Zeros.
 
-    /**
-     * @brief Geometrical zero tolerance.
-     * 
-     */
-    constexpr Real ___geometrical_zero = 1E-12;
-    
-    /**
-     * @brief Quadrature zero tolerance.
-     * 
-     */
-    constexpr Real ___quadrature_zero = 1E-14;
+        /**
+         * @brief Zero tolerance.
+         * 
+         */
+        constexpr Real zero = 1E-16;
 
-    // Diagrams.
+        /**
+         * @brief Geometrical zero tolerance.
+         * 
+         */
+        constexpr Real geometrical_zero = 1E-12;
+        
+        /**
+         * @brief Quadrature zero tolerance.
+         * 
+         */
+        constexpr Real quadrature_zero = 1E-14;
 
-    /**
-     * @brief Lloyd stopping multiplier.
-     * 
-     */
-    constexpr Real ___diagram_stop = 1E-6;
+        // Diagrams.
 
-    /**
-     * @brief Collapse multiplier.
-     * 
-     */
-    constexpr Real ___diagram_collapse = 1E-1;
+        /**
+         * @brief Lloyd stopping multiplier.
+         * 
+         */
+        constexpr Real diagram_stop = 1E-6;
 
-    // Constants.
+        /**
+         * @brief Collapse multiplier.
+         * 
+         */
+        constexpr Real diagram_collapse = 1E-1;
 
-    /**
-     * @brief Quadrature order.
-     * 
-     */
-    constexpr Natural ___quadrature = 7;
+        // Constants.
+
+        /**
+         * @brief Quadrature order.
+         * 
+         */
+        constexpr Natural quadrature = 7;
+
+    }
 
 }
 

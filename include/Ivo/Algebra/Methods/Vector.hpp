@@ -145,16 +145,16 @@ namespace ivo {
     template<Numerical T>
     Vector<T> stepped(const T &a, const T &b, const T &step = static_cast<T>(1)) {
         #ifndef NDEBUG // Integrity check.
-        assert(((a < b) && (step > ___zero)) || ((a > b) && (step < -___zero)));
+        assert(((a < b) && (step > constants::zero)) || ((a > b) && (step < -constants::zero)));
         #endif
 
         std::vector<T> _stepped;
 
-        if(step > ___zero)
-            for(T j = a; j <= b + ___zero; j += step)
+        if(step > constants::zero)
+            for(T j = a; j <= b + constants::zero; j += step)
                 _stepped.emplace_back(j);
         else
-            for(T j = a; j >= b - ___zero; j += step)
+            for(T j = a; j >= b - constants::zero; j += step)
                 _stepped.emplace_back(j);
 
         return Vector{_stepped};
