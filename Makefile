@@ -1,6 +1,6 @@
 .PHONY: all lib distclean
 
-CXXFLAGS += -Wall -pedantic -march=native -O2 -fPIC -I./include -O2 -fno-unsafe-math-optimizations -fno-fast-math
+CXXFLAGS = -Wall -pedantic -march=native -O2 -fPIC -I./include -O2 -fno-unsafe-math-optimizations -fno-fast-math
 
 ifeq ($(shell uname),Darwin) # Looks for Homebrew GCC 14.
 ifneq ($(shell find /opt/homebrew/bin | grep g++-14),)
