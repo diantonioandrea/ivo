@@ -48,7 +48,7 @@ namespace ivo {
             // Attributes access.
 
             /**
-             * @brief Convection coefficient
+             * @brief Convection coefficient.
              * 
              * @param t Time.
              * @return constexpr Real 
@@ -56,7 +56,7 @@ namespace ivo {
             constexpr Real convection(const Real &t) const { return this->_convection(t); }
 
             /**
-             * @brief Diffusion coefficient
+             * @brief Diffusion coefficient.
              * 
              * @param t Time.
              * @return constexpr Real 
@@ -64,7 +64,7 @@ namespace ivo {
             constexpr Real diffusion(const Real &t) const { return this->_diffusion(t); }
 
             /**
-             * @brief Reaction coefficient
+             * @brief Reaction coefficient.
              * 
              * @param t Time.
              * @return constexpr Real 
@@ -80,6 +80,11 @@ namespace ivo {
             constexpr std::array<Real, 3> coefficients(const Real &t) const {
                 return {this->_convection(t), this->_diffusion(t), this->_reaction(t)};
             }
+
+            Vector<Real> convection(const Vector<Real> &) const;
+            Vector<Real> diffusion(const Vector<Real> &) const;
+            Vector<Real> reaction(const Vector<Real> &) const;
+            std::array<Vector<Real>, 3> coefficients(const Vector<Real> &) const;
 
             // Constructors.
 
