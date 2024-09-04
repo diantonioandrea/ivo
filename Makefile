@@ -18,6 +18,7 @@ CXXFLAGS += -std=c++2b
 endif
 
 # Headers, recompilation purposes.
+HEADERS = ./include/*.hpp
 HEADERS = ./include/Ivo/*.hpp
 
 # Headers, Base.
@@ -31,8 +32,14 @@ HEADERS += ./include/Ivo/Algebra/Methods/*.hpp
 HEADERS += ./include/Ivo/Geometry21/*.hpp
 HEADERS += ./include/Ivo/Geometry21/Methods/*.hpp
 
-# Headers, Mesh2121.
+# Headers, Mesh21.
 HEADERS += ./include/Ivo/Mesh21/*.hpp
+
+# Headers, Fem.
+HEADERS += ./include/Ivo/Fem/*.hpp
+
+# Headers, Problem.
+HEADERS += ./include/Ivo/Problem/*.hpp
 
 # Library.
 LIBRARY_NAME = Ivo
