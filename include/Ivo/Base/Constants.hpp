@@ -1,15 +1,15 @@
 /**
- * @file Tolerances.hpp
+ * @file Constants.hpp
  * @author Andrea Di Antonio (github.com/diantonioandrea)
- * @brief Tolerances.
+ * @brief Constants.
  * @date 2024-07-19
  * 
  * @copyright Copyright (c) 2024
  * 
  */
 
-#ifndef BASE_TOLERANCES
-#define BASE_TOLERANCES
+#ifndef BASE_CONSTANTS
+#define BASE_CONSTANTS
 
 #include "./Primitives.hpp"
 
@@ -48,6 +48,14 @@ namespace ivo {
      * 
      */
     constexpr Real ___diagram_collapse = 1E-1;
+
+    // Constants.
+
+    /**
+     * @brief Quadrature order.
+     * 
+     */
+    constexpr Natural ___quadrature = 7;
 
 }
 
