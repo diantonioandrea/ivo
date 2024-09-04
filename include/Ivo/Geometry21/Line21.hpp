@@ -11,8 +11,6 @@
 #ifndef GEOMETRY21_LINE21
 #define GEOMETRY21_LINE21
 
-#include "./Includes.hpp"
-#include "./Point21.hpp"
 #include "./Edge21.hpp"
 
 namespace ivo {

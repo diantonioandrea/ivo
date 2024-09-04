@@ -11,7 +11,6 @@
 #ifndef ALGEBRA_METHODS_VECTOR
 #define ALGEBRA_METHODS_VECTOR
 
-#include "../Includes.hpp"
 #include "../Vector.hpp"
 
 namespace ivo {

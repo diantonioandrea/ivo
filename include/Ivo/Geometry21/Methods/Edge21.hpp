@@ -11,7 +11,6 @@
 #ifndef GEOMETRY21_METHODS_EDGE21
 #define GEOMETRY21_METHODS_EDGE21
 
-#include "../Includes.hpp"
 #include "../Edge21.hpp"
 
 namespace ivo {

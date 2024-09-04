@@ -11,10 +11,7 @@
 #ifndef GEOMETRY21_POLYGON21
 #define GEOMETRY21_POLYGON21
 
-#include "./Includes.hpp"
 #include "./Line21.hpp"
-#include "./Edge21.hpp"
-#include "./Point21.hpp"
 
 namespace ivo {
 

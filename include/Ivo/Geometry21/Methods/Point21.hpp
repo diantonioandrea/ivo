@@ -11,7 +11,6 @@
 #ifndef GEOMETRY21_METHODS_POINT21
 #define GEOMETRY21_METHODS_POINT21
 
-#include "../Includes.hpp"
 #include "../Point21.hpp"
 
 namespace ivo {

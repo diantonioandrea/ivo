@@ -11,7 +11,6 @@
 #ifndef GEOMETRY21_METHODS_POLYGON21_2
 #define GEOMETRY21_METHODS_POLYGON21_2
 
-#include "../Includes.hpp"
 #include "../Polygon21.hpp"
 
 namespace ivo {

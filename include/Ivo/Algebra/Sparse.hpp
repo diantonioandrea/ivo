@@ -11,8 +11,6 @@
 #ifndef ALGEBRA_SPARSE
 #define ALGEBRA_SPARSE
 
-#include "./Includes.hpp"
-#include "./Vector.hpp"
 #include "./Matrix.hpp"
 
 namespace ivo {
