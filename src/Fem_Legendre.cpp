@@ -12,25 +12,27 @@
 
 namespace ivo {
 
-    // Utilities.
+    namespace internal {
 
-    /**
-     * @brief Binomial coefficient.
-     * 
-     * @param n Natural.
-     * @param k Natural.
-     * @return Natural 
-     */
-    Natural __binomial(const Natural &n, const Natural &k) {
-        #ifndef NDEBUG // Integrity check.
-        assert(n >= k);
-        #endif
+        /**
+         * @brief Binomial coefficient.
+         * 
+         * @param n Natural.
+         * @param k Natural.
+         * @return Natural 
+         */
+        Natural binomial(const Natural &n, const Natural &k) {
+            #ifndef NDEBUG // Integrity check.
+            assert(n >= k);
+            #endif
 
-        if((n == k) || (k == 0))
-            return 1;
+            if((n == k) || (k == 0))
+                return 1;
 
-        // Recursive formula.
-        return __binomial(n - 1, k - 1) + __binomial(n - 1, k);
+            // Recursive formula.
+            return internal::binomial(n - 1, k - 1) + internal::binomial(n - 1, k);
+        }
+
     }
 
     // Legendre polynomials.
@@ -52,7 +54,7 @@ namespace ivo {
             for(Natural j = 0; j < k; ++j)
                 power *= 0.5L * (x - 1.0L);
 
-            legendre += __binomial(n, k) * __binomial(n + k, k) * power;
+            legendre += internal::binomial(n, k) * internal::binomial(n + k, k) * power;
         }
 
         return legendre;
@@ -75,7 +77,7 @@ namespace ivo {
             for(Natural j = 1; j < k; ++j)
                 power *= 0.5L * (x - 1.0L);
 
-            legendre += 0.5L * __binomial(n, k) * __binomial(n + k, k) * power;
+            legendre += 0.5L * internal::binomial(n, k) * internal::binomial(n + k, k) * power;
         }
 
         return legendre;
