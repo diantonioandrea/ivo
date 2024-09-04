@@ -101,6 +101,8 @@ namespace ivo {
         return {nodes, weights};
     }
 
+    // Gauss-Legendre nodes and weights over reference structures.
+
     /**
      * @brief Gauss-Legendre nodes and weights over the reference interval [-1, 1].
      * 
