@@ -15,9 +15,14 @@
 
 namespace ivo {
 
-    // Gauss-Legendre nodes.
+    // Gauss-Legendre nodes and weights.
     
-    std::array<Vector<Real>, 2> gauss1(const Natural &, const Real &, const Real &);
+    std::array<Vector<Real>, 2> __gauss1(const Natural &, const Real &, const Real &);
+
+    // Gauss-Legendre nodes and weights over reference structures.
+
+    std::array<Vector<Real>, 2> quadrature1(const Natural &);
+    std::array<Vector<Real>, 3> quadrature2(const Natural &);
 
 }
 

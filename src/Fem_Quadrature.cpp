@@ -33,7 +33,7 @@ namespace ivo {
      * @param b Interval's b.
      * @return std::array<Vector<Real>, 2> 
      */
-    std::array<Vector<Real>, 2> gauss1(const Natural &n, const Real &a, const Real &b) {
+    std::array<Vector<Real>, 2> __gauss1(const Natural &n, const Real &a, const Real &b) {
         #ifndef NDEBUG // Integrity check.
         assert(a < b);
         assert(n % 2 == 1); // n must be odd.
@@ -74,9 +74,10 @@ namespace ivo {
             temp = n * (z * p.column(0) - p.column(1)) / (z * z - 1.0L);
             Vector<Real> z_old{z};
             
-            for(Natural j = 0; j < m; ++j)
-                if((error_vector(j) > ___quadrature_zero) && (temp(j) > ___zero))
-                    z(j, z_old(j) - p(j, 1) / temp(j));
+            for(Natural j = 0; j < m; ++j) {
+                Real update = (error_vector(j) > ___quadrature_zero) ? p(j, 0) / temp(j) : 0.0L;
+                z(j, z_old(j) - update);
+            }
 
             // Error update.
             error_vector = std::abs(z - z_old);
@@ -87,6 +88,7 @@ namespace ivo {
         Mask mask{m, true};
         mask(m - 1, false);
 
+        // Nodes.
         Vector<Real> nodes = ((b + a) / 2.0L - (b - a) / 2.0L) * stacked(z(mask), -flipped(z));
 
         // Reflection.
@@ -97,6 +99,52 @@ namespace ivo {
         Vector<Real> weights = (b - a) / (1.0L - z_ref * z_ref) / (temp_ref * temp_ref);
 
         return {nodes, weights};
+    }
+
+    /**
+     * @brief Gauss-Legendre nodes and weights over the reference interval [-1, 1].
+     * 
+     * @param n Order.
+     * @return std::array<Vector<Real>, 2> 
+     */
+    std::array<Vector<Real>, 2> quadrature1(const Natural &n) { return __gauss1(n, -1.0L, 1.0L); }
+
+    /**
+     * @brief Gauss-Legendre nodes and weights over the reference triangle {(0, 0), (0, 1), (1, 0)}.
+     * 
+     * @param n 
+     * @return std::array<Vector<Real>, 3> 
+     */
+    std::array<Vector<Real>, 3> quadrature2(const Natural &n) {
+
+        // Square nodes and weights.
+        auto [nodes1, weights1] = quadrature1(n);
+
+        // Temporary nodes and weights.
+        Vector<Real> nodes2_x{n * n};
+        Vector<Real> weights2_x{n * n};
+
+        Vector<Real> nodes2_y{n * n};
+        Vector<Real> weights2_y{n * n};
+
+        for(Natural j = 0; j < n; ++j)
+            for(Natural k = 0; k < n; ++k) {
+                
+                // Nodes.
+                nodes2_x(j * n + k, nodes1(j));
+                nodes2_y(j * n + k, nodes1(k));
+
+                // Weights.
+                weights2_x(j * n + k, weights1(j));
+                weights2_y(j * n + k, weights1(k));
+            }
+        
+        // Triangle nodes and weights.
+        Vector<Real> nodes2t_x = (1.0L + nodes2_x) / 2.0L;
+        Vector<Real> nodes2t_y = (1.0L - nodes2_x) * (1.0L + nodes2_y) / 4.0L;
+        Vector<Real> weights2t = (1.0L - nodes2_x) * weights2_x * weights2_y / 8.0L;
+
+        return {nodes2t_x, nodes2t_y, weights2t};
     }
 
 }

@@ -13,7 +13,7 @@
 int main(int argc, char **argv) {
 
     // Gauss-Legendre nodes.
-    auto [nodes, weights] = ivo::gauss1(5, -1.0L, 1.0L);
+    auto [nodes, weights] = ivo::__gauss1(5, -1.0L, 1.0L);
 
     std::cout << nodes << std::endl;
     std::cout << weights << std::endl;
