@@ -17,4 +17,7 @@
 // Equation.
 #include "./Problem/Equation.hpp"
 
+// Matrix.
+#include "./Problem/Stiffness.hpp"
+
 #endif
