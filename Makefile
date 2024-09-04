@@ -6,7 +6,7 @@ ifeq ($(shell uname),Darwin) # Looks for Homebrew GCC 14.
 ifneq ($(shell find /opt/homebrew/bin | grep g++-14),)
 CXX = g++-14
 else # Apple's Clang.
-CXXFLAGS += -ffp-model=precise
+CXXFLAGS += -ffp-model=precise -Wno-pre-c++2b-compat
 endif
 endif
 
