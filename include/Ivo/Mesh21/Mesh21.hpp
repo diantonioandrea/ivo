@@ -135,6 +135,10 @@ namespace ivo {
                 return this->_neighbours[j + k * _time];
             }
 
+            // Parameters.
+
+            Natural dofs() const;
+
             // Output.
 
             friend std::ostream &operator <<(std::ostream &, const Mesh21 &);

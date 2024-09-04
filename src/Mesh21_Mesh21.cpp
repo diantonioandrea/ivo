@@ -82,6 +82,22 @@ namespace ivo {
         }
     }
 
+    // Parameters.
+
+    /**
+     * @brief Mesh' dofs.
+     * 
+     * @return Natural 
+     */
+    Natural Mesh21::dofs() const {
+        Natural dofs = 0;
+
+        for(const auto &element: this->_elements)
+            dofs += element.dofs();
+
+        return dofs;
+    }
+
     // Output.
 
     /**
