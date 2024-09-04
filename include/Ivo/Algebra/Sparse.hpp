@@ -110,7 +110,7 @@ namespace ivo {
              * @return std::tuple<std::vector<Natural>, std::vector<Natural>, std::vector<T>> 
              */
             inline std::tuple<std::vector<Natural>, std::vector<Natural>, std::vector<T>> csr() {
-                this->__csr_update();
+                this->_csr_update();
                 return {this->_csr_inner, this->_csr_outer, this->_csr_entries};
             }
 
@@ -120,7 +120,7 @@ namespace ivo {
              * @return std::tuple<std::vector<Natural>, std::vector<Natural>, std::vector<T>> 
              */
             inline std::tuple<std::vector<Natural>, std::vector<Natural>, std::vector<T>> csc() {
-                this->__csc_update();
+                this->_csc_update();
                 return {this->_csc_inner, this->_csc_outer, this->_csc_entries};
             }
 
@@ -388,7 +388,7 @@ namespace ivo {
                 #endif
 
                 // CSR needed.
-                this->__csr_update();
+                this->_csr_update();
 
                 Vector<T> row{this->_columns};
                 for(Natural k = this->_csr_inner[j]; k < this->_csr_inner[j + 1]; ++k)
@@ -409,7 +409,7 @@ namespace ivo {
                 #endif
 
                 // CSC needed.
-                this->__csc_update();
+                this->_csc_update();
 
                 Vector<T> column{this->_rows};
                 for(Natural j = this->_csc_inner[k]; j < this->_csc_inner[k + 1]; ++j)
@@ -838,7 +838,7 @@ namespace ivo {
                 #endif
 
                 // CSR needed.
-                this->__csr_update();
+                this->_csr_update();
 
                 Vector<T> result{this->_rows};
                 for(Natural j = 0; j < this->_rows; ++j) {
@@ -867,7 +867,7 @@ namespace ivo {
                 #endif
 
                 // CSC needed.
-                sparse.__csc_update();
+                sparse._csc_update();
 
                 Vector<T> result{sparse._columns};
                 for(Natural k = 0; k < sparse._columns; ++k) {
@@ -895,8 +895,8 @@ namespace ivo {
                 #endif
 
                 // CSR and CSC needed.
-                this->__csr_update();
-                sparse.__csc_update();
+                this->_csr_update();
+                sparse._csc_update();
                 
                 Sparse result{this->_rows, sparse._columns};
 
@@ -931,7 +931,7 @@ namespace ivo {
              * @brief CSR updater.
              * 
              */
-            void __csr_update() {
+            void _csr_update() {
                 if(this->_csr)
                     return;
 
@@ -961,7 +961,7 @@ namespace ivo {
              * @brief CSC updater.
              * 
              */
-            void __csc_update() {
+            void _csc_update() {
                 if(this->_csc)
                     return;
 
