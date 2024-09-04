@@ -1,16 +1,20 @@
 .PHONY: all lib distclean
 
-# C++ standard.
-ifneq ($(shell g++ --version | grep GCC),) # C++26, requires GCC 14+.
-CXXFLAGS = -std=c++2c
-else # C++23.
-CXXFLAGS = -std=c++2b
-endif
-
 CXXFLAGS += -Wall -pedantic -march=native -O2 -fPIC -I./include -O2 -fno-unsafe-math-optimizations -fno-fast-math
 
-ifeq ($(shell uname),Darwin) # Apple's clang.
+ifeq ($(shell uname),Darwin) # Looks for Homebrew GCC 14.
+ifneq ($(shell find /opt/homebrew/bin | grep g++-14),)
+CXX = g++-14
+else # Apple's Clang.
 CXXFLAGS += -ffp-model=precise
+endif
+endif
+
+# C++ standard.
+ifneq ($(shell $(CXX) --version | grep "GCC 14"),) # C++26, requires GCC 14+.
+CXXFLAGS += -std=c++2c
+else # C++23.
+CXXFLAGS += -std=c++2b
 endif
 
 # Headers, recompilation purposes.
@@ -44,7 +48,7 @@ T_OBJECTS = $(subst src/,objects/,$(subst .cpp,.o,$(shell find src -name "Test_*
 OBJECTS = $(subst src/,objects/,$(subst .cpp,.o,$(shell find src -name "*.cpp" -not -name "Test_*")))
 
 # Directories.
-DIRECTORIES = ./output ./objects ./executables ./lib
+DIRECTORIES = ./output ./objects ./executables
 
 # All.
 all: $(DIRECTORIES) $(TESTS)
@@ -54,6 +58,7 @@ all: $(DIRECTORIES) $(TESTS)
 lib: $(LIBRARY)
 
 $(LIBRARY): $(DIRECTORIES) $(OBJECTS)
+	@mkdir ./lib
 	@echo "Archiving the library to $(LIBRARY)"
 	@ar rcs $(LIBRARY) $(OBJECTS)
 
@@ -93,3 +98,4 @@ $(DIRECTORIES):
 distclean:
 	@echo "Cleaning the repo."
 	@$(RM) -r $(DIRECTORIES)
+	@$(RM) -r ./lib
