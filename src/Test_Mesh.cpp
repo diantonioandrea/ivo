@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
     ivo::Point21 d{0.0, 1.0};
 
     // Polygon.
-    ivo::Polygon21 abcd{{a, b, c, d}};
+    ivo::Polygon21 abcd = {a, b, c, d};
 
     // Space diagram.
     std::vector<ivo::Polygon21> space = ivo::mesher2(abcd, 10);
