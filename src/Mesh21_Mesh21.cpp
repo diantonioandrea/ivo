@@ -98,6 +98,54 @@ namespace ivo {
         return dofs;
     }
 
+    /**
+     * @brief Global to local dofs.
+     * 
+     * @param j Element's index.
+     * @return std::vector<Natural> 
+     */
+    std::vector<Natural> Mesh21::dofs(const Natural &j) const {
+        #ifndef NDEBUG
+        assert(j < this->_elements.size());
+        #endif
+
+        Natural start = 0;
+        std::vector<Natural> dofs;
+
+        for(Natural k = 0; k < j; ++k)
+            start += this->_elements[k].dofs();
+
+        for(Natural k = start; k < start + this->element(j).dofs(); ++k)
+            dofs.emplace_back(k);
+
+        return dofs;
+    }
+
+    /**
+     * @brief Global to local dofs.
+     * 
+     * @param j Element's space index.
+     * @param k Element's time index.
+     * @return std::vector<Natural> 
+     */
+    std::vector<Natural> Mesh21::dofs(const Natural &j, const Natural &k) const {
+        #ifndef NDEBUG
+        assert(j < this->_space);
+        assert(k < this->_time);
+        #endif
+
+        Natural start = 0;
+        std::vector<Natural> dofs;
+
+        for(Natural h = 0; h < j * this->_time + k; ++h)
+            start += this->_elements[h].dofs();
+
+        for(Natural h = start; h < start + this->element(j, k).dofs(); ++h)
+            dofs.emplace_back(h);
+
+        return dofs;
+    }
+
     // Output.
 
     /**

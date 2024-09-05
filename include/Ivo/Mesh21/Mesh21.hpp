@@ -102,7 +102,7 @@ namespace ivo {
                 assert(k < this->_time);
                 #endif
 
-                return this->_elements[j + k * _time];
+                return this->_elements[j * this->_time + k];
             }
 
             /**
@@ -132,12 +132,14 @@ namespace ivo {
                 assert(k < this->_time);
                 #endif
 
-                return this->_neighbours[j + k * _time];
+                return this->_neighbours[j * this->_time + k];
             }
 
             // Parameters.
 
             Natural dofs() const;
+            std::vector<Natural> dofs(const Natural &j) const;
+            std::vector<Natural> dofs(const Natural &j, const Natural &k) const;
 
             // Output.
 
