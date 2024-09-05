@@ -31,7 +31,7 @@ namespace ivo {
     // Constructors and copy operators.
 
     /**
-     * @brief Points constructor.
+     * @brief Vector constructor.
      * 
      * @param points 
      */
@@ -48,6 +48,26 @@ namespace ivo {
     }
 
     /**
+     * @brief List constructor.
+     * 
+     * @param points Points.
+     */
+    Polygon21::Polygon21(const std::initializer_list<Point21> &points) {
+        #ifndef NDEBUG // Integrity check.
+        assert(points.size() > 2);
+        #endif
+
+        this->_points.resize(points.size());
+        std::copy(points.begin(), points.end(), this->_points.begin());
+
+        #ifndef NDEBUG // Integrity check.
+        for(Natural j = 0; j < this->_points.size(); ++j)
+            for(Natural k = j + 1; k < this->_points.size(); ++k)
+                assert(this->_points[j] != this->_points[k]);
+        #endif
+    }
+
+    /**
      * @brief Copy constructor.
      * 
      * @param polygon Polygon.
@@ -55,6 +75,29 @@ namespace ivo {
     Polygon21::Polygon21(const Polygon21 &polygon) {
         this->_points.resize(polygon._points.size());
         std::copy(polygon._points.begin(), polygon._points.end(), this->_points.begin());
+    }
+
+    /**
+     * @brief List copy operator.
+     * 
+     * @param points Points.
+     * @return Polygon21& 
+     */
+    Polygon21 &Polygon21::operator =(const std::initializer_list<Point21> &points) {
+        #ifndef NDEBUG // Integrity check.
+        assert(points.size() > 2);
+        #endif
+
+        this->_points.resize(points.size());
+        std::copy(points.begin(), points.end(), this->_points.begin());
+
+        #ifndef NDEBUG // Integrity check.
+        for(Natural j = 0; j < this->_points.size(); ++j)
+            for(Natural k = j + 1; k < this->_points.size(); ++k)
+                assert(this->_points[j] != this->_points[k]);
+        #endif
+
+        return *this;
     }
 
     /**

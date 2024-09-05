@@ -13,6 +13,7 @@
 
 // Containers.
 #include <vector>
+#include <initializer_list>
 
 // Random.
 #include <cstdlib>

@@ -48,7 +48,9 @@ namespace ivo {
             // Constructors and copy operators.
 
             Polygon21(const std::vector<Point21> &);
+            Polygon21(const std::initializer_list<Point21> &);
             Polygon21(const Polygon21 &);
+            Polygon21 &operator =(const std::initializer_list<Point21> &);
             Polygon21 &operator =(const Polygon21 &);
 
             // Subscript operator, legacy scalar access (C++23).
