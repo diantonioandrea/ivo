@@ -1,20 +1,8 @@
 .PHONY: all lib distclean
+CXXFLAGS = -Wall -std=c++26 -pedantic -march=native -O2 -fPIC -I./include -O2 -fno-unsafe-math-optimizations -fno-fast-math
 
-CXXFLAGS = -Wall -pedantic -march=native -O2 -fPIC -I./include -O2 -fno-unsafe-math-optimizations -fno-fast-math
-
-ifeq ($(shell uname),Darwin) # Looks for Homebrew GCC 14.
-ifneq ($(shell find /opt/homebrew/bin | grep g++-14),)
-CXX = g++-14
-else # Apple's Clang.
-CXXFLAGS += -ffp-model=precise -Wno-pre-c++2b-compat
-endif
-endif
-
-# C++ standard.
-ifneq ($(shell $(CXX) --version | grep "GCC 14"),) # C++26, requires GCC 14+.
-CXXFLAGS += -std=c++2c
-else # C++23.
-CXXFLAGS += -std=c++2b
+ifneq ($(shell $(CXX) --version | grep -i "clang"),)
+CXXFLAGS += -ffp-model=precise
 endif
 
 # Headers, recompilation purposes.
