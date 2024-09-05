@@ -20,6 +20,7 @@
 
 // Matrices.
 #include "./Algebra/Matrix.hpp"
+#include "./Algebra/Methods/Matrix.hpp"
 
 // Sparse matrices.
 #include "./Algebra/Sparse.hpp"
