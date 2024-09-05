@@ -14,7 +14,8 @@
 // Base.
 #include "./Base.hpp"
 
-// Legendre.
+// Basis functions.
+#include "./Fem/Basis.hpp"
 #include "./Fem/Legendre.hpp"
 
 // Quadrature.
