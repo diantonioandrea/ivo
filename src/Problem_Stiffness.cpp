@@ -22,7 +22,7 @@ namespace ivo {
     Sparse<Real> stiffness(const Mesh21 &mesh, const Equation &equation) {
 
         // Quadrature.
-        auto [nodes1, weights1] = quadrature1(constants::quadrature);
+        auto [nodes1t, weights1] = quadrature1(constants::quadrature);
         auto [nodes2x, nodes2y, weights2] = quadrature2(constants::quadrature);
 
         // Stiffness matrix.
@@ -33,6 +33,22 @@ namespace ivo {
 
             // Element.
             Element21 element = mesh.element(j);
+
+            // Dofs.
+            std::vector<Natural> dofs = mesh.dofs(j);
+
+            // VOLUME INTEGRALS.
+
+            // Basis.
+            Real dt_j = element.height() / 2.0L;
+            auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, {nodes2x, nodes2y});
+
+            auto [phi_s, gradx_phi_s, grady_phi_s] = basis_s(mesh, j, nodes2xy_j);
+            auto [phi_t, gradt_phi_t] = basis_t(mesh, j, nodes1t);
+
+            // [!]
+            
+            // FACE INTEGRALS.
 
             // [!]
         }
