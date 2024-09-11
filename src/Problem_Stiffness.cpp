@@ -39,8 +39,8 @@ namespace ivo {
 
             // VOLUME INTEGRALS.
 
-            // Basis.
-            Real dt_j = element.height() / 2.0L;
+            // Nodes and basis.
+            auto [nodes1t_j, dt_j] = internal::reference_to_element(mesh, j, nodes1t);
             auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, {nodes2x, nodes2y});
 
             auto [phi_s, gradx_phi_s, grady_phi_s] = basis_s(mesh, j, nodes2xy_j);

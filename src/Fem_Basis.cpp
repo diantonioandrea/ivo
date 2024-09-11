@@ -17,6 +17,33 @@ namespace ivo {
         // Maps.
 
         /**
+         * @brief Reference segment to element mapping.
+         * 
+         * @param mesh Mesh.
+         * @param j Element's index.
+         * @param nodes Nodes.
+         * @return std::tuple<std::array<Vector<Real>, 2>, Real> 
+         */
+        std::tuple<Vector<Real>, Real> reference_to_element(const Mesh21 &mesh, const Natural &j, const Vector<Real> &nodes) {
+
+            // Element.
+            Element21 element = mesh.element(j);
+
+            // Bases.
+            Polygon21 bottom = element.b_base();
+            Polygon21 top = element.t_base();
+
+            // Time.
+            std::array<Real, 2> t{bottom(0)(2), top(0)(2)};
+
+            // dt.
+            Real dt = (t[1] - t[0]) / 2.0L;
+
+            // Nodes and dt.
+            return {dt * nodes + (t[0] + t[1]) / 2.0L, dt};
+        }
+
+        /**
          * @brief Reference triangle to element mapping.
          * 
          * @param mesh Mesh.
@@ -67,7 +94,7 @@ namespace ivo {
                 y(k, xy(1));
             }
 
-            // Nodes.
+            // Nodes and dxy.
             return {{x, y}, dxy};
         }
 
