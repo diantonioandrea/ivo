@@ -21,7 +21,7 @@ namespace ivo {
      * @param diffusion Diffusion coefficient.
      * @param reaction Reaction coefficient.
      */
-    Equation::Equation(const std::function<Real (Real)> &convection, const std::function<Real (Real)> &diffusion, const std::function<Real (Real)> &reaction): _convection{convection}, _diffusion{diffusion}, _reaction{reaction} {}
+    Equation::Equation(const std::function<std::array<Real, 2> (Real)> &convection, const std::function<Real (Real)> &diffusion, const std::function<Real (Real)> &reaction): _convection{convection}, _diffusion{diffusion}, _reaction{reaction} {}
 
     // Attributes access.
 
@@ -31,12 +31,20 @@ namespace ivo {
      * @param T Time.
      * @return Vector<Real> 
      */
-    Vector<Real> Equation::convection(const Vector<Real> &T) const {
-        std::vector<Real> convection;
-        std::vector<Real> time = T.entries();
+    std::array<Vector<Real>, 2> Equation::convection(const Vector<Real> &T) const {
+        std::array<std::vector<Real>, 2> convections;
+        convections[0].reserve(T.size());
+        convections[1].reserve(T.size());
 
-        std::transform(time.begin(), time.end(), convection.begin(), [*this](const Real &t){ return this->_convection(t); });
-        return Vector<Real>{convection};
+        for(Natural j = 0; j < T.size(); ++j) {
+            std::array<Real, 2> convection = this->_convection(T(j));
+
+            convections[0].emplace_back(convection[0]);
+            convections[1].emplace_back(convection[1]);
+        }
+
+        
+        return {Vector<Real>{convections[0]}, Vector<Real>{convections[1]}};
     }
 
     /**
@@ -47,9 +55,11 @@ namespace ivo {
      */
     Vector<Real> Equation::diffusion(const Vector<Real> &T) const {
         std::vector<Real> diffusion;
+        diffusion.reserve(T.size());
+
         std::vector<Real> time = T.entries();
 
-        std::transform(time.begin(), time.end(), diffusion.begin(), [*this](const Real &t){ return this->_convection(t); });
+        std::transform(time.begin(), time.end(), diffusion.begin(), [*this](const Real &t){ return this->_diffusion(t); });
         return Vector<Real>{diffusion};
     }
 
@@ -61,27 +71,12 @@ namespace ivo {
      */
     Vector<Real> Equation::reaction(const Vector<Real> &T) const {
         std::vector<Real> reaction;
+        reaction.reserve(T.size());
+
         std::vector<Real> time = T.entries();
 
-        std::transform(time.begin(), time.end(), reaction.begin(), [*this](const Real &t){ return this->_convection(t); });
+        std::transform(time.begin(), time.end(), reaction.begin(), [*this](const Real &t){ return this->_reaction(t); });
         return Vector<Real>{reaction};
-    }
-
-    /**
-     * @brief Coefficients, vectorial evaluation.
-     * 
-     * @param T Time.
-     * @return std::array<Vector<Real>, 3> 
-     */
-    std::array<Vector<Real>, 3> Equation::coefficients(const Vector<Real> &T) const {
-        std::vector<Real> convection, diffusion, reaction;
-        std::vector<Real> time = T.entries();
-
-        std::transform(time.begin(), time.end(), convection.begin(), [*this](const Real &t){ return this->_convection(t); });
-        std::transform(time.begin(), time.end(), diffusion.begin(), [*this](const Real &t){ return this->_convection(t); });
-        std::transform(time.begin(), time.end(), reaction.begin(), [*this](const Real &t){ return this->_convection(t); });
-
-        return {Vector<Real>{convection}, Vector<Real>{diffusion}, Vector<Real>{reaction}};
     }
 
 }

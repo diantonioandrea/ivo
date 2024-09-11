@@ -29,7 +29,7 @@ namespace ivo {
              * @brief Convection coefficient.
              * 
              */
-            const std::function<Real (Real)> _convection;
+            const std::function<std::array<Real, 2> (Real)> _convection;
 
             /**
              * @brief Diffusion coefficient.
@@ -53,7 +53,7 @@ namespace ivo {
              * @param t Time.
              * @return constexpr Real 
              */
-            constexpr Real convection(const Real &t) const { return this->_convection(t); }
+            constexpr std::array<Real, 2> convection(const Real &t) const { return this->_convection(t); }
 
             /**
              * @brief Diffusion coefficient.
@@ -71,24 +71,13 @@ namespace ivo {
              */
             constexpr Real reaction(const Real &t) const { return this->_reaction(t); }
 
-            /**
-             * @brief Coefficients.
-             * 
-             * @param t Time.
-             * @return constexpr std::array<Real, 3> 
-             */
-            constexpr std::array<Real, 3> coefficients(const Real &t) const {
-                return {this->_convection(t), this->_diffusion(t), this->_reaction(t)};
-            }
-
-            Vector<Real> convection(const Vector<Real> &) const;
+            std::array<Vector<Real>, 2> convection(const Vector<Real> &) const;
             Vector<Real> diffusion(const Vector<Real> &) const;
             Vector<Real> reaction(const Vector<Real> &) const;
-            std::array<Vector<Real>, 3> coefficients(const Vector<Real> &) const;
 
             // Constructors.
 
-            Equation(const std::function<Real (Real)> &, const std::function<Real (Real)> &, const std::function<Real (Real)> &);
+            Equation(const std::function<std::array<Real, 2> (Real)> &, const std::function<Real (Real)> &, const std::function<Real (Real)> &);
 
     };
 
