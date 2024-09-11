@@ -33,8 +33,6 @@ namespace ivo {
      */
     std::array<Vector<Real>, 2> Equation::convection(const Vector<Real> &T) const {
         std::array<std::vector<Real>, 2> convections;
-        convections[0].reserve(T.size());
-        convections[1].reserve(T.size());
 
         for(Natural j = 0; j < T.size(); ++j) {
             std::array<Real, 2> convection = this->_convection(T(j));
