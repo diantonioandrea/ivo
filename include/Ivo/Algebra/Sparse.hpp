@@ -115,7 +115,7 @@ namespace ivo {
             }
 
             /**
-             * @brief Sparse's CSc structure.
+             * @brief Sparse's CSC structure.
              * 
              * @return std::tuple<std::vector<Natural>, std::vector<Natural>, std::vector<T>> 
              */

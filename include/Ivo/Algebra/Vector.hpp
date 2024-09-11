@@ -57,7 +57,7 @@ namespace ivo {
              */
             constexpr Natural size() const { return this->_size; }
 
-            // Constructors and copy operators.
+            // Constructors.
 
             /**
              * @brief Zero constructor.
@@ -87,17 +87,6 @@ namespace ivo {
             }
 
             /**
-             * @brief Scalar copy operator.
-             * 
-             * @param scalar Scalar.
-             * @return Vector& 
-             */
-            Vector &operator =(const T &scalar) {
-                this->_entries.resize(this->_size, scalar);
-                return *this;
-            }
-
-            /**
              * @brief Standard vector constructor.
              * 
              * @param vector Standard vector.
@@ -109,21 +98,6 @@ namespace ivo {
 
                 this->_entries.resize(vector.size(), static_cast<T>(0));
                 std::copy(vector.begin(), vector.end(), this->_entries.begin());
-            }
-
-            /**
-             * @brief Standard vector copy operator.
-             * 
-             * @param vector Standard vector.
-             * @return Vector& 
-             */
-            Vector &operator =(const std::vector<T> &vector) {
-                #ifndef NDEBUG // Integrity check.
-                assert(this->_size == vector.size());
-                #endif
-
-                std::copy(vector.begin(), vector.end(), this->_entries.begin());
-                return *this;
             }
 
             /**

@@ -111,17 +111,6 @@ namespace ivo {
             }
 
             /**
-             * @brief Scalar copy operator.
-             * 
-             * @param scalar Scalar.
-             * @return Matrix& 
-             */
-            Matrix &operator =(const T &scalar) {
-                this->_entries.resize(this->_rows * this->_columns, scalar);
-                return *this;
-            }
-
-            /**
              * @brief Standard vector constructor.
              * 
              * @param rows Matrix' rows.
@@ -140,19 +129,6 @@ namespace ivo {
             }
 
             /**
-             * @brief Standard vector copy operator.
-             * 
-             * @param vector Standard vector.
-             */
-            Matrix &operator =(const std::vector<T> &vector) {
-                #ifndef NDEBUG // Integrity check.
-                assert(this->_rows * this->_columns == vector.size());
-                #endif
-
-                std::copy(vector.begin(), vector.end(), this->_entries.begin());
-            }
-
-            /**
              * @brief Vector constructor.
              * 
              * @param rows Matrix' rows.
@@ -160,15 +136,6 @@ namespace ivo {
              * @param vector Vector.
              */
             Matrix(const Natural &rows, const Natural &columns, const Vector<T> &vector): Matrix(rows, columns, vector.entries()) {}
-
-            /**
-             * @brief Vector copy operator.
-             * 
-             * @param vector Vector.
-             */
-            Matrix &operator =(const Vector<T> &vector) {
-                return *this = vector.entries();
-            }
 
             /**
              * @brief Copy constructor.
