@@ -336,6 +336,23 @@ namespace ivo {
                     this->_entries[j * this->_columns + k] = vector(j);
             }
 
+            // Methods.
+
+            /**
+             * @brief Transpose matrix.
+             * 
+             * @return Matrix 
+             */
+            Matrix transpose() const {
+                Matrix<T> transpose{this->_columns, this->_rows};
+
+                for(Natural j = 0; j < this->_rows; ++j)
+                    for(Natural k = 0; k < this->_columns; ++k)
+                        transpose._entries[k * this->_rows + j] = this->_entries[j * this->_columns + k ];
+
+                return transpose;
+            }
+
             // Operations.
 
             /**

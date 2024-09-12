@@ -34,7 +34,7 @@ namespace ivo {
              * @brief Sparse's entries, DOK.
              * 
              */
-            std::map<Natural, T> _entries;
+            mutable std::map<Natural, T> _entries;
 
             /**
              * @brief Sparse's rows.
@@ -357,8 +357,8 @@ namespace ivo {
              */
             void operator ()(const std::vector<Natural> &J, const std::vector<Natural> &K, const Matrix<T> &matrix) {
                 #ifndef NDEBUG // Integrity check.
-                assert(J.size() == matrix._rows);
-                assert(K.size() == matrix._columns);
+                assert(J.size() == matrix.rows());
+                assert(K.size() == matrix.columns());
                 for(const auto &j: J)
                     assert(j < this->_rows);
                 for(const auto &k: K)

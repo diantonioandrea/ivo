@@ -15,6 +15,54 @@
 
 namespace ivo {
 
+    namespace internal {
+        
+        /**
+         * @brief Scales a matrix' rows by a vector.
+         * 
+         * @tparam T Numerical type.
+         * @param vector Vector.
+         * @param matrix Matrix.
+         * @return Matrix<T> 
+         */
+        template<Numerical T>
+        Matrix<T> r_scale(const Vector<T> &vector, const Matrix<T> &matrix) {
+            #ifndef NDEBUG // Integrity check.
+            assert(vector.size() == matrix.columns());
+            #endif
+
+            Matrix<T> scaled{matrix.rows(), matrix.columns()};
+
+            for(Natural j = 0; j < matrix.rows(); ++j)
+                scaled.row(j, vector * matrix.row(j));
+
+            return scaled;
+        }
+
+        /**
+         * @brief Scales a matrix' columns by a vector.
+         * 
+         * @tparam T Numerical type.
+         * @param vector Vector.
+         * @param matrix Matrix.
+         * @return Matrix<T> 
+         */
+        template<Numerical T>
+        Matrix<T> c_scale(const Vector<T> &vector, const Matrix<T> &matrix) {
+            #ifndef NDEBUG // Integrity check.
+            assert(vector.size() == matrix.rows());
+            #endif
+
+            Matrix<T> scaled{matrix.rows(), matrix.columns()};
+
+            for(Natural j = 0; j < matrix.columns(); ++j)
+                scaled.column(j, vector * matrix.column(j));
+
+            return scaled;
+        }
+
+    }
+
     /**
      * @brief Kronecker product.
      * 
@@ -30,7 +78,7 @@ namespace ivo {
         for(Natural jx = 0; jx < X.rows(); ++jx)
             for(Natural kx = 0; kx < X.columns(); ++kx)
                 for(Natural jy = 0; jy < Y.rows(); ++jy)
-                    for(Natural ky = 0; ky < Y.columns; ++ky)
+                    for(Natural ky = 0; ky < Y.columns(); ++ky)
                         XY(jx * X.rows() + jy, kx * X.columns() + ky, X(jx, kx) * Y(jy, ky));
 
         return XY;
