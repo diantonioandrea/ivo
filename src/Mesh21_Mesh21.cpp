@@ -62,7 +62,7 @@ namespace ivo {
 
                             for(Natural ce = 0; ce < candidate_edges.size(); ++ce) {
                                 if(current_edges[e] == candidate_edges[ce]) {
-                                    facing[e] = std::array<Integer, 2>{static_cast<Integer>(ce), static_cast<Integer>(ce)};
+                                    facing[e] = std::array<Integer, 2>{static_cast<Integer>(e), static_cast<Integer>(ce)};
                                     found_edge = true;
                                     break;
                                 }
