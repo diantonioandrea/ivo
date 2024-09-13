@@ -40,7 +40,6 @@ namespace ivo {
             convections[0].emplace_back(convection[0]);
             convections[1].emplace_back(convection[1]);
         }
-
         
         return {Vector<Real>{convections[0]}, Vector<Real>{convections[1]}};
     }
@@ -53,7 +52,7 @@ namespace ivo {
      */
     Vector<Real> Equation::diffusion(const Vector<Real> &T) const {
         std::vector<Real> diffusion;
-        diffusion.reserve(T.size());
+        diffusion.resize(T.size());
 
         std::vector<Real> time = T.entries();
 
@@ -69,7 +68,7 @@ namespace ivo {
      */
     Vector<Real> Equation::reaction(const Vector<Real> &T) const {
         std::vector<Real> reaction;
-        reaction.reserve(T.size());
+        reaction.resize(T.size());
 
         std::vector<Real> time = T.entries();
 
