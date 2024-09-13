@@ -235,10 +235,10 @@ namespace ivo {
         // Gradients.
         for(Natural k = 0; k < rows; ++k)
             for(Natural h = 0; h < columns; ++h) {
-                Vector<Real> gradient = M_inv * Vector<Real>{{gradx_phi(j, k), grady_phi(j, k)}};
+                Vector<Real> gradient = M_inv * Vector<Real>{{gradx_phi(k, h), grady_phi(k, h)}};
 
-                gradx_phi(j, k, gradient(0));
-                grady_phi(j, k, gradient(1));
+                gradx_phi(k, h, gradient(0));
+                grady_phi(k, h, gradient(1));
             }
 
         return {phi, gradx_phi, grady_phi};
