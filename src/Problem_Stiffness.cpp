@@ -42,11 +42,6 @@ namespace ivo {
             Natural dofs_xy = (element.p() + 1) * (element.p() + 2) / 2;
             Natural dofs_t = element.q() + 1;
 
-            // Equation coefficients.
-            auto [convection_x, convection_y] = equation.convection(nodes1t_j);
-            Vector<Real> diffusion = equation.diffusion(nodes1t_j);
-            Vector<Real> reaction = equation.reaction(nodes1t_j);
-
             // VOLUME INTEGRALS - COMPUTING.
 
             // Submatrices.
@@ -70,6 +65,11 @@ namespace ivo {
 
             Vector<Real> weights1_j = weights1 * dt_j;
             Vector<Real> weights2_j = weights2 * dxy_j;
+
+            // Equation coefficients.
+            auto [convection_x, convection_y] = equation.convection(nodes1t_j);
+            Vector<Real> diffusion = equation.diffusion(nodes1t_j);
+            Vector<Real> reaction = equation.reaction(nodes1t_j);
 
             // Integrals.
 
