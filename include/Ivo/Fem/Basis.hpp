@@ -21,6 +21,7 @@ namespace ivo {
 
         std::tuple<Vector<Real>, Real> reference_to_element(const Mesh21 &, const Natural &, const Vector<Real> &);
         std::tuple<std::array<Vector<Real>, 2>, Real> reference_to_element(const Mesh21 &, const Natural &, const std::array<Vector<Real>, 2> &);
+        std::tuple<std::array<Vector<Real>, 2>, Vector<Real>, Real> reference_to_element(const Mesh21 &, const Natural &, const Natural &, const Vector<Real> &);
 
     }
 

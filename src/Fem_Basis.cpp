@@ -98,6 +98,72 @@ namespace ivo {
             return {{x, y}, dxy};
         }
 
+        /**
+         * @brief Reference segment to element's edge mapping.
+         * 
+         * @param mesh Mesh.
+         * @param j Element's index.
+         * @param k Edge's index.
+         * @param nodes Nodes.
+         * @return std::tuple<std::array<Vector<Real>, 2>, std::array<Real, 2>, Real> 
+         */
+        std::tuple<std::array<Vector<Real>, 2>, Vector<Real>, Real> reference_to_element(const Mesh21 &mesh, const Natural &j, const Natural &k, const Vector<Real> &nodes) {
+
+            // Element.
+            Element21 element = mesh.element(j);
+
+            // Base.
+            Polygon21 base = element.b_base();
+
+            // Edges.
+            std::vector<Edge21> edges = base.edges();
+
+            #ifndef NDEBUG // Integrity check.
+            assert(k < edges.size());
+            #endif
+
+            // Edge.
+            Edge21 edge = edges[k];
+
+            // Jacobian.
+            Matrix<Real> J{2, 2};
+
+            J(0, 0, edge(1)(0) - edge(0)(0));
+            J(0, 1, 0.5L * J(0, 0));
+            J(1, 0, edge(1)(1) - edge(0)(1));
+            J(1, 1, 0.5L * J(1, 0));
+
+            // Translation.
+            Vector<Real> T{2};
+
+            T(0, edge(0)(0));
+            T(1, edge(0)(1));
+
+            // Space.
+            Vector<Real> x{nodes.size()};
+            Vector<Real> y{nodes.size()};
+
+            for(Natural k = 0; k < nodes.size(); ++k) {
+                Vector<Real> xy = J * Vector<Real>{{nodes(k), 0.0L}} + T;
+
+                x(k, xy(0));
+                y(k, xy(1));
+            }
+
+            // Edge size.
+            Real de = distance(edge(0), edge(1));
+
+            // Edge normal.
+            Vector<Real> normal{2};
+
+            normal(0, edge(1)(1) - edge(0)(1));
+            normal(0, edge(0)(0) - edge(1)(0));
+
+            normal /= norm(normal);
+
+            return {{x, y}, normal, de};
+        }
+
     }
 
     /**
