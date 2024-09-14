@@ -75,7 +75,7 @@ namespace ivo {
             Vector<Real> diffusion(const Vector<Real> &) const;
             Vector<Real> reaction(const Vector<Real> &) const;
 
-            // Constructors.
+            // Constructor.
 
             Equation(const std::function<std::array<Real, 2> (Real)> &, const std::function<Real (Real)> &, const std::function<Real (Real)> &);
 
