@@ -8,6 +8,7 @@
  * 
  */
 
+#include <fstream>
 #include <Ivo.hpp>
 
 std::array<ivo::Real, 2> convection(const ivo::Real &t);
@@ -26,20 +27,27 @@ int main(int argc, char **argv) {
     ivo::Polygon21 abcd = {a, b, c, d};
 
     // Space diagram.
-    std::vector<ivo::Polygon21> space = ivo::mesher2(abcd, 10);
+    std::vector<ivo::Polygon21> space = ivo::mesher2(abcd, 5);
     space = ivo::triangulate(space); // Triangulation.
 
     // Time "diagram" (intervals).
-    std::vector<ivo::Real> time{0.0L, 0.25L, 0.5L, 0.75L, 1.0L};
+    std::vector<ivo::Real> time{0.0L, 0.5L, 1.0L};
 
     // Mesh.
     ivo::Mesh21 mesh{space, time};
+
+    // Mesh output.
+    std::ofstream output("output/Test_Stiffness.p21");
+    output << mesh;
 
     // Equation.
     ivo::Equation equation{convection, diffusion, reaction};
 
     // Stiffness matrix.
     ivo::Sparse<ivo::Real> A = ivo::stiffness(mesh, equation);
+
+    // Stiffness matrix output.
+    std::cout << A << std::endl;
 
     return 0;
 }

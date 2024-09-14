@@ -25,9 +25,6 @@ namespace ivo {
         auto [nodes1t, weights1] = quadrature1(constants::quadrature);
         auto [nodes2x, nodes2y, weights2] = quadrature2(constants::quadrature);
 
-        // Stiffness matrix.
-        Sparse<Real> A{mesh.dofs(), mesh.dofs()};
-
         // Stiffness submatrices.
         Sparse<Real> V{mesh.dofs(), mesh.dofs()}; // Volume integrals.
         Sparse<Real> I{mesh.dofs(), mesh.dofs()}; // Edge integrals.
@@ -81,20 +78,20 @@ namespace ivo {
 
             // a(*, *), diffusion.
 
-            V_a_xy += internal::c_scale(weights2_j, gradx_phi_s).transpose() * gradx_phi_s + internal::c_scale(weights2_j, grady_phi_s).transpose() * grady_phi_s;
-            V_a_t += internal::c_scale(weights1_j * diffusion, phi_t).transpose() * phi_t;
+            V_a_xy = internal::c_scale(weights2_j, gradx_phi_s).transpose() * gradx_phi_s + internal::c_scale(weights2_j, grady_phi_s).transpose() * grady_phi_s;
+            V_a_t = internal::c_scale(weights1_j * diffusion, phi_t).transpose() * phi_t;
 
             // b(*, *), convection.
 
-            V_bx_xy += internal::c_scale(weights2_j, gradx_phi_s).transpose() * phi_s;
-            V_by_xy += internal::c_scale(weights2_j, grady_phi_s).transpose() * phi_s;
-            V_bx_t += internal::c_scale(weights1_j * convection_x, phi_t).transpose() * phi_t;
-            V_by_t += internal::c_scale(weights1_j * convection_y, phi_t).transpose() * phi_t;
+            V_bx_xy = internal::c_scale(weights2_j, gradx_phi_s).transpose() * phi_s;
+            V_by_xy = internal::c_scale(weights2_j, grady_phi_s).transpose() * phi_s;
+            V_bx_t = internal::c_scale(weights1_j * convection_x, phi_t).transpose() * phi_t;
+            V_by_t = internal::c_scale(weights1_j * convection_y, phi_t).transpose() * phi_t;
 
             // c(*, *), reaction.
 
-            V_c_xy += internal::c_scale(weights2_j,phi_s).transpose() * phi_s;
-            V_c_t += internal::c_scale(weights1_j * reaction, phi_t).transpose() * phi_t;
+            V_c_xy = internal::c_scale(weights2_j,phi_s).transpose() * phi_s;
+            V_c_t = internal::c_scale(weights1_j * reaction, phi_t).transpose() * phi_t;
 
             // VOLUME INTEGRALS - BUILDING.
 
@@ -105,19 +102,19 @@ namespace ivo {
             // FACE INTEGRALS - PRECOMPUTING.
 
             // Submatrices.
-            std::vector<Matrix<Real>> I_a_xy_k;
-            std::vector<Matrix<Real>> I_b_xy_k;
-            std::vector<Matrix<Real>> I_J_xy_k;
+            std::vector<Matrix<Real>> I_a;
+            std::vector<Matrix<Real>> I_b;
+            std::vector<Matrix<Real>> I_J;
 
             // FACE INTEGRALS - COMPUTING.
             
             for(Natural k = 0; k < neighbours; ++k) {
 
                 // Nodes and basis. Using time nodes as 1D nodes.
-                auto [nodes2xy_jk, normal, dxy_jk] = internal::reference_to_element(mesh, j, k, nodes1t);
-                auto [phi_sk, gradx_phi_sk, grady_phi_sk] = basis_s(mesh, j, nodes2xy_jk);
+                auto [e_nodes2xy_j, normal, e_dxy_j] = internal::reference_to_element(mesh, j, k, nodes1t);
+                auto [e_phi_s, e_gradx_phi_s, e_grady_phi_s] = basis_s(mesh, j, e_nodes2xy_j);
 
-                Vector<Real> weights2_jk = weights1 * dxy_jk;
+                Vector<Real> weights2_jk = weights1 * e_dxy_j;
 
                 if(facing[k][0] != -1) {
 
@@ -125,81 +122,108 @@ namespace ivo {
                     Element21 n_element = mesh.element(facing[k][1]);
 
                     // Neighbour dofs.
-                    std::vector<Natural> dofs_jk = mesh.dofs(facing[k][1]);
-                    Natural dofs_xyk = (n_element.p() + 1) * (n_element.p() + 2) / 2;
+                    Natural n_e_dofs_xy = (n_element.p() + 1) * (n_element.p() + 2) / 2;
 
                     // Submatrices.
-                    Matrix<Real> I_a_xy{dofs_xy, dofs_xyk};
-                    Matrix<Real> I_b_xy{dofs_xy, dofs_xyk};
-                    Matrix<Real> I_J_xy{dofs_xy, dofs_xyk};
+                    Matrix<Real> I_a_xy{dofs_xy, n_e_dofs_xy};
+                    Matrix<Real> I_a_t{dofs_t, dofs_t};
+
+                    Matrix<Real> I_b_xy{dofs_xy, n_e_dofs_xy};
+                    Matrix<Real> I_b_t{dofs_t, dofs_t};
+
+                    Matrix<Real> I_J_xy{dofs_xy, n_e_dofs_xy};
+                    Matrix<Real> I_J_t{dofs_t, dofs_t};
 
                     // Neighbour basis.
-                    auto [n_phi_sk, n_gradx_phi_sk, n_grady_phi_sk] = basis_s(mesh, facing[k][1], nodes2xy_jk);
+                    auto [n_e_phi_s, n_e_gradx_phi_s, n_e_grady_phi_s] = basis_s(mesh, facing[k][1], e_nodes2xy_j);
 
                     // FACE INTEGRALS - COMPUTING.
 
                     // a(*, *), diffusion.
 
-                    // [!]
+                    I_a_xy = internal::c_scale(weights2_jk, 0.5L * normal(0) * (e_gradx_phi_s + n_e_gradx_phi_s) + 0.5L * normal(1) * (e_grady_phi_s + n_e_grady_phi_s)).transpose() * (e_phi_s - n_e_phi_s);
+                    I_a_xy -= I_a_xy.transpose();
+                    I_a_t = internal::c_scale(weights1_j * diffusion, phi_t).transpose() * phi_t;
 
-                    // b(*, *), convection.
+                    // b(*, *), convection. Mind the signs.
 
-                    // [!]
+                    I_b_xy = internal::c_scale(weights2_jk, e_phi_s - n_e_phi_s).transpose() * e_phi_s; // [!] Sign check needed.
+                    I_b_t = internal::c_scale(weights1_j * (normal(0) * convection_x + normal(1) * convection_y), phi_t).transpose() * phi_t; // [!] Sign check needed.
 
-                    // J(*, *).
+                    // J(*, *). Mind the signs.
 
-                    I_J_xy += internal::c_scale(weights2_jk / dxy_jk, phi_sk - n_phi_sk).transpose() * (phi_sk - n_phi_sk);
+                    I_J_xy = -internal::c_scale(weights2_jk / e_dxy_j, e_phi_s - n_e_phi_s).transpose() * (e_phi_s - n_e_phi_s);
+                    I_J_t = internal::c_scale(weights1_j * diffusion, phi_t).transpose() * phi_t;
 
                     // FACE INTEGRALS - PREBUILDING.
 
-                    I_a_xy_k.emplace_back(I_a_xy); // [?]
-                    I_b_xy_k.emplace_back(I_b_xy); // [?]
-                    I_J_xy_k.emplace_back(I_J_xy); // [?]
+                    I_a.emplace_back(kronecker(I_a_t, I_a_xy));
+                    I_b.emplace_back(kronecker(I_b_t, I_b_xy));
+                    I_J.emplace_back(kronecker(I_J_t, I_J_xy));
 
                 } else {
                     
                     // Submatrices.
                     Matrix<Real> I_a_xy{dofs_xy, dofs_xy};
+                    Matrix<Real> I_a_t{dofs_t, dofs_t};
+
                     Matrix<Real> I_b_xy{dofs_xy, dofs_xy};
+                    Matrix<Real> I_b_t{dofs_t, dofs_t};
+
                     Matrix<Real> I_J_xy{dofs_xy, dofs_xy};
+                    Matrix<Real> I_J_t{dofs_t, dofs_t};
 
                     // FACE INTEGRALS - COMPUTING.
 
                     // a(*, *), diffusion.
 
-                    // [!]
+                    I_a_xy = internal::c_scale(weights2_jk, normal(0) * e_gradx_phi_s + normal(1) * e_grady_phi_s).transpose() * e_phi_s;
+                    I_a_xy -= I_a_xy.transpose(); // [?]
+                    I_a_t = internal::c_scale(weights1_j * diffusion, phi_t).transpose() * phi_t;
 
                     // b(*, *), convection.
 
-                    // [!]
+                    I_b_xy = internal::c_scale(weights2_jk, e_phi_s).transpose() * e_phi_s; // [!] Sign check needed.
+                    I_b_t = internal::c_scale(weights1_j * (normal(0) * convection_x + normal(1) * convection_y), phi_t).transpose() * phi_t; // [!] Sign check needed.
 
-                    // J(*, *).
+                    // J(*, *). Mind the signs.
 
-                    I_J_xy += internal::c_scale(weights2_jk / dxy_jk, phi_sk).transpose() * phi_sk;
+                    I_J_xy = -internal::c_scale(weights2_jk / e_dxy_j, e_phi_s).transpose() * e_phi_s;
+                    I_J_t = internal::c_scale(weights1_j * diffusion, phi_t).transpose() * phi_t;
 
                     // FACE INTEGRALS - PREBUILDING.
 
-                    I_a_xy_k.emplace_back(I_a_xy); // [?]
-                    I_b_xy_k.emplace_back(I_b_xy); // [?]
-                    I_J_xy_k.emplace_back(I_J_xy); // [?]
+                    I_a.emplace_back(kronecker(I_a_t, I_a_xy));
+                    I_b.emplace_back(kronecker(I_b_t, I_b_xy));
+                    I_J.emplace_back(kronecker(I_J_t, I_J_xy));
                 }
-
             }
 
             // FACE INTEGRALS - BUILDING.
 
             for(Natural k = 0; k < neighbours; ++k) {
+                if(facing[k][0] != -1) {
 
-                // [!]
+                    // Neighbour dofs.
+                    std::vector<Natural> n_dofs_j = mesh.dofs(facing[k][1]);
 
+                    // Building.
+                    I(dofs_j, n_dofs_j, I(dofs_j, n_dofs_j) + I_a[k]);
+                    I(dofs_j, n_dofs_j, I(dofs_j, n_dofs_j) + I_b[k]);
+                    I(dofs_j, n_dofs_j, I(dofs_j, n_dofs_j) + I_J[k]);
+                    
+                } else {
+                    
+                    // Building.
+                    I(dofs_j, dofs_j, I(dofs_j, dofs_j) + I_a[k]);
+                    I(dofs_j, dofs_j, I(dofs_j, dofs_j) + I_b[k]);
+                    I(dofs_j, dofs_j, I(dofs_j, dofs_j) + I_J[k]);
+                }
             }
-
         }
 
-        // Building.
-        A = V;
-    
-        return A;
+        // Building and return.
+        return V - I;
     }
 
 }
