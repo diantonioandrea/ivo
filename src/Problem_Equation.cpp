@@ -12,7 +12,7 @@
 
 namespace ivo {
 
-    // Constructors.
+    // Constructor.
     
     /**
      * @brief Default constructor.
