@@ -157,7 +157,7 @@ namespace ivo {
             Vector<Real> normal{2};
 
             normal(0, edge(1)(1) - edge(0)(1));
-            normal(0, edge(0)(0) - edge(1)(0));
+            normal(1, edge(0)(0) - edge(1)(0));
 
             normal /= norm(normal);
 
