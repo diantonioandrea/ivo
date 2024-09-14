@@ -152,9 +152,9 @@ namespace ivo {
 
                     // FACE INTEGRALS - PREBUILDING.
 
-                    I_a_xy_k.emplace_back(I_a_xy);
-                    I_b_xy_k.emplace_back(I_b_xy);
-                    I_J_xy_k.emplace_back(I_J_xy);
+                    I_a_xy_k.emplace_back(I_a_xy); // [?]
+                    I_b_xy_k.emplace_back(I_b_xy); // [?]
+                    I_J_xy_k.emplace_back(I_J_xy); // [?]
 
                 } else {
                     
@@ -179,9 +179,9 @@ namespace ivo {
 
                     // FACE INTEGRALS - PREBUILDING.
 
-                    I_a_xy_k.emplace_back(I_a_xy);
-                    I_b_xy_k.emplace_back(I_b_xy);
-                    I_J_xy_k.emplace_back(I_J_xy);
+                    I_a_xy_k.emplace_back(I_a_xy); // [?]
+                    I_b_xy_k.emplace_back(I_b_xy); // [?]
+                    I_J_xy_k.emplace_back(I_J_xy); // [?]
                 }
 
             }
