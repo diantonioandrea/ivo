@@ -50,7 +50,7 @@ namespace ivo {
 
             // Submatrices.
             Matrix<Real> T_xy{dofs_xy, dofs_xy};
-            Matrix<Real> T_t{dofs_xy, dofs_xy};
+            Matrix<Real> T_t{dofs_t, dofs_t};
 
             Matrix<Real> V_a_xy{dofs_xy, dofs_xy};
             Matrix<Real> V_a_t{dofs_t, dofs_t};
