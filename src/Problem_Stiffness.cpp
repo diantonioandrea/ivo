@@ -20,7 +20,7 @@ namespace ivo {
      * @param initial Initial condition.
      * @return Sparse<Real> 
      */
-    Sparse<Real> stiffness(const Mesh21 &mesh, const Equation &equation, const Initial &initial) {
+    Sparse<Real> stiffness(const Mesh21 &mesh, const Equation &equation) {
 
         // Quadrature.
         auto [nodes1t, weights1] = quadrature1(constants::quadrature);

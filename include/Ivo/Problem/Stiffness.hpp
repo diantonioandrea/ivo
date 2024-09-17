@@ -12,11 +12,10 @@
 #define PROBLEM_STIFFNESS
 
 #include "./Equation.hpp"
-#include "./Initial.hpp"
 
 namespace ivo {
 
-    Sparse<Real> stiffness(const Mesh21 &, const Equation &, const Initial &);
+    Sparse<Real> stiffness(const Mesh21 &, const Equation &);
 
 }
 
