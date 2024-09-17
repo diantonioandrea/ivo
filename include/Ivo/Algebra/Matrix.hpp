@@ -163,18 +163,16 @@ namespace ivo {
                 return *this;
             }
 
-            // Subscript operator, legacy scalar access (C++23).
-
-            #if __cplusplus > 202002L
+            // Access.
 
             /**
-             * @brief Scalar reference access, legacy.
+             * @brief Const scalar access.
              * 
              * @param j Row index.
              * @param k Column index.
-             * @return T& 
+             * @return T 
              */
-            inline T &operator [](const Natural &j, const Natural &k) {
+            inline T operator ()(const Natural &j, const Natural &k) const {
                 #ifndef NDEBUG // Integrity check.
                 assert(j < this->_rows);
                 assert(k < this->_columns);
@@ -183,18 +181,14 @@ namespace ivo {
                 return this->_entries[j * this->_columns + k];
             }
 
-            #endif
-
-            // Call operator, subscript behaviour.
-
             /**
              * @brief Scalar access.
              * 
              * @param j Row index.
              * @param k Column index.
-             * @return T 
+             * @return T& 
              */
-            inline T operator ()(const Natural &j, const Natural &k) const {
+            inline T &operator [](const Natural &j, const Natural &k) {
                 #ifndef NDEBUG // Integrity check.
                 assert(j < this->_rows);
                 assert(k < this->_columns);
@@ -227,6 +221,8 @@ namespace ivo {
 
                 return matrix;
             }
+
+            // Insert.
 
             /**
              * @brief Scalar insert.
@@ -266,7 +262,7 @@ namespace ivo {
                         this->_entries[J[j] * this->_columns + K[k]] = matrix._entries[j * matrix._columns + k];
             }
 
-            // Access.
+            // Substructures access and insert.
 
             /**
              * @brief Row access.
