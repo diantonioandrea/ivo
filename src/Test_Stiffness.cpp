@@ -11,9 +11,10 @@
 #include <fstream>
 #include <Ivo.hpp>
 
-std::array<ivo::Real, 2> convection(const ivo::Real &t);
-ivo::Real diffusion(const ivo::Real &t);
-ivo::Real reaction(const ivo::Real &t);
+ivo::Real start(const ivo::Real &, const ivo::Real &);
+std::array<ivo::Real, 2> convection(const ivo::Real &);
+ivo::Real diffusion(const ivo::Real &);
+ivo::Real reaction(const ivo::Real &);
 
 int main(int argc, char **argv) {
 
@@ -43,13 +44,20 @@ int main(int argc, char **argv) {
     // Equation.
     ivo::Equation equation{convection, diffusion, reaction};
 
+    // Initial condition.
+    ivo::Initial initial{start};
+
     // Stiffness matrix.
-    ivo::Sparse<ivo::Real> A = ivo::stiffness(mesh, equation);
+    ivo::Sparse<ivo::Real> A = ivo::stiffness(mesh, equation, initial);
 
     // Stiffness matrix output.
     std::cout << A << std::endl;
 
     return 0;
+}
+
+ivo::Real start(const ivo::Real &x, const ivo::Real &y) {
+    return x + y;
 }
 
 std::array<ivo::Real, 2> convection(const ivo::Real &t) {

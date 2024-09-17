@@ -15,7 +15,7 @@
 
 namespace ivo {
 
-    Sparse<Real> stiffness(const Mesh21 &, const Equation &);
+    Sparse<Real> stiffness(const Mesh21 &, const Equation &, const Initial &);
 
 }
 
