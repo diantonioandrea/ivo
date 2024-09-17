@@ -125,17 +125,15 @@ namespace ivo {
                 return *this;
             }
 
-            // Subscript operator, legacy scalar access (C++23).
-
-            #if __cplusplus > 202002L
+            // Access.
 
             /**
-             * @brief Scalar reference access, legacy.
+             * @brief Const scalar access.
              * 
-             * @param j Index.
-             * @return T& 
+             * @param j 
+             * @return T 
              */
-            T &operator [](const Natural &j) {
+            T operator ()(const Natural &j) const {
                 #ifndef NDEBUG // Integrity check.
                 assert(j < this->_size);
                 #endif
@@ -143,17 +141,13 @@ namespace ivo {
                 return this->_entries[j];
             }
 
-            #endif
-
-            // Call operator, subscript behaviour.
-
             /**
              * @brief Scalar access.
              * 
-             * @param j 
-             * @return T 
+             * @param j Index.
+             * @return T& 
              */
-            T operator ()(const Natural &j) const {
+            T &operator [](const Natural &j) {
                 #ifndef NDEBUG // Integrity check.
                 assert(j < this->_size);
                 #endif
@@ -199,6 +193,8 @@ namespace ivo {
 
                 return vector;
             }
+
+            // Insert.
 
             /**
              * @brief Scalar insert.
