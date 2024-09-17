@@ -160,6 +160,25 @@ namespace ivo {
         return Vector{_stepped};
     }
 
+    /**
+     * @brief Kronecker product.
+     * 
+     * @tparam T Numerical type.
+     * @param X First vector.
+     * @param Y Second vector.
+     * @return Vector<T> 
+     */
+    template<Numerical T>
+    Vector<T> kronecker(const Vector<T> &X, const Vector<T> &Y) {
+        Vector<T> XY{X.size() * Y.size()};
+
+        for(Natural jx = 0; jx < X.size(); ++jx)
+            for(Natural jy = 0; jy < Y.size(); ++jy)
+                XY(jx * X.size() + jy, X(jx) * Y(jy));
+
+        return XY;
+    }
+
 }
 
 namespace std {
