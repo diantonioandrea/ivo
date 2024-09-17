@@ -12,6 +12,7 @@
 #define PROBLEM_STIFFNESS
 
 #include "./Equation.hpp"
+#include "./Initial.hpp"
 
 namespace ivo {
 
