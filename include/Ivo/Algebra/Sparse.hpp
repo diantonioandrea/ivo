@@ -238,36 +238,10 @@ namespace ivo {
                 return *this;
             }
 
-            // Subscript operator, legacy scalar access (C++23).
-
-            #if __cplusplus > 202002L
+            // Access.
 
             /**
-             * @brief Scalar reference access, legacy.
-             * May create an element.
-             * 
-             * @param j Row index.
-             * @param k Column index.
-             * @return T& 
-             */
-            inline T &operator [](const Natural &j, const Natural &k) {
-                #ifndef NDEBUG // Integrity check.
-                assert(j < this->_rows);
-                assert(k < this->_columns);
-                #endif
-
-                this->_csr = false;
-                this->_csc = false;
-
-                return this->_entries[j * this->_columns + k];
-            }
-
-            #endif
-
-            // Call operator, subscript behaviour.
-
-            /**
-             * @brief Scalar access.
+             * @brief Const scalar access.
              * 
              * @param j Row index.
              * @param k Column index.
@@ -288,6 +262,26 @@ namespace ivo {
                     return this->_entries[j * this->_columns + k];
 
                 return static_cast<T>(0);
+            }
+
+            /**
+             * @brief Scalar access.
+             * May create an element.
+             * 
+             * @param j Row index.
+             * @param k Column index.
+             * @return T& 
+             */
+            inline T &operator [](const Natural &j, const Natural &k) {
+                #ifndef NDEBUG // Integrity check.
+                assert(j < this->_rows);
+                assert(k < this->_columns);
+                #endif
+
+                this->_csr = false;
+                this->_csc = false;
+
+                return this->_entries[j * this->_columns + k];
             }
 
             /**
@@ -327,6 +321,8 @@ namespace ivo {
 
                 return matrix;
             }
+
+            // Insert.
 
             /**
              * @brief Scalar insert.
@@ -374,7 +370,7 @@ namespace ivo {
                             this->_entries[J[j] * this->_columns + K[k]] = matrix(j, k);
             }
 
-            // Access.
+            // Substructures access.
 
             /**
              * @brief Row access.
