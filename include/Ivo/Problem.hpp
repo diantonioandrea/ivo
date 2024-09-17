@@ -17,6 +17,7 @@
 // Equation.
 #include "./Problem/Equation.hpp"
 #include "./Problem/Data.hpp"
+#include "./Problem/Initial.hpp"
 
 // Matrix.
 #include "./Problem/Stiffness.hpp"
