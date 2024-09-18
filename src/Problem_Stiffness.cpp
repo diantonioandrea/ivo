@@ -123,8 +123,6 @@ namespace ivo {
             std::vector<Matrix<Real>> I_a;
             std::vector<Matrix<Real>> I_b;
             std::vector<Matrix<Real>> I_J;
-
-            // FACE INTEGRALS - COMPUTING.
             
             for(Natural k = 0; k < neighbours; ++k) {
 
