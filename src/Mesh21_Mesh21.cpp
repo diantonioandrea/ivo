@@ -54,27 +54,21 @@ namespace ivo {
                     bool found_edge = false;
 
                     for(Natural i = 0; i < this->_space; ++i) {
-                        for(Natural h = 0; h < this->_time; ++h) {
-                            if(i == j)
-                                continue;
+                        if(i == j)
+                            continue;
 
-                            if(h != k)
-                                continue;
+                        // Candidate.
+                        Element21 candidate = this->_elements[i + k * this->_space];
+                        std::vector<Edge21> candidate_edges = candidate.b_edges();
 
-                            // Candidate.
-                            Element21 candidate = this->_elements[i + h * this->_space];
-                            std::vector<Edge21> candidate_edges = candidate.b_edges();
+                        for(Natural ce = 0; ce < candidate_edges.size(); ++ce) {
+                            if(current_edges[e] == candidate_edges[ce]) {
+                                facing[e][0] = static_cast<Integer>(i + k * this->_space);
+                                facing[e][1] = static_cast<Integer>(ce);
 
-                            for(Natural ce = 0; ce < candidate_edges.size(); ++ce) {
-                                if(current_edges[e] == candidate_edges[ce]) {
-                                    facing[e] = std::array<Integer, 2>{static_cast<Integer>(i + h * this->_space), static_cast<Integer>(ce)};
-                                    found_edge = true;
-                                    break;
-                                }
-                            }
-
-                            if(found_edge)
+                                found_edge = true;
                                 break;
+                            }
                         }
 
                         if(found_edge)
