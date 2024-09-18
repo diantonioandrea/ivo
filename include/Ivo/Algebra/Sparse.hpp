@@ -912,10 +912,10 @@ namespace ivo {
              */
             friend std::ostream &operator <<(std::ostream &ost, const Sparse &sparse) {
                 for(const auto &[index, entry]: sparse._entries) {
-                    std::cout << "(" << index / sparse._columns << ", " << index % sparse._columns << "): " << entry;
+                    ost << "(" << index / sparse._columns << ", " << index % sparse._columns << "): " << entry;
 
                     if(index < (*--sparse._entries.end()).first)
-                        std::cout << std::endl;
+                        ost << std::endl;
                 }
 
                 return ost << std::flush;
