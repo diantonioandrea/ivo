@@ -26,6 +26,12 @@ namespace ivo {
         constexpr Real zero = 1E-16;
 
         /**
+         * @brief Algebra zero tolerance (solvers).
+         * 
+         */
+        constexpr Real algebra_zero = 1E-8;
+
+        /**
          * @brief Geometrical zero tolerance.
          * 
          */
@@ -58,6 +64,20 @@ namespace ivo {
          * 
          */
         constexpr Natural quadrature = 7;
+
+        // Solvers.
+
+        /**
+         * @brief Solvers' maximum number of iterations.
+         * 
+         */
+        constexpr Natural solvers_stop = 1E4;
+
+        /**
+         * @brief Restarted GMRES threshold.
+         * 
+         */
+        constexpr Natural gmres_restart = 2E2;
 
     }
 

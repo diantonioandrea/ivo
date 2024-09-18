@@ -25,4 +25,7 @@
 // Sparse matrices.
 #include "./Algebra/Sparse.hpp"
 
+// Solvers.
+#include "./Algebra/Methods/Solvers.hpp"
+
 #endif
