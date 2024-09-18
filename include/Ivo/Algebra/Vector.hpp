@@ -223,8 +223,8 @@ namespace ivo {
                     assert(j < this->_size);
                 #endif
 
-                for(const auto &j: J)
-                    this->_entries[j] = vector._entries[j];
+                for(Natural j = 0; j < J.size(); ++j)
+                    this->_entries[J[j]] = vector._entries[j];
             }
 
             // Comparisons.
