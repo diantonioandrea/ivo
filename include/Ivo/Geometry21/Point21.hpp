@@ -62,15 +62,13 @@ namespace ivo {
             bool operator ==(const Point21 &) const;
             bool operator !=(const Point21 &) const;
 
-            // Subscript operator, legacy scalar access (C++23).
-
-            #if __cplusplus > 202002L
-            Real &operator [](const Natural &);
-            #endif
-
-            // Call operator, subscript behaviour.
+            // Access.
 
             Real operator ()(const Natural &) const;
+            Real &operator [](const Natural &);
+
+            // Insert.
+
             void operator ()(const Natural &, const Real &);
 
             // Operations.

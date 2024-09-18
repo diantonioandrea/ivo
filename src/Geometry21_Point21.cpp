@@ -88,12 +88,30 @@ namespace ivo {
         return distance(*this, point) > constants::geometrical_zero;
     }
 
-    // Subscript operator, legacy scalar access (C++23).
-
-    #if __cplusplus > 202002L
+    // Access.
 
     /**
-     * @brief Scalar reference access, legacy.
+     * @brief Const scalar access.
+     * 
+     * @param j Index.
+     * @return Real 
+     */
+    Real Point21::operator ()(const Natural &j) const {
+        #ifndef NDEBUG // Integrity check.
+        assert(j <= 2);
+        #endif
+
+        if(j == 0)
+            return this->_x;
+
+        if(j == 1)
+            return this->_y;
+        
+        return this->_t;
+    }
+
+    /**
+     * @brief Scalar access.
      * 
      * @param j Index.
      * @return Real& 
@@ -112,29 +130,7 @@ namespace ivo {
         return this->_t;
     }
 
-    #endif
-
-    // Call operator, subscript behaviour.
-
-    /**
-     * @brief Scalar access.
-     * 
-     * @param j Index.
-     * @return Real 
-     */
-    Real Point21::operator ()(const Natural &j) const {
-        #ifndef NDEBUG // Integrity check.
-        assert(j <= 2);
-        #endif
-
-        if(j == 0)
-            return this->_x;
-
-        if(j == 1)
-            return this->_y;
-        
-        return this->_t;
-    }
+    // Insert.
 
     /**
      * @brief Scalar insert.
