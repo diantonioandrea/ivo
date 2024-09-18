@@ -68,15 +68,13 @@ namespace ivo {
             Line21(const Line21 &);
             Line21 &operator =(const Line21 &);
 
-            // Subscript operator, legacy scalar access (C++23).
-
-            #if __cplusplus > 202002L
-            Real &operator [](const Natural &, const Natural &);
-            #endif
-
-            // Call operator, subscript behaviour.
+            // Access.
 
             Real operator ()(const Natural &, const Natural &) const;
+            Real &operator [](const Natural &, const Natural &);
+
+            // Insert.
+
             void operator ()(const Natural &, const Natural &, const Real &);
 
             // Call operator.

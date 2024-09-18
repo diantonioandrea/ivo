@@ -56,12 +56,43 @@ namespace ivo {
         return *this;
     }
 
-    // Subscript operator, legacy scalar access (C++23).
-
-    #if __cplusplus > 202002L
+    // Access.
 
     /**
-     * @brief Scalar reference access, legacy.
+     * @brief Const scalar access.
+     * 
+     * @param j Coordinate index.
+     * @param k Parameter index.
+     * @return Real 
+     */
+    Real Line21::operator ()(const Natural &j, const Natural &k) const {
+        #ifndef NDEBUG // Integrity check.
+        assert(j <= 2);
+        assert(k <= 1);
+        #endif
+
+        if(j == 0) {
+            if(k == 0)
+                return this->_a;
+
+            return this->_x0;
+        }
+
+        if(j == 1) {
+            if(k == 0)
+                return this->_b;
+
+            return this->_y0;
+        }
+
+        if(k == 0)
+            return this->_c;
+
+        return this->_t0;
+    }
+
+    /**
+     * @brief Scalar access.
      * 
      * @param j Coordinate index.
      * @param k Parameter index.
@@ -93,42 +124,7 @@ namespace ivo {
         return this->_t0;
     }
 
-    #endif
-
-    // Call operator, subscript behaviour.
-
-    /**
-     * @brief Scalar access.
-     * 
-     * @param j Coordinate index.
-     * @param k Parameter index.
-     * @return Real 
-     */
-    Real Line21::operator ()(const Natural &j, const Natural &k) const {
-        #ifndef NDEBUG // Integrity check.
-        assert(j <= 2);
-        assert(k <= 1);
-        #endif
-
-        if(j == 0) {
-            if(k == 0)
-                return this->_a;
-
-            return this->_x0;
-        }
-
-        if(j == 1) {
-            if(k == 0)
-                return this->_b;
-
-            return this->_y0;
-        }
-
-        if(k == 0)
-            return this->_c;
-
-        return this->_t0;
-    }
+    // Insert.
 
     /**
      * @brief Scalar insert.
