@@ -23,4 +23,7 @@
 #include "./Problem/Stiffness.hpp"
 #include "./Problem/Forcing.hpp"
 
+// Visualization.
+#include "./Problem/Visual.hpp"
+
 #endif

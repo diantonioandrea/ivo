@@ -20,6 +20,10 @@
 // Coefficients.
 #include <functional>
 
+// Output.
+#include <string>
+#include <fstream>
+
 // Base, Algebra, Geometry21 and Mesh21.
 #include "../Base.hpp"
 #include "../Algebra.hpp"
