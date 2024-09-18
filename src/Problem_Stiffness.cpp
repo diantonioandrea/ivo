@@ -130,7 +130,7 @@ namespace ivo {
                 auto [e_nodes2xy_j, normal, e_dxy_j] = internal::reference_to_element(mesh, j, k, nodes1t);
                 auto [e_phi_s, e_gradx_phi_s, e_grady_phi_s] = basis_s(mesh, j, e_nodes2xy_j);
 
-                Vector<Real> weights2_jk = weights1 * e_dxy_j;
+                Vector<Real> e_weights2_j = weights1 * e_dxy_j;
 
                 // Sign check.
                 Vector<Real> negative{nodes1t.size()};
@@ -163,18 +163,18 @@ namespace ivo {
 
                     // a(*, *), diffusion.
 
-                    I_a_xy = internal::c_scale(weights2_jk, 0.5L * normal(0) * (e_gradx_phi_s + n_e_gradx_phi_s) + 0.5L * normal(1) * (e_grady_phi_s + n_e_grady_phi_s)).transpose() * (e_phi_s - n_e_phi_s);
+                    I_a_xy = internal::c_scale(e_weights2_j, 0.5L * normal(0) * (e_gradx_phi_s + n_e_gradx_phi_s) + 0.5L * normal(1) * (e_grady_phi_s + n_e_grady_phi_s)).transpose() * (e_phi_s - n_e_phi_s);
                     I_a_xy -= I_a_xy.transpose();
                     I_a_t = internal::c_scale(weights1_j * diffusion, phi_t).transpose() * phi_t;
 
                     // b(*, *), convection. Mind the signs.
 
-                    I_b_xy = internal::c_scale(weights2_jk, e_phi_s - n_e_phi_s).transpose() * e_phi_s;
+                    I_b_xy = internal::c_scale(e_weights2_j, e_phi_s - n_e_phi_s).transpose() * e_phi_s;
                     I_b_t = internal::c_scale(weights1_j * negative * (normal(0) * convection_x + normal(1) * convection_y), phi_t).transpose() * phi_t;
 
                     // J(*, *). Mind the signs.
 
-                    I_J_xy = -internal::c_scale(weights2_jk / e_dxy_j, e_phi_s - n_e_phi_s).transpose() * (e_phi_s - n_e_phi_s);
+                    I_J_xy = -internal::c_scale(e_weights2_j / e_dxy_j, e_phi_s - n_e_phi_s).transpose() * (e_phi_s - n_e_phi_s);
                     I_J_t = internal::c_scale(weights1_j * diffusion, phi_t).transpose() * phi_t;
 
                     // FACE INTEGRALS - PREBUILDING.
@@ -199,18 +199,18 @@ namespace ivo {
 
                     // a(*, *), diffusion.
 
-                    I_a_xy = internal::c_scale(weights2_jk, normal(0) * e_gradx_phi_s + normal(1) * e_grady_phi_s).transpose() * e_phi_s;
+                    I_a_xy = internal::c_scale(e_weights2_j, normal(0) * e_gradx_phi_s + normal(1) * e_grady_phi_s).transpose() * e_phi_s;
                     I_a_xy -= I_a_xy.transpose(); // [?]
                     I_a_t = internal::c_scale(weights1_j * negative * diffusion, phi_t).transpose() * phi_t;
 
                     // b(*, *), convection.
 
-                    I_b_xy = internal::c_scale(weights2_jk, e_phi_s).transpose() * e_phi_s;
+                    I_b_xy = internal::c_scale(e_weights2_j, e_phi_s).transpose() * e_phi_s;
                     I_b_t = internal::c_scale(weights1_j * negative * (normal(0) * convection_x + normal(1) * convection_y), phi_t).transpose() * phi_t;
 
                     // J(*, *). Mind the signs.
 
-                    I_J_xy = -internal::c_scale(weights2_jk / e_dxy_j, e_phi_s).transpose() * e_phi_s;
+                    I_J_xy = -internal::c_scale(e_weights2_j / e_dxy_j, e_phi_s).transpose() * e_phi_s;
                     I_J_t = internal::c_scale(weights1_j * negative * diffusion, phi_t).transpose() * phi_t;
 
                     // FACE INTEGRALS - PREBUILDING.
