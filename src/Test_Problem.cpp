@@ -52,13 +52,18 @@ int main(int argc, char **argv) {
     // Forcing vector.
     ivo::Vector<ivo::Real> F = ivo::forcing(mesh, equation, data, initial);
 
+    // Solution.
+    ivo::Vector<ivo::Real> X = ivo::solve(A, F);
+
     // Problem output.
     std::ofstream mesh_output("output/Test_Problem_Mesh.p21");
     std::ofstream matrix_output("output/Test_Problem_Matrix.txt");
     std::ofstream vector_output("output/Test_Problem_Vector.txt");
+    std::ofstream solution_output("output/Test_Problem_Solution.txt");
     mesh_output << mesh;
     matrix_output << A;
     vector_output << F;
+    solution_output << X;
 
     return 0;
 }
