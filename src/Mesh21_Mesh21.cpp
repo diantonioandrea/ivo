@@ -19,18 +19,20 @@ namespace ivo {
      * 
      * @param cells Space cells.
      * @param intervals Time intervals, length = N + 1: [t0, t1, t2, ..., tN].
+     * @param p Space degree.
+     * @param q Time degree.
      */
-    Mesh21::Mesh21(const std::vector<Polygon21> &cells, const std::vector<Real> &intervals): _space{cells.size()}, _time{intervals.size() - 1} {
+    Mesh21::Mesh21(const std::vector<Polygon21> &cells, const std::vector<Real> &intervals, const Natural &p, const Natural &q): _space{cells.size()}, _time{intervals.size() - 1} {
 
         // Elements.
-        for(Natural j = 0; j < cells.size(); ++j)
-            for(Natural k = 0; k < intervals.size() - 1; ++k) {
-                std::vector<Point21> points = cells[j].points();
+        for(Natural j = 0; j < intervals.size() - 1; ++j)
+            for(Natural k = 0; k < cells.size(); ++k) {
+                std::vector<Point21> points = cells[k].points();
 
                 for(auto &point: points)
-                    point += intervals[k] * 1.0_t;
+                    point += intervals[j] * 1.0_t;
 
-                this->_elements.emplace_back(Element21{Polygon21{points}, intervals[k + 1] - intervals[k]});
+                this->_elements.emplace_back(Element21{Polygon21{points}, intervals[j + 1] - intervals[j], p, q});
             }
 
         // Neighbours.
@@ -120,31 +122,6 @@ namespace ivo {
 
         for(Natural k = start; k < start + this->element(j).dofs(); ++k)
             dofs.emplace_back(k);
-
-        return dofs;
-    }
-
-    /**
-     * @brief Global to local dofs.
-     * 
-     * @param j Element's space index.
-     * @param k Element's time index.
-     * @return std::vector<Natural> 
-     */
-    std::vector<Natural> Mesh21::dofs(const Natural &j, const Natural &k) const {
-        #ifndef NDEBUG
-        assert(j < this->_space);
-        assert(k < this->_time);
-        #endif
-
-        Natural start = 0;
-        std::vector<Natural> dofs;
-
-        for(Natural h = 0; h < j * this->_time + k; ++h)
-            start += this->_elements[h].dofs();
-
-        for(Natural h = start; h < start + this->element(j, k).dofs(); ++h)
-            dofs.emplace_back(h);
 
         return dofs;
     }

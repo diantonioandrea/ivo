@@ -71,7 +71,7 @@ namespace ivo {
 
             // Constructors.
 
-            Mesh21(const std::vector<Polygon21> &, const std::vector<Real> &);
+            Mesh21(const std::vector<Polygon21> &, const std::vector<Real> &, const Natural &p = 1, const Natural &q = 1);
 
             // Elements and neighbours access.
 
@@ -90,22 +90,6 @@ namespace ivo {
             }
 
             /**
-             * @brief Scalar element access.
-             * 
-             * @param j Space index.
-             * @param k Time index.
-             * @return Element21 
-             */
-            inline Element21 element(const Natural &j, const Natural &k) const {
-                #ifndef NDEBUG
-                assert(j < this->_space);
-                assert(k < this->_time);
-                #endif
-
-                return this->_elements[j * this->_time + k];
-            }
-
-            /**
              * @brief Scalar neighbour access.
              * 
              * @param j Neighbour index.
@@ -119,27 +103,10 @@ namespace ivo {
                 return this->_neighbours[j];
             }
 
-            /**
-             * @brief Scalar neighbour access.
-             * 
-             * @param j Space index.
-             * @param k Time index.
-             * @return Neighbour21 
-             */
-            inline Neighbour21 neighbour(const Natural &j, const Natural &k) const {
-                #ifndef NDEBUG
-                assert(j < this->_space);
-                assert(k < this->_time);
-                #endif
-
-                return this->_neighbours[j * this->_time + k];
-            }
-
             // Parameters.
 
             Natural dofs() const;
             std::vector<Natural> dofs(const Natural &j) const;
-            std::vector<Natural> dofs(const Natural &j, const Natural &k) const;
 
             // Output.
 
