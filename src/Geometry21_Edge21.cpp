@@ -69,12 +69,27 @@ namespace ivo {
         return ((this->_a != edge._a) || (this->_b != edge._b)) && ((this->_a != edge._b) || (this->_b != edge._a));
     }
     
-    // Subscript operator, legacy scalar access (C++23).
-
-    #if __cplusplus > 202002L
+    // Access.
 
     /**
-     * @brief Scalar reference access, legacy.
+     * @brief Const scalar access.
+     * 
+     * @param j Index.
+     * @return Point21& 
+     */
+    Point21 Edge21::operator ()(const Natural &j) const {
+        #ifndef NDEBUG // Integrity check.
+        assert(j <= 1);
+        #endif
+
+        if(j == 0)
+            return this->_a;
+        
+        return this->_b;
+    }
+
+    /**
+     * @brief Scalar access.
      * 
      * @param j Index.
      * @return Point21& 
@@ -90,26 +105,7 @@ namespace ivo {
         return this->_b;
     }
 
-    #endif
-
-    // Call operator, subscript behaviour.
-
-    /**
-     * @brief Scalar access.
-     * 
-     * @param j Index.
-     * @return Point21& 
-     */
-    Point21 Edge21::operator ()(const Natural &j) const {
-        #ifndef NDEBUG // Integrity check.
-        assert(j <= 1);
-        #endif
-
-        if(j == 0)
-            return this->_a;
-        
-        return this->_b;
-    }
+    // Insert.
 
     /**
      * @brief Scalar insert.
