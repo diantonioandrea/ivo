@@ -53,7 +53,10 @@ namespace ivo {
 
                     for(Natural i = 0; i < this->_space; ++i) {
                         for(Natural h = 0; h < this->_time; ++h) {
-                            if((i == j) && (h == k))
+                            if(i == j)
+                                continue;
+
+                            if(h != k)
                                 continue;
 
                             // Candidate.
