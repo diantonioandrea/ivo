@@ -112,9 +112,21 @@ namespace ivo {
         return *this;
     }
 
-    // Subscript operator, legacy scalar access (C++23).
+    // Access.
 
-    #if __cplusplus > 202002L
+    /**
+     * @brief Scalar access.
+     * 
+     * @param j Index.
+     * @return Point21 
+     */
+    Point21 Polygon21::operator ()(const Natural &j) const {
+        #ifndef NDEBUG // Integrity check.
+        assert(j < this->_points.size());
+        #endif
+
+        return this->_points[j];
+    }
 
     /**
      * @brief Scalar reference access, legacy.
@@ -130,23 +142,7 @@ namespace ivo {
         return this->_points[j];
     }
 
-    #endif
-
-    // Call operator, subscript behaviour.
-
-    /**
-     * @brief Scalar access.
-     * 
-     * @param j Index.
-     * @return Point21 
-     */
-    Point21 Polygon21::operator ()(const Natural &j) const {
-        #ifndef NDEBUG // Integrity check.
-        assert(j < this->_points.size());
-        #endif
-
-        return this->_points[j];
-    }
+    // Insert.
 
     /**
      * @brief Scalar insert.

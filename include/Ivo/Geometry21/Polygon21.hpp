@@ -53,15 +53,13 @@ namespace ivo {
             Polygon21 &operator =(const std::initializer_list<Point21> &);
             Polygon21 &operator =(const Polygon21 &);
 
-            // Subscript operator, legacy scalar access (C++23).
-
-            #if __cplusplus > 202002L
-            Point21 &operator [](const Natural &);
-            #endif
-
-            // Call operator, subscript behaviour.
+            // Access.
 
             Point21 operator ()(const Natural &) const;
+            Point21 &operator [](const Natural &);
+
+            // Insert.
+
             void operator ()(const Natural &, const Point21 &);
 
             // Output.
