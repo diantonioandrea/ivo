@@ -115,7 +115,7 @@ namespace ivo {
     // Access.
 
     /**
-     * @brief Scalar access.
+     * @brief Const scalar access.
      * 
      * @param j Index.
      * @return Point21 
@@ -129,7 +129,7 @@ namespace ivo {
     }
 
     /**
-     * @brief Scalar reference access, legacy.
+     * @brief Scalar access.
      * 
      * @param j Index.
      * @return Point21& 
