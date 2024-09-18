@@ -141,7 +141,7 @@ namespace ivo {
                 if(facing[k][0] != -1) {
 
                     // Neighbour element.
-                    Element21 n_element = mesh.element(facing[k][1]);
+                    Element21 n_element = mesh.element(facing[k][0]);
 
                     // Neighbour dofs.
                     Natural n_e_dofs_xy = (n_element.p() + 1) * (n_element.p() + 2) / 2;
@@ -157,7 +157,7 @@ namespace ivo {
                     Matrix<Real> I_J_t{dofs_t, dofs_t};
 
                     // Neighbour basis.
-                    auto [n_e_phi_s, n_e_gradx_phi_s, n_e_grady_phi_s] = basis_s(mesh, facing[k][1], e_nodes2xy_j);
+                    auto [n_e_phi_s, n_e_gradx_phi_s, n_e_grady_phi_s] = basis_s(mesh, facing[k][0], e_nodes2xy_j);
 
                     // FACE INTEGRALS - COMPUTING.
 
@@ -227,7 +227,7 @@ namespace ivo {
                 if(facing[k][0] != -1) {
 
                     // Neighbour dofs.
-                    std::vector<Natural> n_dofs_j = mesh.dofs(facing[k][1]);
+                    std::vector<Natural> n_dofs_j = mesh.dofs(facing[k][0]);
 
                     // Building.
                     I(dofs_j, n_dofs_j, I(dofs_j, n_dofs_j) + I_a[k]);
