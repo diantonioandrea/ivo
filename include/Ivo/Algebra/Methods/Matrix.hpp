@@ -79,7 +79,7 @@ namespace ivo {
             for(Natural kx = 0; kx < X.columns(); ++kx)
                 for(Natural jy = 0; jy < Y.rows(); ++jy)
                     for(Natural ky = 0; ky < Y.columns(); ++ky)
-                        XY(jx * X.rows() + jy, kx * X.columns() + ky, X(jx, kx) * Y(jy, ky));
+                        XY(jx * Y.rows() + jy, kx * Y.columns() + ky, X(jx, kx) * Y(jy, ky));
 
         return XY;
     }

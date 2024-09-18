@@ -174,7 +174,12 @@ namespace ivo {
 
         for(Natural jx = 0; jx < X.size(); ++jx)
             for(Natural jy = 0; jy < Y.size(); ++jy)
-                XY(jx * X.size() + jy, X(jx) * Y(jy));
+                XY(jx * Y.size() + jy, X(jx) * Y(jy));
+
+        std::cout << X << std::endl;
+        std::cout << Y << std::endl;
+        std::cout << XY << std::endl;
+        std::exit(0);
 
         return XY;
     }
