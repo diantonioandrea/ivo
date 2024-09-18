@@ -36,8 +36,8 @@ namespace ivo {
             Vector<T> x{A.columns()};
 
             // Iterations and GMRES counter.
-            std::size_t iterations = 0;
-            std::size_t m = 1;
+            Natural iterations = 0;
+            Natural m = 1;
 
             // Residual.
             Vector<T> residual = b - A * x;
@@ -55,10 +55,10 @@ namespace ivo {
                 std::vector<Vector<T>> Vs;
                 Vs.emplace_back(residual / residual_norm);
 
-                for(std::size_t j = 0; j < m; ++j) {
+                for(Natural j = 0; j < m; ++j) {
                     Vector<T> w = A * Vs[j];
 
-                    for(std::size_t k = 0; k <= j; ++k) {
+                    for(Natural k = 0; k <= j; ++k) {
                         H(k, j, dot(w, Vs[k]));
                         w -= H(k, j) * Vs[k];
                     }
@@ -73,8 +73,8 @@ namespace ivo {
                 // Base matrix.
                 Matrix<T> V{A.rows(), m};
 
-                for(std::size_t j = 0; j < m; ++j)
-                    for(std::size_t k = 0; k < A.rows(); ++k)
+                for(Natural j = 0; j < m; ++j)
+                    for(Natural k = 0; k < A.rows(); ++k)
                         V.column(j, Vs[j]);
 
                 // Solution by least squares.
