@@ -160,7 +160,6 @@ namespace ivo {
             ost << *it << std::endl;
         
         return ost << *--mesh._elements.end() << std::flush;
-
     }
 
 }
