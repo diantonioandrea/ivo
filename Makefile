@@ -1,5 +1,5 @@
 .PHONY: all lib distclean
-CXXFLAGS = -Wall -std=c++26 -pedantic -march=native -O2 -fPIC -I./include -O2 -fno-unsafe-math-optimizations -fno-fast-math
+CXXFLAGS = -Wall -std=c++23 -pedantic -march=native -O2 -fPIC -I./include -O2 -fno-unsafe-math-optimizations -fno-fast-math
 
 ifneq ($(shell $(CXX) --version | grep -i "clang"),)
 CXXFLAGS += -ffp-model=precise
