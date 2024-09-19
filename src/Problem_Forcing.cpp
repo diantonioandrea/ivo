@@ -202,6 +202,10 @@ namespace ivo {
             }
         }
 
+        #ifndef NVERBOSE
+        std::cout << "\t[Forcing] Exited" << std::endl;
+        #endif
+
         // Building and return
         return E + V + I;
     }

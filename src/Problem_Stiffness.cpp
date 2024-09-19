@@ -295,6 +295,10 @@ namespace ivo {
             }
         }
 
+        #ifndef NVERBOSE
+        std::cout << "\t[Stiffness] Exited" << std::endl;
+        #endif
+
         // Building and return.
         return T + E + V - I;
     }
