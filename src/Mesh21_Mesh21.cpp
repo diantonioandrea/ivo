@@ -30,8 +30,8 @@ namespace ivo {
         #endif
 
         // Elements.
-        for(Natural j = 0; j < intervals.size() - 1; ++j)
-            for(Natural k = 0; k < cells.size(); ++k) {
+        for(Natural j = 0; j < this->_time; ++j)
+            for(Natural k = 0; k < this->_space; ++k) {
                 std::vector<Point21> points = cells[k].points();
 
                 for(auto &point: points)
@@ -45,16 +45,16 @@ namespace ivo {
         #endif
 
         // Neighbours.
-        for(Natural j = 0; j < this->_space; ++j) {
-            for(Natural k = 0; k < this->_time; ++k) {
+        for(Natural j = 0; j < this->_time; ++j)
+            for(Natural k = 0; k < this->_space; ++k) {
 
                 // Current element.
-                Element21 current = this->_elements[j + k * this->_space];
+                Element21 current = this->_elements[j * this->_space + k];
                 std::vector<Edge21> current_edges = current.b_edges();
 
                 // Neighbours parameters.
-                Integer top = (k == this->_time - 1) ? -1 :  j + (k + 1) * this->_space;
-                Integer bottom = (k == 0) ? -1 : j + (k - 1) * this->_space;
+                Integer top = (j == this->_time - 1) ? -1 :  (j + 1) * this->_space + k;
+                Integer bottom = (j == 0) ? -1 : (j - 1) * this->_space + k;
                 std::vector<std::array<Integer, 2>> facing(current_edges.size(), std::array<Integer, 2>{-1, -1});
 
                 for(Natural e = 0; e < current_edges.size(); ++e) {
@@ -63,16 +63,16 @@ namespace ivo {
                     bool found_edge = false;
 
                     for(Natural i = 0; i < this->_space; ++i) {
-                        if(i == j)
+                        if(i == k)
                             continue;
 
                         // Candidate.
-                        Element21 candidate = this->_elements[i + k * this->_space];
+                        Element21 candidate = this->_elements[j * this->_space + i];
                         std::vector<Edge21> candidate_edges = candidate.b_edges();
 
                         for(Natural ce = 0; ce < candidate_edges.size(); ++ce) {
                             if(current_edges[e] == candidate_edges[ce]) {
-                                facing[e][0] = static_cast<Integer>(i + k * this->_space);
+                                facing[e][0] = static_cast<Integer>(j * this->_space + i);
                                 facing[e][1] = static_cast<Integer>(ce);
 
                                 found_edge = true;
@@ -87,7 +87,6 @@ namespace ivo {
                 
                 this->_neighbours.emplace_back(top, bottom, facing);
             }
-        }
 
         #ifndef NVERBOSE
         std::cout << "\t[Mesh21] Exited" << std::endl;
