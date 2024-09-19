@@ -53,7 +53,11 @@ int main(int argc, char **argv) {
     std::cout << ivo::kronecker(v_0, v_2) << std::endl << std::endl;
     std::cout << ivo::kronecker(m_0, m_0) << std::endl << std::endl;
     std::cout << ivo::kronecker(m_0, m_1) << std::endl << std::endl;
-    std::cout << ivo::solve(s_0, v_0) << std::endl;
+    std::cout << ivo::solve(s_0, v_0) << std::endl << std::endl;
+
+    s_0(std::vector<ivo::Natural>{0, 1}, std::vector<ivo::Natural>{0, 1}, m_0);
+
+    std::cout << s_0 << std::endl;
 
     return 0;
 }
