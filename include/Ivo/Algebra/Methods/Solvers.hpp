@@ -42,6 +42,10 @@ namespace ivo {
             // Residual.
             Vector<T> residual = b - A * x;
 
+            #ifndef NVERBOSE
+            std::cout << "Ivo - Restarted GMRES." << std::endl;
+            #endif
+
             do {
                 ++iterations;
 
@@ -134,13 +138,24 @@ namespace ivo {
                 residual = b - A * x;
 
                 // Exit condition.
-                if(std::abs(rhs(m)) < constants::algebra_zero)
+                if(norm(residual) < constants::algebra_zero)
                     break;
 
                 // Size update.
                 m = (m > constants::gmres_restart) ? 1 : m + 1;
 
+                #ifndef NVERBOSE // Updates.
+                if(iterations % 25 == 0) {
+                    std::cout << "\tCompleted iteration: " << iterations << std::endl;
+                    std::cout << "\t\tResidual: " << norm(residual) << std::endl;
+                }
+                #endif
+
             } while(iterations < constants::solvers_stop);
+
+            #ifndef NVERBOSE
+            std::cout << "\tRestarted GMRES - Residual: " << norm(b - A * x) << std::endl;
+            #endif
 
             return x;
         }
