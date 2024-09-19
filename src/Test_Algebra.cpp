@@ -15,9 +15,10 @@ int main(int argc, char **argv) {
     // Vectors.
     ivo::Vector<ivo::Real> v_0{{1, 2}};
     ivo::Vector<ivo::Real> v_1{{3, 4}};
+    ivo::Vector<ivo::Real> v_2{{1, 2, 3}};
 
     // Matrices.
-    ivo::Matrix<ivo::Real> m_0{2, 2, {4, 1, 1, 3}};
+    ivo::Matrix<ivo::Real> m_0{2, 2, {1, 2, 3, 4}};
     ivo::Matrix<ivo::Real> m_1{2, 3, {1, 2, 3, 4, 5, 6}};
 
     // Sparse matrices.
@@ -48,6 +49,10 @@ int main(int argc, char **argv) {
     std::cout << v_1 * s_0 << std::endl << std::endl;
     std::cout << m_0 * m_0 << std::endl << std::endl;
     std::cout << m_0 * m_1 << std::endl << std::endl;
+    std::cout << ivo::kronecker(v_0, v_0) << std::endl << std::endl;
+    std::cout << ivo::kronecker(v_0, v_2) << std::endl << std::endl;
+    std::cout << ivo::kronecker(m_0, m_0) << std::endl << std::endl;
+    std::cout << ivo::kronecker(m_0, m_1) << std::endl << std::endl;
     std::cout << ivo::solve(s_0, v_0) << std::endl;
 
     return 0;
