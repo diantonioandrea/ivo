@@ -93,7 +93,7 @@ namespace ivo {
             // (*', *).
 
             T_xy = internal::c_scale(weights2_j, phi_s).transpose() * phi_s;
-            T_t = internal::c_scale(weights1_j * diffusion, gradt_phi_t).transpose() * phi_t;
+            T_t = internal::c_scale(weights1_j, gradt_phi_t).transpose() * phi_t;
 
             // a(*, *), diffusion.
 
@@ -166,7 +166,7 @@ namespace ivo {
                     // a(*, *), diffusion.
 
                     I_a_xy = internal::c_scale(e_weights2_j, 0.5L * normal(0) * (e_gradx_phi_s + n_e_gradx_phi_s) + 0.5L * normal(1) * (e_grady_phi_s + n_e_grady_phi_s)).transpose() * (e_phi_s - n_e_phi_s);
-                    I_a_xy -= I_a_xy.transpose();
+                    I_a_xy -= I_a_xy.transpose(); //[?]
                     I_a_t = internal::c_scale(weights1_j * diffusion, phi_t).transpose() * phi_t;
 
                     // b(*, *), convection. Mind the signs.
