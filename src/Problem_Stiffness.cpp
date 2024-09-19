@@ -32,6 +32,11 @@ namespace ivo {
         Sparse<Real> V{mesh.dofs(), mesh.dofs()}; // Volume integrals.
         Sparse<Real> I{mesh.dofs(), mesh.dofs()}; // Face integrals.
 
+        #ifndef NVERBOSE
+        std::cout << "[Ivo] Stiffness" << std::endl;
+        std::cout << "\t[Stiffness] Building the stiffness matrix" << std::endl;
+        #endif
+
         // Loop over elements.
         for(Natural j = 0; j < mesh.space() * mesh.time(); ++j) {
 

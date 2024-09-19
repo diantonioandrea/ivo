@@ -31,6 +31,11 @@ namespace ivo {
         Vector<Real> V{mesh.dofs()}; // Volume integrals.
         Vector<Real> I{mesh.dofs()}; // Face integrals.
 
+        #ifndef NVERBOSE
+        std::cout << "[Ivo] Forcing" << std::endl;
+        std::cout << "\t[Forcing] Building the forcing vector" << std::endl;
+        #endif
+
         // Loop over elements.
         for(Natural j = 0; j < mesh.space() * mesh.time(); ++j) {
 
