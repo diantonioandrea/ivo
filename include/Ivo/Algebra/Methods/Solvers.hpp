@@ -138,7 +138,7 @@ namespace ivo {
                 residual = b - A * x;
 
                 // Exit conditions.
-                if(norm(residual) < constants::algebra_zero)
+                if(std::abs(rhs(m)) < constants::algebra_zero)
                     break;
 
                 // Size update.
@@ -152,7 +152,7 @@ namespace ivo {
             } while(iterations < constants::solvers_stop);
 
             #ifndef NVERBOSE
-            std::cout << "\t[Restarted GMRES] Exited, residual: " << norm(residual) << std::endl;
+            std::cout << "\t[Restarted GMRES] Exited, iterations: " << iterations << ", " << " residual: " << norm(residual) << std::endl;
             #endif
 
             return x;
