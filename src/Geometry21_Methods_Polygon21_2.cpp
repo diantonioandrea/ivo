@@ -24,14 +24,31 @@ namespace ivo {
      */
     std::vector<Polygon21> mesher2(const Polygon21 &polygon, const Natural &number) {
 
+        #ifndef NVERBOSE
+        std::cout << "[Ivo] Mesher2" << std::endl;
+        std::cout << "\t[Mesher2] Building a diagram for: " << polygon << std::endl;
+        #endif
+
         // Initial diagram.
         std::vector<Polygon21> diagram = voronoi2(polygon, number);
+
+        #ifndef NVERBOSE
+        std::cout << "\t[Mesher2] Relaxing the diagram" << std::endl;
+        #endif
 
         // Relaxation.
         lloyd2(polygon, diagram);
 
+        #ifndef NVERBOSE
+        std::cout << "\t[Mesher2] Collapsing the diagram" << std::endl;
+        #endif
+
         // Postprocessing.
         collapse2(polygon, diagram);
+
+        #ifndef NVERBOSE
+        std::cout << "\t[Mesher2] Exited" << std::endl;
+        #endif
 
         // Final diagram.
         return diagram;
@@ -262,6 +279,10 @@ namespace ivo {
 
             if(residual <= constants::diagram_stop * diagram.size())
                 return;
+
+            #ifndef NVERBOSE
+            std::cout << "\t\t[Mesher2] Relaxation step " << j << ", residual: " << residual << std::endl;
+            #endif
 
             // Diagram update.
             diagram = voronoi2(polygon, centroids);
