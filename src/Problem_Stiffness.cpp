@@ -56,9 +56,6 @@ namespace ivo {
             Natural dofs_xy = (element.p() + 1) * (element.p() + 2) / 2;
             Natural dofs_t = element.q() + 1;
 
-            // Time interval.
-            std::array<Real, 2> interval = element.interval();
-
             // VOLUME INTEGRALS - PRECOMPUTING.
 
             // Submatrices.
@@ -251,32 +248,31 @@ namespace ivo {
             // TIME FACE INTEGRALS - PRECOMPUTING.
 
             // Face time basis.
-            auto [f_phi_t, f_gradt_phi_t] = basis_t(mesh, j, Vector<Real>{1, interval[0]});
+            auto [f_phi_t, f_gradt_phi_t] = basis_t(mesh, j, Vector<Real>{1, -1.0L}); // [?]
 
             if(bottom != -1) {
 
                 // Neighbour element.
                 Element21 n_element = mesh.element(bottom);
 
+                // Neighbour face time basis.
+                auto [n_f_phi_t, n_f_gradt_phi_t] = basis_t(mesh, bottom, Vector<Real>{1, 1.0L}); // [?]
+
                 // Neighbour dofs.
-                Natural n_dofs_xy = (n_element.p() + 1) * (n_element.p() + 2) / 2;
                 std::vector<Natural> n_dofs_j = mesh.dofs(bottom);
 
-                // Neighbour basis.
-                auto [n_phi_s, n_gradx_phi_s, n_grady_phi_s] = basis_s(mesh, bottom, nodes2xy_j);
-
                 // Submatrices.
-                Matrix<Real> E_xy{dofs_xy, n_dofs_xy};
+                Matrix<Real> E_xy{dofs_xy, dofs_xy};
                 Matrix<Real> E_t{dofs_t, dofs_t};
 
                 // TIME FACE INTEGRALS - COMPUTING.
 
-                E_xy = internal::c_scale(weights2_j, phi_s - n_phi_s).transpose() * phi_s;
-                E_t = f_phi_t.transpose() * f_phi_t;
+                E_xy = internal::c_scale(weights2_j, phi_s).transpose() * phi_s;
+                E_t = (f_phi_t - n_f_phi_t).transpose() * f_phi_t;
 
                 // TIME FACE INTEGRALS - BUILDING.
 
-                E(dofs_j, n_dofs_j, E(dofs_j, n_dofs_j) + kronecker(E_t, E_xy));
+                E(dofs_j, n_dofs_j, E(dofs_j, n_dofs_j) + kronecker(E_t, E_xy)); // [?]
 
             } else {
 

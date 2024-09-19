@@ -55,9 +55,6 @@ namespace ivo {
             Natural dofs_xy = (element.p() + 1) * (element.p() + 2) / 2;
             Natural dofs_t = element.q() + 1;
 
-            // Time interval.
-            std::array<Real, 2> interval = element.interval();
-
             // VOLUME INTEGRALS - PRECOMPUTING.
 
             // Subvectors.
@@ -186,7 +183,7 @@ namespace ivo {
                 Vector<Real> E_t{dofs_t};
 
                 // Face time basis.
-                auto [f_phi_t, f_gradt_phi_t] = basis_t(mesh, j, Vector<Real>{1, interval[0]});
+                auto [f_phi_t, f_gradt_phi_t] = basis_t(mesh, j, Vector<Real>{1, -1.0L}); // [?]
 
                 // Condition.
                 Vector<Real> condition = initial(nodes2xy_j[0], nodes2xy_j[1]);
