@@ -23,6 +23,11 @@ namespace ivo {
      * @param q Time degree.
      */
     Mesh21::Mesh21(const std::vector<Polygon21> &cells, const std::vector<Real> &intervals, const Natural &p, const Natural &q): _space{cells.size()}, _time{intervals.size() - 1} {
+        
+        #ifndef NVERBOSE
+        std::cout << "[Ivo] Mesh21" << std::endl;
+        std::cout << "\t[Mesh21] Evaluating elements" << std::endl;
+        #endif
 
         // Elements.
         for(Natural j = 0; j < intervals.size() - 1; ++j)
@@ -34,6 +39,10 @@ namespace ivo {
 
                 this->_elements.emplace_back(Element21{Polygon21{points}, intervals[j + 1] - intervals[j], p, q});
             }
+
+        #ifndef NVERBOSE
+        std::cout << "\t[Mesh21] Evaluating neighbours" << std::endl;
+        #endif
 
         // Neighbours.
         for(Natural j = 0; j < this->_space; ++j) {
@@ -79,6 +88,10 @@ namespace ivo {
                 this->_neighbours.emplace_back(top, bottom, facing);
             }
         }
+
+        #ifndef NVERBOSE
+        std::cout << "\t[Mesh21] Exited" << std::endl;
+        #endif
     }
 
     // Parameters.
