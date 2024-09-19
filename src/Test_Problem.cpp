@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     space = ivo::triangulate(space); // Triangulation.
 
     // Time "diagram" (intervals).
-    std::vector<ivo::Real> time{0.0L, 0.5L, 1.0L};
+    std::vector<ivo::Real> time{0.0L, 0.2L, 0.4L, 0.6L, 0.8L, 1.0L};
 
     // Mesh.
     ivo::Mesh21 mesh{space, time};
