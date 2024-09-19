@@ -79,8 +79,7 @@ namespace ivo {
                 Matrix<T> V{A.rows(), m};
 
                 for(Natural j = 0; j < m; ++j)
-                    for(Natural k = 0; k < A.rows(); ++k)
-                        V.column(j, Vs[j]);
+                    V.column(j, Vs[j]);
 
                 // Solution by least squares.
 
@@ -113,7 +112,7 @@ namespace ivo {
                     rotation(j, j, c);
                     rotation(j + 1, j + 1, c);
                     rotation(j, j + 1, s);
-                    rotation(j + 1, j, s);
+                    rotation(j + 1, j, -s);
 
                     // Rotation.
                     H = rotation * H;
@@ -127,7 +126,7 @@ namespace ivo {
                     T sum = static_cast<T>(0);
 
                     for(Natural k = j; k < m; ++k)
-                        sum += y(k) * H(j, k);
+                        sum += y(k) * H(j - 1, k);
                         
                     y(j - 1, (rhs(j - 1) - sum) / H(j - 1, j - 1));
                 }
@@ -138,7 +137,7 @@ namespace ivo {
                 // Residual re-evaluation.
                 residual = b - A * x;
 
-                // Exit condition.
+                // Exit conditions.
                 if(norm(residual) < constants::algebra_zero)
                     break;
 

@@ -17,16 +17,16 @@ int main(int argc, char **argv) {
     ivo::Vector<ivo::Real> v_1{{3, 4}};
 
     // Matrices.
-    ivo::Matrix<ivo::Real> m_0{2, 2, {1, 2, 3, 4}};
+    ivo::Matrix<ivo::Real> m_0{2, 2, {4, 1, 1, 3}};
     ivo::Matrix<ivo::Real> m_1{2, 3, {1, 2, 3, 4, 5, 6}};
 
     // Sparse matrices.
     ivo::Sparse<ivo::Real> s_0{2, 2};
 
-    s_0(0, 0, 1.0L);
-    s_0(0, 1, 2.0L);
-    s_0(1, 0, 3.0L);
-    s_0(1, 1, 4.0L);
+    s_0(0, 0, 4.0L);
+    s_0(0, 1, 1.0L);
+    s_0(1, 0, 1.0L);
+    s_0(1, 1, 3.0L);
 
     // Output.
     std::cout << v_0 << std::endl << std::endl;
@@ -47,7 +47,8 @@ int main(int argc, char **argv) {
     std::cout << v_0 * s_0 << std::endl << std::endl;
     std::cout << v_1 * s_0 << std::endl << std::endl;
     std::cout << m_0 * m_0 << std::endl << std::endl;
-    std::cout << m_0 * m_1 << std::endl;
+    std::cout << m_0 * m_1 << std::endl << std::endl;
+    std::cout << ivo::solve(s_0, v_0) << std::endl;
 
     return 0;
 }
