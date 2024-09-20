@@ -191,8 +191,10 @@ namespace ivo {
 
         // Polynomial evaluations.
         for(Natural k = 0; k < columns; ++k) {
-            phi.column(k, legendre1(nodes, k));
-            gradt_phi.column(k, legendre_grad1(nodes, k));
+            Real coefficient = std::sqrt(k + 0.5L);
+
+            phi.column(k, coefficient * legendre1(nodes, k));
+            gradt_phi.column(k, coefficient * legendre_grad1(nodes, k));
         }
 
         return {phi, gradt_phi};
