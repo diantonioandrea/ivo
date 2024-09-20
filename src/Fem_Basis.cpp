@@ -290,12 +290,14 @@ namespace ivo {
             Vector<Real> legendre_x = legendre1(x, px[k]);
             Vector<Real> legendre_y = legendre1(y, py[k]);
 
+            Real coefficient = std::sqrt((2.0L * px[k] + 1.0L) * (2.0L * py[k] + 1.0L)) / 2.0L;
+
             Vector<Real> grad_legendre_x = legendre1(x, px[k]);
             Vector<Real> grad_legendre_y = legendre1(y, py[k]);
 
-            phi.column(k, legendre_x * legendre_y);
-            gradx_phi.column(k, grad_legendre_x * legendre_y);
-            grady_phi.column(k, legendre_x * grad_legendre_y);
+            phi.column(k, coefficient * legendre_x * legendre_y);
+            gradx_phi.column(k, coefficient * grad_legendre_x * legendre_y);
+            grady_phi.column(k, coefficient * legendre_x * grad_legendre_y);
         }
 
         // Gradients.
