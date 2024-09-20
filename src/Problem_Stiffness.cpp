@@ -272,7 +272,7 @@ namespace ivo {
 
                 // TIME FACE INTEGRALS - BUILDING.
 
-                E(dofs_j, n_dofs_j, E(dofs_j, n_dofs_j) + kronecker(E_t, E_xy)); // [?]
+                E(n_dofs_j, dofs_j, E(n_dofs_j, dofs_j) + kronecker(E_t, E_xy)); // [??]
 
             } else {
 
