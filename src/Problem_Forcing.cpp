@@ -115,7 +115,7 @@ namespace ivo {
 
                 for(Natural j = 0; j < nodes1t.size(); ++j) {
                     negative(j, (normal(0) * convection_x(j) + normal(1) * convection_y(j) < 0.0L) ? 1.0L : 0.0L);
-                    positive(j, (normal(0) * convection_x(j) + normal(1) * convection_y(j) >= 0.0L) ? 1.0L : 0.0L);
+                    positive(j, 1.0L - negative(j));
                 }
 
                 // Data.
