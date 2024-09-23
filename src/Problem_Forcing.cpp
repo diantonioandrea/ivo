@@ -63,25 +63,31 @@ namespace ivo {
 
             // Nodes and basis.
             auto [nodes1t_j, dt_j] = internal::reference_to_element(mesh, j, nodes1t);
-            auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, {nodes2x, nodes2y});
-
-            auto [phi_s, gradx_phi_s, grady_phi_s] = basis_s(mesh, j, nodes2xy_j);
             auto [phi_t, gradt_phi_t] = basis_t(mesh, j, nodes1t);
 
             Vector<Real> weights1_j = weights1 * dt_j;
-            Vector<Real> weights2_j = weights2 * dxy_j;
 
             // Equation coefficients.
             auto [convection_x, convection_y] = equation.convection(nodes1t_j);
             Vector<Real> diffusion = equation.diffusion(nodes1t_j);
             Vector<Real> reaction = equation.reaction(nodes1t_j);
 
-            // Data.
-            Vector<Real> source = data.source(nodes2xy_j[0], nodes2xy_j[1]);
-
             // VOLUME INTEGRALS - COMPUTING.
 
-            V_xy = internal::c_scale(weights2_j, phi_s).transpose() * source;
+            for(Natural k = 0; k < neighbours; ++k) { // Sub-triangulation.
+
+                // Nodes and basis.
+                auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
+                auto [phi_s, gradx_phi_s, grady_phi_s] = basis_s(mesh, j, nodes2xy_j);
+
+                Vector<Real> weights2_j = weights2 * dxy_j;
+
+                // Data.
+                Vector<Real> source = data.source(nodes2xy_j[0], nodes2xy_j[1]);
+
+                V_xy += internal::c_scale(weights2_j, phi_s).transpose() * source;
+            }
+
             V_t = phi_t.transpose() * weights1_j;
 
             // VOLUME INTEGRALS - BUILDING.
@@ -185,12 +191,22 @@ namespace ivo {
                 // Face time basis.
                 auto [f_phi_t, f_gradt_phi_t] = basis_t(mesh, j, Vector<Real>{1, -1.0L}); // [?]
 
-                // Condition.
-                Vector<Real> condition = initial(nodes2xy_j[0], nodes2xy_j[1]);
-
                 // TIME FACE INTEGRALS - COMPUTING.
 
-                E_xy = internal::c_scale(weights2_j, phi_s).transpose() * condition;
+                for(Natural k = 0; k < neighbours; ++k) { // Sub-triangulation.
+
+                    // Nodes and basis.
+                    auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
+                    auto [phi_s, gradx_phi_s, grady_phi_s] = basis_s(mesh, j, nodes2xy_j);
+
+                    Vector<Real> weights2_j = weights2 * dxy_j;
+
+                    // Condition.
+                    Vector<Real> condition = initial(nodes2xy_j[0], nodes2xy_j[1]);
+
+                    E_xy += internal::c_scale(weights2_j, phi_s).transpose() * condition;
+                }
+
                 E_t = f_phi_t.row(0);
 
                 // TIME FACE INTEGRALS - BUILDING.

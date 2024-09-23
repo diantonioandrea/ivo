@@ -48,10 +48,11 @@ namespace ivo {
          * 
          * @param mesh Mesh.
          * @param j Element's index.
+         * @param k Triangle's index.
          * @param nodes Nodes.
          * @return std::tuple<std::array<Vector<Real>, 2>, Real> 
          */
-        std::tuple<std::array<Vector<Real>, 2>, Real> reference_to_element(const Mesh21 &mesh, const Natural &j, const std::array<Vector<Real>, 2> &nodes) {
+        std::tuple<std::array<Vector<Real>, 2>, Real> reference_to_element(const Mesh21 &mesh, const Natural &j, const Natural &k, const std::array<Vector<Real>, 2> &nodes) {
 
             // Nodes.
             auto [nodesx, nodesy] = nodes;
@@ -65,6 +66,12 @@ namespace ivo {
 
             // Base.
             Polygon21 base = element.b_base();
+
+            // Triangles.
+            std::vector<Polygon21> triangles = triangulate(base);
+
+            // Triangle.
+            Polygon21 triangle = triangles[k];
 
             // Jacobian.
             Matrix<Real> J{2, 2};
@@ -234,10 +241,6 @@ namespace ivo {
         // Base.
         Polygon21 base = element.b_base();
 
-        #ifndef NDEBUG // Integrity check.
-        assert(base.edges().size() == 3);
-        #endif
-
         // Box.
         auto [xy_min, xy_max] = box2(base);
 
@@ -257,7 +260,7 @@ namespace ivo {
         Vector<Real> T{2};
 
         T(0, (x_max + x_min) / 2.0L);
-        T(0, (y_max + y_min) / 2.0L);
+        T(1, (y_max + y_min) / 2.0L);
 
         // Inverse map.
         Matrix<Real> M_inv{2, 2};
