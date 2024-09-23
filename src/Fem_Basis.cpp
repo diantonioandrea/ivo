@@ -76,16 +76,16 @@ namespace ivo {
             // Jacobian.
             Matrix<Real> J{2, 2};
 
-            J(0, 0, base(1)(0) - base(0)(0));
-            J(0, 1, base(2)(0) - base(0)(0));
-            J(1, 0, base(1)(1) - base(0)(1));
-            J(1, 1, base(2)(1) - base(0)(1));
+            J(0, 0, triangle(1)(0) - triangle(0)(0));
+            J(0, 1, triangle(2)(0) - triangle(0)(0));
+            J(1, 0, triangle(1)(1) - triangle(0)(1));
+            J(1, 1, triangle(2)(1) - triangle(0)(1));
 
             // Translation.
             Vector<Real> T{2};
 
-            T(0, base(0)(0));
-            T(1, base(0)(1));
+            T(0, triangle(0)(0));
+            T(1, triangle(0)(1));
 
             // Jacobian's determinant.
             Real dxy = J(0, 0) * J(1, 1) - J(0, 1) * J(1, 0);
