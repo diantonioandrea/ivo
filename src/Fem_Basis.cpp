@@ -244,16 +244,14 @@ namespace ivo {
         // Box.
         auto [xy_min, xy_max] = box2(base);
 
-        Real x_min = xy_min(0);
-        Real y_min = xy_min(1);
-        Real x_max = xy_max(0);
-        Real y_max = xy_max(1);
+        Real x_min = xy_min(0), y_min = xy_min(1);
+        Real x_max = xy_max(0), y_max = xy_max(1);
 
         // Box map.
         Matrix<Real> M{2, 2};
 
         M(0, 0, (x_max - x_min) / 2.0L);
-        M(1, 1, (x_max - x_min) / 2.0L);
+        M(1, 1, (y_max - y_min) / 2.0L);
 
         Real M_det = M(0, 0) * M(1, 1);
 
@@ -297,8 +295,8 @@ namespace ivo {
 
             Real coefficient = std::sqrt((2.0L * px[k] + 1.0L) * (2.0L * py[k] + 1.0L)) / 2.0L;
 
-            Vector<Real> grad_legendre_x = legendre1(x, px[k]);
-            Vector<Real> grad_legendre_y = legendre1(y, py[k]);
+            Vector<Real> grad_legendre_x = legendre_grad1(x, px[k]);
+            Vector<Real> grad_legendre_y = legendre_grad1(y, py[k]);
 
             phi.column(k, coefficient * legendre_x * legendre_y);
             gradx_phi.column(k, coefficient * grad_legendre_x * legendre_y);
