@@ -56,7 +56,7 @@ namespace ivo {
              * @return constexpr Real 
              */
             constexpr Real source(const Real &x, const Real &y, const Real &t) const {
-                return this->_source(x, y);
+                return this->_source(x, y, t);
             }
 
             /**
@@ -68,7 +68,7 @@ namespace ivo {
              * @return constexpr Real 
              */
             constexpr Real dirichlet(const Real &x, const Real &y, const Real &t) const {
-                return this->_dirichlet(x, y);
+                return this->_dirichlet(x, y, t);
             }
 
             /**
@@ -80,7 +80,7 @@ namespace ivo {
              * @return constexpr Real 
              */
             constexpr Real neumann(const Real &x, const Real &y, const Real &t) const {
-                return this->_neumann(x, y);
+                return this->_neumann(x, y, t);
             }
 
             // Constructor.
