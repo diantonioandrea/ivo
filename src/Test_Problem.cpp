@@ -64,8 +64,8 @@ int main(int argc, char **argv) {
     vector_output << F;
     solution_output << X;
 
-    // // Solution output.
-    // ivo::visual(mesh, X, "output/Test_Problem_Solution.s21");
+    // Solution output.
+    ivo::visual(mesh, X, "output/Test_Problem_Solution.s21");
 
     return 0;
 }
