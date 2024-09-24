@@ -52,7 +52,6 @@ namespace ivo {
                 // Nodes and basis.
                 auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
                 auto [phi_s, gradx_phi_s, grady_phi_s] = basis_s(mesh, j, nodes2xy_j);
-
                 auto [nodes2x_j, nodes2y_j] = nodes2xy_j;
 
                 // Full basis.
