@@ -75,13 +75,9 @@ namespace ivo {
 
             // Nodes and basis.
             auto [nodes1t_j, dt_j] = internal::reference_to_element(mesh, j, nodes1t);
-            auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, {nodes2x, nodes2y});
-
-            auto [phi_s, gradx_phi_s, grady_phi_s] = basis_s(mesh, j, nodes2xy_j);
             auto [phi_t, gradt_phi_t] = basis_t(mesh, j, nodes1t);
 
             Vector<Real> weights1_j = weights1 * dt_j;
-            Vector<Real> weights2_j = weights2 * dxy_j;
 
             // Equation coefficients.
             auto [convection_x, convection_y] = equation.convection(nodes1t_j);
@@ -90,26 +86,47 @@ namespace ivo {
 
             // VOLUME INTEGRALS - COMPUTING.
 
+            for(Natural k = 0; k < neighbours; ++k) { // Sub-triangulation.
+
+                // Nodes and basis.
+                auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
+                auto [phi_s, gradx_phi_s, grady_phi_s] = basis_s(mesh, j, nodes2xy_j);
+
+                Vector<Real> weights2_j = weights2 * dxy_j;
+
+                // (*', *).
+
+                T_xy += internal::c_scale(weights2_j, phi_s).transpose() * phi_s;
+
+                // a(*, *), diffusion.
+
+                V_a_xy += internal::c_scale(weights2_j, gradx_phi_s).transpose() * gradx_phi_s + internal::c_scale(weights2_j, grady_phi_s).transpose() * grady_phi_s;
+
+                // b(*, *), convection.
+
+                V_bx_xy += internal::c_scale(weights2_j, gradx_phi_s).transpose() * phi_s;
+                V_by_xy += internal::c_scale(weights2_j, grady_phi_s).transpose() * phi_s;
+
+                // c(*, *), reaction.
+
+                V_c_xy += internal::c_scale(weights2_j,phi_s).transpose() * phi_s;
+            }
+
             // (*', *).
 
-            T_xy = internal::c_scale(weights2_j, phi_s).transpose() * phi_s;
             T_t = internal::c_scale(weights1_j, gradt_phi_t).transpose() * phi_t;
 
             // a(*, *), diffusion.
 
-            V_a_xy = internal::c_scale(weights2_j, gradx_phi_s).transpose() * gradx_phi_s + internal::c_scale(weights2_j, grady_phi_s).transpose() * grady_phi_s;
             V_a_t = internal::c_scale(weights1_j * diffusion, phi_t).transpose() * phi_t;
 
             // b(*, *), convection.
 
-            V_bx_xy = internal::c_scale(weights2_j, gradx_phi_s).transpose() * phi_s;
-            V_by_xy = internal::c_scale(weights2_j, grady_phi_s).transpose() * phi_s;
             V_bx_t = internal::c_scale(weights1_j * convection_x, phi_t).transpose() * phi_t;
             V_by_t = internal::c_scale(weights1_j * convection_y, phi_t).transpose() * phi_t;
 
             // c(*, *), reaction.
 
-            V_c_xy = internal::c_scale(weights2_j,phi_s).transpose() * phi_s;
             V_c_t = internal::c_scale(weights1_j * reaction, phi_t).transpose() * phi_t;
 
             // VOLUME INTEGRALS - BUILDING.
@@ -232,16 +249,12 @@ namespace ivo {
                     std::vector<Natural> n_dofs_j = mesh.dofs(facing[k][0]);
 
                     // Building.
-                    I(dofs_j, n_dofs_j, I(dofs_j, n_dofs_j) + I_a[k]);
-                    I(dofs_j, n_dofs_j, I(dofs_j, n_dofs_j) + I_b[k]);
-                    I(dofs_j, n_dofs_j, I(dofs_j, n_dofs_j) + I_J[k]);
+                    I(dofs_j, n_dofs_j, I(dofs_j, n_dofs_j) + I_a[k] + I_b[k] + I_J[k]);
                     
                 } else {
                     
                     // Building.
-                    I(dofs_j, dofs_j, I(dofs_j, dofs_j) + I_a[k]);
-                    I(dofs_j, dofs_j, I(dofs_j, dofs_j) + I_b[k]);
-                    I(dofs_j, dofs_j, I(dofs_j, dofs_j) + I_J[k]);
+                    I(dofs_j, dofs_j, I(dofs_j, dofs_j) + I_a[k] + I_b[k] + I_J[k]);
                 }
             }
 
@@ -267,7 +280,17 @@ namespace ivo {
 
                 // TIME FACE INTEGRALS - COMPUTING.
 
-                E_xy = internal::c_scale(weights2_j, phi_s).transpose() * phi_s;
+                for(Natural k = 0; k < neighbours; ++k) { // Sub-triangulation.
+
+                    // Nodes and basis.
+                    auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
+                    auto [phi_s, gradx_phi_s, grady_phi_s] = basis_s(mesh, j, nodes2xy_j);
+
+                    Vector<Real> weights2_j = weights2 * dxy_j;
+
+                    E_xy += internal::c_scale(weights2_j, phi_s).transpose() * phi_s;
+                }
+
                 E_t = (f_phi_t - n_f_phi_t).transpose() * f_phi_t;
 
                 // TIME FACE INTEGRALS - BUILDING.
@@ -282,12 +305,22 @@ namespace ivo {
 
                 // TIME FACE INTEGRALS - COMPUTING.
 
-                E_xy = internal::c_scale(weights2_j, phi_s).transpose() * phi_s;
+                for(Natural k = 0; k < neighbours; ++k) { // Sub-triangulation.
+
+                    // Nodes and basis.
+                    auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
+                    auto [phi_s, gradx_phi_s, grady_phi_s] = basis_s(mesh, j, nodes2xy_j);
+
+                    Vector<Real> weights2_j = weights2 * dxy_j;
+
+                    E_xy += internal::c_scale(weights2_j, phi_s).transpose() * phi_s;
+                }
+
                 E_t = f_phi_t.transpose() * f_phi_t;
 
                 // TIME FACE INTEGRALS - BUILDING.
 
-                E(dofs_j, dofs_j, E(dofs_j, dofs_j) + kronecker(E_t, E_xy));
+                E(dofs_j, dofs_j, E(dofs_j, dofs_j) + kronecker(E_t, E_xy)); // [?]
             }
         }
 

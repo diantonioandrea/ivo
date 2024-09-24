@@ -32,8 +32,7 @@ int main(int argc, char **argv) {
     ivo::Polygon21 abcd = {a, b, c, d};
 
     // Space diagram.
-    std::vector<ivo::Polygon21> space = ivo::mesher2(abcd, 5);
-    space = ivo::triangulate(space); // Triangulation.
+    std::vector<ivo::Polygon21> space = ivo::mesher2(abcd, 15);
 
     // Time "diagram" (intervals).
     std::vector<ivo::Real> time{0.0L, 0.2L, 0.4L, 0.6L, 0.8L, 1.0L};

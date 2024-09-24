@@ -48,10 +48,11 @@ namespace ivo {
          * 
          * @param mesh Mesh.
          * @param j Element's index.
+         * @param k Triangle's index.
          * @param nodes Nodes.
          * @return std::tuple<std::array<Vector<Real>, 2>, Real> 
          */
-        std::tuple<std::array<Vector<Real>, 2>, Real> reference_to_element(const Mesh21 &mesh, const Natural &j, const std::array<Vector<Real>, 2> &nodes) {
+        std::tuple<std::array<Vector<Real>, 2>, Real> reference_to_element(const Mesh21 &mesh, const Natural &j, const Natural &k, const std::array<Vector<Real>, 2> &nodes) {
 
             // Nodes.
             auto [nodesx, nodesy] = nodes;
@@ -66,19 +67,25 @@ namespace ivo {
             // Base.
             Polygon21 base = element.b_base();
 
+            // Triangles.
+            std::vector<Polygon21> triangles = triangulate(base);
+
+            // Triangle.
+            Polygon21 triangle = triangles[k];
+
             // Jacobian.
             Matrix<Real> J{2, 2};
 
-            J(0, 0, base(1)(0) - base(0)(0));
-            J(0, 1, base(2)(0) - base(0)(0));
-            J(1, 0, base(1)(1) - base(0)(1));
-            J(1, 1, base(2)(1) - base(0)(1));
+            J(0, 0, triangle(1)(0) - triangle(0)(0));
+            J(0, 1, triangle(2)(0) - triangle(0)(0));
+            J(1, 0, triangle(1)(1) - triangle(0)(1));
+            J(1, 1, triangle(2)(1) - triangle(0)(1));
 
             // Translation.
             Vector<Real> T{2};
 
-            T(0, base(0)(0));
-            T(1, base(0)(1));
+            T(0, triangle(0)(0));
+            T(1, triangle(0)(1));
 
             // Jacobian's determinant.
             Real dxy = J(0, 0) * J(1, 1) - J(0, 1) * J(1, 0);
@@ -234,30 +241,24 @@ namespace ivo {
         // Base.
         Polygon21 base = element.b_base();
 
-        #ifndef NDEBUG // Integrity check.
-        assert(base.edges().size() == 3);
-        #endif
-
         // Box.
         auto [xy_min, xy_max] = box2(base);
 
-        Real x_min = xy_min(0);
-        Real y_min = xy_min(1);
-        Real x_max = xy_max(0);
-        Real y_max = xy_max(1);
+        Real x_min = xy_min(0), y_min = xy_min(1);
+        Real x_max = xy_max(0), y_max = xy_max(1);
 
         // Box map.
         Matrix<Real> M{2, 2};
 
         M(0, 0, (x_max - x_min) / 2.0L);
-        M(1, 1, (x_max - x_min) / 2.0L);
+        M(1, 1, (y_max - y_min) / 2.0L);
 
         Real M_det = M(0, 0) * M(1, 1);
 
         Vector<Real> T{2};
 
         T(0, (x_max + x_min) / 2.0L);
-        T(0, (y_max + y_min) / 2.0L);
+        T(1, (y_max + y_min) / 2.0L);
 
         // Inverse map.
         Matrix<Real> M_inv{2, 2};
@@ -294,8 +295,8 @@ namespace ivo {
 
             Real coefficient = std::sqrt((2.0L * px[k] + 1.0L) * (2.0L * py[k] + 1.0L)) / 2.0L;
 
-            Vector<Real> grad_legendre_x = legendre1(x, px[k]);
-            Vector<Real> grad_legendre_y = legendre1(y, py[k]);
+            Vector<Real> grad_legendre_x = legendre_grad1(x, px[k]);
+            Vector<Real> grad_legendre_y = legendre_grad1(y, py[k]);
 
             phi.column(k, coefficient * legendre_x * legendre_y);
             gradx_phi.column(k, coefficient * grad_legendre_x * legendre_y);

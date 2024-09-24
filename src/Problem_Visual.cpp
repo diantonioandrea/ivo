@@ -34,33 +34,44 @@ namespace ivo {
             // Element.
             Element21 element = mesh.element(j);
 
+            // Neighbours.
+            Neighbour21 neighbourhood = mesh.neighbour(j);
+
+            std::vector<std::array<Integer, 2>> facing = neighbourhood.facing();
+            Natural neighbours = facing.size();
+
             // Dofs.
             std::vector<Natural> dofs_j = mesh.dofs(j);
 
             // Nodes and basis.
             auto [nodes1t_j, dt_j] = internal::reference_to_element(mesh, j, nodes1t);
-            auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, {nodes2x, nodes2y});
-            auto [nodes2x_j, nodes2y_j] = nodes2xy_j;
-
-            auto [phi_s, gradx_phi_s, grady_phi_s] = basis_s(mesh, j, nodes2xy_j);
             auto [phi_t, gradt_phi_t] = basis_t(mesh, j, nodes1t);
 
-            // Full basis.
-            Matrix<Real> phi = kronecker(phi_t, phi_s);
+            for(Natural k = 0; k < neighbours; ++k) { // Sub-triangulation.
 
-            // Full nodes.
-            std::vector<std::array<Real, 3>> nodes;
+                // Nodes and basis.
+                auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
+                auto [phi_s, gradx_phi_s, grady_phi_s] = basis_s(mesh, j, nodes2xy_j);
 
-            for(Natural k = 0; k < nodes1t_j.size(); ++k)
-                for(Natural h = 0; h < nodes2x_j.size(); ++h)
-                    nodes.emplace_back(std::array<Real, 3>{nodes2x_j[h], nodes2y_j[h], nodes1t_j[k]});
+                auto [nodes2x_j, nodes2y_j] = nodes2xy_j;
 
-            // Evaluation.
-            Vector<Real> evaluation = phi * solution(dofs_j);
+                // Full basis.
+                Matrix<Real> phi = kronecker(phi_t, phi_s);
 
-            // Output.
-            for(Natural j = 0; j < nodes.size(); ++j) {
-                output << nodes[j][0] << "," << nodes[j][1] << "," << nodes[j][2] << "," << evaluation(j) << std::endl;
+                // Full nodes.
+                std::vector<std::array<Real, 3>> nodes;
+
+                for(Natural l = 0; l < nodes1t_j.size(); ++l)
+                    for(Natural h = 0; h < nodes2x_j.size(); ++h)
+                        nodes.emplace_back(std::array<Real, 3>{nodes2x_j[h], nodes2y_j[h], nodes1t_j[l]});
+
+                // Evaluation.
+                Vector<Real> evaluation = phi * solution(dofs_j);
+
+                // Output.
+                for(Natural j = 0; j < nodes.size(); ++j) {
+                    output << nodes[j][0] << "," << nodes[j][1] << "," << nodes[j][2] << "," << evaluation(j) << std::endl;
+                }
             }
         }
     }
