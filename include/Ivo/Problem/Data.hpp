@@ -29,19 +29,19 @@ namespace ivo {
              * @brief Source.
              * 
              */
-            const std::function<Real (Real, Real)> _source;
+            const std::function<Real (Real, Real, Real)> _source;
 
             /**
              * @brief Dirichlet boundary condition.
              * 
              */
-            const std::function<Real (Real, Real)> _dirichlet;
+            const std::function<Real (Real, Real, Real)> _dirichlet;
 
             /**
              * @brief Neumann boundary condition.
              * 
              */
-            const std::function<Real (Real, Real)> _neumann;
+            const std::function<Real (Real, Real, Real)> _neumann;
 
         public:
 
@@ -52,9 +52,10 @@ namespace ivo {
              * 
              * @param x 
              * @param y 
+             * @param t 
              * @return constexpr Real 
              */
-            constexpr Real source(const Real &x, const Real &y) const {
+            constexpr Real source(const Real &x, const Real &y, const Real &t) const {
                 return this->_source(x, y);
             }
 
@@ -63,9 +64,10 @@ namespace ivo {
              * 
              * @param x 
              * @param y 
+             * @param t 
              * @return constexpr Real 
              */
-            constexpr Real dirichlet(const Real &x, const Real &y) const {
+            constexpr Real dirichlet(const Real &x, const Real &y, const Real &t) const {
                 return this->_dirichlet(x, y);
             }
 
@@ -74,19 +76,16 @@ namespace ivo {
              * 
              * @param x 
              * @param y 
+             * @param t 
              * @return constexpr Real 
              */
-            constexpr Real neumann(const Real &x, const Real &y) const {
+            constexpr Real neumann(const Real &x, const Real &y, const Real &t) const {
                 return this->_neumann(x, y);
             }
 
-            Vector<Real> source(const Vector<Real> &, const Vector<Real> &) const;
-            Vector<Real> dirichlet(const Vector<Real> &, const Vector<Real> &) const;
-            Vector<Real> neumann(const Vector<Real> &, const Vector<Real> &) const;
-
             // Constructor.
 
-            Data(const std::function<Real (Real, Real)> &, const std::function<Real (Real, Real)> &, const std::function<Real (Real, Real)> &);
+            Data(const std::function<Real (Real, Real, Real)> &, const std::function<Real (Real, Real, Real)> &, const std::function<Real (Real, Real, Real)> &);
 
     };
 
