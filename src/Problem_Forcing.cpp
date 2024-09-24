@@ -173,9 +173,8 @@ namespace ivo {
                 if(facing[k][0] != -1)
                     continue;
 
-                I(dofs_j, I(dofs_j) + I_d[k]);
-                I(dofs_j, I(dofs_j) + I_de[k]);
-                I(dofs_j, I(dofs_j) + I_n[k]);
+                // Building.
+                I(dofs_j, I(dofs_j) + I_d[k] + I_de[k] + I_n[k]);
             }
 
             // TIME FACE INTEGRALS.

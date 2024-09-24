@@ -249,16 +249,12 @@ namespace ivo {
                     std::vector<Natural> n_dofs_j = mesh.dofs(facing[k][0]);
 
                     // Building.
-                    I(dofs_j, n_dofs_j, I(dofs_j, n_dofs_j) + I_a[k]);
-                    I(dofs_j, n_dofs_j, I(dofs_j, n_dofs_j) + I_b[k]);
-                    I(dofs_j, n_dofs_j, I(dofs_j, n_dofs_j) + I_J[k]);
+                    I(dofs_j, n_dofs_j, I(dofs_j, n_dofs_j) + I_a[k] + I_b[k] + I_J[k]);
                     
                 } else {
                     
                     // Building.
-                    I(dofs_j, dofs_j, I(dofs_j, dofs_j) + I_a[k]);
-                    I(dofs_j, dofs_j, I(dofs_j, dofs_j) + I_b[k]);
-                    I(dofs_j, dofs_j, I(dofs_j, dofs_j) + I_J[k]);
+                    I(dofs_j, dofs_j, I(dofs_j, dofs_j) + I_a[k] + I_b[k] + I_J[k]);
                 }
             }
 
