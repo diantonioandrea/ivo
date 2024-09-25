@@ -28,7 +28,7 @@ namespace ivo {
     // Basis functions.
 
     std::array<Matrix<Real>, 2> basis_t(const Mesh21 &, const Natural &, const Vector<Real> &);
-    std::array<Matrix<Real>, 3> basis_s(const Mesh21 &, const Natural &, const std::array<Vector<Real>, 2> &);
+    std::array<Matrix<Real>, 3> basis_xy(const Mesh21 &, const Natural &, const std::array<Vector<Real>, 2> &);
 
 }
 

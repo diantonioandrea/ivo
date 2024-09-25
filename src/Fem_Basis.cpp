@@ -215,7 +215,7 @@ namespace ivo {
      * @param nodes Nodes.
      * @return std::tuple<Matrix<Real>, Matrix<Real>, Matrix<Real>, Real> 
      */
-    std::array<Matrix<Real>, 3> basis_s(const Mesh21 &mesh, const Natural &j, const std::array<Vector<Real>, 2> &nodes) {
+    std::array<Matrix<Real>, 3> basis_xy(const Mesh21 &mesh, const Natural &j, const std::array<Vector<Real>, 2> &nodes) {
         
         // Nodes.
         auto [nodesx, nodesy] = nodes;

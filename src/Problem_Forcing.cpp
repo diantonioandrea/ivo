@@ -73,7 +73,7 @@ namespace ivo {
 
                 // Nodes and basis, space.
                 auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
-                auto [phi_xy, gradx_phi_xy, grady_phi_xy] = basis_s(mesh, j, nodes2xy_j);
+                auto [phi_xy, gradx_phi_xy, grady_phi_xy] = basis_xy(mesh, j, nodes2xy_j);
                 auto [nodes2x_j, nodes2y_j] = nodes2xy_j;
 
                 Vector<Real> weights2_j = weights2 * dxy_j;
@@ -109,7 +109,7 @@ namespace ivo {
 
                 // Nodes and basis, space.
                 auto [e_nodes2xy_j, normal, e_dxy_j] = internal::reference_to_element(mesh, j, k, nodes1x);
-                auto [e_phi_xy, e_gradx_phi_xy, e_grady_phi_xy] = basis_s(mesh, j, e_nodes2xy_j);
+                auto [e_phi_xy, e_gradx_phi_xy, e_grady_phi_xy] = basis_xy(mesh, j, e_nodes2xy_j);
                 auto [e_nodes2x_j, e_nodes2y_j] = e_nodes2xy_j;
 
                 // Normal gradient.
@@ -181,7 +181,7 @@ namespace ivo {
 
                     // Nodes and basis.
                     auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
-                    auto [phi_xy, gradx_phi_xy, grady_phi_xy] = basis_s(mesh, j, nodes2xy_j);
+                    auto [phi_xy, gradx_phi_xy, grady_phi_xy] = basis_xy(mesh, j, nodes2xy_j);
                     auto [nodes2x_j, nodes2y_j] = nodes2xy_j;
 
                     // Weights, space.
