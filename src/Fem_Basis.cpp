@@ -94,11 +94,11 @@ namespace ivo {
             Vector<Real> x{nodesx.size()};
             Vector<Real> y{nodesy.size()};
 
-            for(Natural k = 0; k < nodesx.size(); ++k) {
-                Vector<Real> xy = J * Vector<Real>{{nodesx(k), nodesy(k)}} + T;
+            for(Natural h = 0; h < nodesx.size(); ++h) {
+                Vector<Real> xy = J * Vector<Real>{{nodesx(h), nodesy(h)}} + T;
 
-                x(k, xy(0));
-                y(k, xy(1));
+                x(h, xy(0));
+                y(h, xy(1));
             }
 
             // Nodes and dxy.
