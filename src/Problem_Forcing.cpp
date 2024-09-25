@@ -99,13 +99,12 @@ namespace ivo {
             V(dofs_j, V(dofs_j) + V_xyt);
 
             // FACE INTEGRALS - PRECOMPUTING.
-
-            // Subvectors.
-            std::vector<Vector<Real>> I_d;
-            std::vector<Vector<Real>> I_de;
-            std::vector<Vector<Real>> I_n;
             
             for(Natural k = 0; k < neighbours; ++k) {
+
+                // Boundary edges.
+                if(facing[k][0] != -1)
+                    continue;
 
                 // Nodes and basis. Using time nodes as 1D nodes.
                 auto [e_nodes2xy_j, normal, e_dxy_j] = internal::reference_to_element(mesh, j, k, nodes1t);
@@ -117,71 +116,45 @@ namespace ivo {
 
                 Vector<Real> e_weights2_j = weights1 * e_dxy_j;
 
-                // Sign check.
-                Vector<Real> negative{nodes1t.size()};
-                Vector<Real> positive{nodes1t.size()};
+                // Sign checks.
+                Vector<Real> negative{phi_t.rows()};
+                Vector<Real> positive{phi_t.rows()};
 
                 for(Natural j = 0; j < nodes1t.size(); ++j) {
-                    negative(j, (normal(0) * convection_x(j) + normal(1) * convection_y(j) < 0.0L) ? 1.0L : 0.0L);
-                    positive(j, 1.0L - negative(j));
+                    negative(j, (convection_n(j) < 0.0L) ? 1.0L : 0.0L);
+                    positive(j, (convection_n(j) >= 0.0L) ? 1.0L : 0.0L);
                 }
 
-                if(facing[k][0] == -1) {
+                // Subvectors.
+                Vector<Real> I_de_xyt{dofs_t * dofs_xy};
+                Vector<Real> I_d_xyt{dofs_t * dofs_xy};
+                Vector<Real> I_n_xyt{dofs_t * dofs_xy};
 
-                    // subvectors.
-                    Vector<Real> I_de_xyt{dofs_t * dofs_xy};
-                    Vector<Real> I_d_xyt{dofs_t * dofs_xy};
-                    Vector<Real> I_n_xyt{dofs_t * dofs_xy};
+                // FACE INTEGRALS - COMPUTING.
 
-                    // FACE INTEGRALS - COMPUTING.
+                for(Natural jt = 0; jt < dofs_t; ++jt)
+                    for(Natural jxy = 0; jxy < dofs_xy; ++jxy)
+                        for(Natural kt = 0; kt < phi_t.rows(); ++kt)
+                            for(Natural kxy = 0; kxy < e_phi_s.rows(); ++kxy) { // Brute-force integral.
+                                Real x = e_nodes2x_j(kxy);
+                                Real y = e_nodes2y_j(kxy);
+                                Real t = nodes1t_j(kt);
 
-                    // Dirichlet, diffusion.
+                                // Dirichlet.
 
-                    for(Natural jt = 0; jt < dofs_t; ++jt)
-                        for(Natural jxy = 0; jxy < dofs_xy; ++jxy)
-                            for(Natural kt = 0; kt < phi_t.rows(); ++kt)
-                                for(Natural kxy = 0; kxy < e_phi_s.rows(); ++kxy) { // Brute-force integral.
-                                    Real x = e_nodes2x_j(kxy);
-                                    Real y = e_nodes2y_j(kxy);
-                                    Real t = nodes1t_j(kt);
+                                I_de_xyt(jt * dofs_xy + jxy, I_de_xyt(jt * dofs_xy + jxy) + negative(kt) * e_weights2_j(kxy) / e_dxy_j * weights1_j(kt) * phi_t(kt, jt) * e_phi_s(kxy, jxy) * data.dirichlet(x, y, t));
+                                I_de_xyt(jt * dofs_xy + jxy, I_de_xyt(jt * dofs_xy + jxy) + negative(kt) * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * e_gradn_phi_s(kxy, jxy) * data.dirichlet(x, y, t));
 
-                                    // Dirichlet, diffusion.
+                                I_d_xyt(jt * dofs_xy + jxy, I_d_xyt(jt * dofs_xy + jxy) - negative(kt) * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * convection_n(kt) * e_phi_s(kxy, jxy) * data.dirichlet(x, y, t));
 
-                                    I_de_xyt(jt * dofs_xy + jxy, V_xyt(jt * dofs_xy + jxy) + negative(kt) * e_weights2_j(kxy) / e_dxy_j * weights1_j(kt) * phi_t(kt, jt) * e_phi_s(kxy, jxy) * data.dirichlet(x, y, t));
-                                    I_de_xyt(jt * dofs_xy + jxy, V_xyt(jt * dofs_xy + jxy) + negative(kt) * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * e_gradn_phi_s(kxy, jxy) * data.dirichlet(x, y, t));
+                                // Neumann.
 
-                                    // Dirichlet.
+                                I_n_xyt(jt * dofs_xy + jxy, I_n_xyt(jt * dofs_xy + jxy) + positive(kt) * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * e_phi_s(kxy, jxy) * data.neumann(x, y, t));
+                            }
 
-                                    I_d_xyt(jt * dofs_xy + jxy, V_xyt(jt * dofs_xy + jxy) + negative(kt) * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * convection_n(kt) * e_phi_s(kxy, jxy) * data.dirichlet(x, y, t));
+                // FACE INTEGRALS - BUILDING.
 
-                                    // Neumann.
-
-                                    I_n_xyt(jt * dofs_xy + jxy, V_xyt(jt * dofs_xy + jxy) + positive(kt) * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * e_phi_s(kxy, jxy) * data.neumann(x, y, t));
-                                }
-
-                    // FACE INTEGRALS - PREBUILDING.
-
-                    I_de.emplace_back(I_de_xyt);
-                    I_d.emplace_back(I_d_xyt);
-                    I_n.emplace_back(I_n_xyt);
-
-                } else {
-                    
-                    // Empty small subvectors.
-                    I_d.emplace_back(Vector<Real>{1});
-                    I_de.emplace_back(Vector<Real>{1});
-                    I_n.emplace_back(Vector<Real>{1});
-                }
-            }
-
-            // FACE INTEGRALS - BUILDING.
-
-            for(Natural k = 0; k < neighbours; ++k) {
-                if(facing[k][0] != -1)
-                    continue;
-
-                // Building.
-                I(dofs_j, I(dofs_j) + I_de[k] + I_d[k] + I_n[k]);
+                I(dofs_j, I(dofs_j) + I_de_xyt + I_d_xyt + I_n_xyt);
             }
 
             // TIME FACE INTEGRALS.
