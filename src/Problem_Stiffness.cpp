@@ -136,6 +136,9 @@ namespace ivo {
                 auto [e_nodes2xy_j, normal, e_dxy_j] = internal::reference_to_element(mesh, j, k, nodes1t);
                 auto [e_phi_s, e_gradx_phi_s, e_grady_phi_s] = basis_s(mesh, j, e_nodes2xy_j);
 
+                // Normal gradient.
+                Matrix<Real> e_gradn_phi_s = normal(0) * e_gradx_phi_s + normal(1) * e_grady_phi_s;
+
                 // Weights, space.
                 Vector<Real> e_weights2_j = weights1 * e_dxy_j;
 
@@ -211,8 +214,8 @@ namespace ivo {
 
                                             // a(*, *), diffusion.
 
-                                            I_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, I_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + negative * weights1_j(kt) * e_weights2_j(kxy) * (normal(0) * phi_t(kt, jt) * e_gradx_phi_s(kxy, jxy) + normal(1) * phi_t(kt, jt) * e_grady_phi_s(kxy, jxy)) * phi_t(kt, ht) * e_phi_s(kxy, hxy) * diffusion);
-                                            I_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, I_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) - negative * weights1_j(kt) * e_weights2_j(kxy) * (normal(0) * phi_t(kt, ht) * e_gradx_phi_s(kxy, hxy) + normal(1) * phi_t(kt, ht) * e_grady_phi_s(kxy, hxy)) * phi_t(kt, jt) * e_phi_s(kxy, jxy) * diffusion);
+                                            I_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, I_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + negative * weights1_j(kt) * e_weights2_j(kxy) * phi_t(kt, jt) * e_gradn_phi_s(kxy, jxy) * phi_t(kt, ht) * e_phi_s(kxy, hxy) * diffusion);
+                                            I_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, I_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) - negative * weights1_j(kt) * e_weights2_j(kxy) * phi_t(kt, ht) * e_gradn_phi_s(kxy, hxy) * phi_t(kt, jt) * e_phi_s(kxy, jxy) * diffusion);
 
                                             // b(*, *), convection.
 
