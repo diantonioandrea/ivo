@@ -188,7 +188,7 @@ namespace ivo {
 
                                             I_b_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, I_b_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + negative * weights1_j(kt) * e_weights2_j(kxy) * (phi_t(kt, jt) * e_phi_s(kxy, jxy) - n_phi_t(kt, jt) * n_e_phi_s(kxy, jxy)) * phi_t(kt, ht) * e_phi_s(kxy, hxy) * convection_n);
 
-                                            // J(*, *). Mind the signs.
+                                            // J(*, *).
 
                                             I_J_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, I_J_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) - weights1_j(kt) * e_weights2_j(kxy) / e_dxy_j * (phi_t(kt, jt) * e_phi_s(kxy, jxy) - n_phi_t(kt, jt) * n_e_phi_s(kxy, jxy)) * (phi_t(kt, ht) * e_phi_s(kxy, hxy) - n_phi_t(kt, ht) * n_e_phi_s(kxy, hxy)) * diffusion);
                                         }
