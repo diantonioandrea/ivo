@@ -250,15 +250,15 @@ namespace ivo {
         // Box map.
         Matrix<Real> M{2, 2};
 
-        M(0, 0, (x_max - x_min) / 2.0L);
-        M(1, 1, (y_max - y_min) / 2.0L);
+        M(0, 0, 0.5L * (x_max - x_min));
+        M(1, 1, 0.5L * (y_max - y_min));
 
         Real M_det = M(0, 0) * M(1, 1);
 
         Vector<Real> T{2};
 
-        T(0, (x_max + x_min) / 2.0L);
-        T(1, (y_max + y_min) / 2.0L);
+        T(0, 0.5L * (x_max + x_min));
+        T(1, 0.5L * (y_max + y_min));
 
         // Inverse map.
         Matrix<Real> M_inv{2, 2};
