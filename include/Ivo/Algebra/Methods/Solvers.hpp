@@ -44,6 +44,7 @@ namespace ivo {
 
             #ifndef NVERBOSE
             std::cout << "[Ivo] Restarted GMRES" << std::endl;
+            std::cout << "\t[Restarted GMRES] Solving a linear system" << std::endl;
             std::cout << "\t[Restarted GMRES] Starting, residual: " << norm(residual) << std::endl;
             #endif
 
