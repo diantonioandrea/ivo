@@ -23,7 +23,8 @@ namespace ivo {
     Vector<Real> forcing(const Mesh21 &mesh, const Equation &equation, const Data &data, const Initial &initial) {
 
         // Quadrature.
-        auto [nodes1t, weights1] = quadrature1t(constants::quadrature);
+        auto [nodes1t, weights1t] = quadrature1t(constants::quadrature);
+        auto [nodes1x, weights1x] = quadrature1t(constants::quadrature);
         auto [nodes2x, nodes2y, weights2] = quadrature2xy(constants::quadrature);
 
         // Forcing vector.
@@ -64,7 +65,7 @@ namespace ivo {
             auto [nodes1t_j, dt_j] = internal::reference_to_element(mesh, j, nodes1t);
             auto [phi_t, gradt_phi_t] = basis_t(mesh, j, nodes1t);
 
-            Vector<Real> weights1_j = weights1 * dt_j;
+            Vector<Real> weights1t_j = weights1t * dt_j;
 
             // VOLUME INTEGRALS - COMPUTING.
 
@@ -90,7 +91,7 @@ namespace ivo {
 
                                 // Source.
 
-                                V_xyt(jt * dofs_xy + jxy, V_xyt(jt * dofs_xy + jxy) + weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * phi_xy(kxy, jxy) * source); // [!]
+                                V_xyt(jt * dofs_xy + jxy, V_xyt(jt * dofs_xy + jxy) + weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, jt) * phi_xy(kxy, jxy) * source); // [!]
                             }
             }
 
@@ -107,7 +108,7 @@ namespace ivo {
                     continue;
 
                 // Nodes and basis, space.
-                auto [e_nodes2xy_j, normal, e_dxy_j] = internal::reference_to_element(mesh, j, k, nodes1t);
+                auto [e_nodes2xy_j, normal, e_dxy_j] = internal::reference_to_element(mesh, j, k, nodes1x);
                 auto [e_phi_xy, e_gradx_phi_xy, e_grady_phi_xy] = basis_s(mesh, j, e_nodes2xy_j);
                 auto [e_nodes2x_j, e_nodes2y_j] = e_nodes2xy_j;
 
@@ -115,7 +116,7 @@ namespace ivo {
                 Matrix<Real> e_gradn_phi_xy = normal(0) * e_gradx_phi_xy + normal(1) * e_grady_phi_xy;
 
                 // Weights, space.
-                Vector<Real> e_weights2_j = weights1 * e_dxy_j;
+                Vector<Real> e_weights2_j = weights1x * e_dxy_j;
 
                 // Subvectors.
                 Vector<Real> I_de_xyt{dofs_t * dofs_xy}; // [!]
@@ -147,14 +148,14 @@ namespace ivo {
 
                                 // Dirichlet.
 
-                                I_de_xyt(jt * dofs_xy + jxy, I_de_xyt(jt * dofs_xy + jxy) + negative * e_weights2_j(kxy) / e_dxy_j * weights1_j(kt) * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * dirichlet * diffusion); // [!]
-                                I_de_xyt(jt * dofs_xy + jxy, I_de_xyt(jt * dofs_xy + jxy) + negative * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * e_gradn_phi_xy(kxy, jxy) * dirichlet * diffusion); // [!]
+                                I_de_xyt(jt * dofs_xy + jxy, I_de_xyt(jt * dofs_xy + jxy) + negative * e_weights2_j(kxy) / e_dxy_j * weights1t_j(kt) * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * dirichlet * diffusion); // [!]
+                                I_de_xyt(jt * dofs_xy + jxy, I_de_xyt(jt * dofs_xy + jxy) + negative * e_weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, jt) * e_gradn_phi_xy(kxy, jxy) * dirichlet * diffusion); // [!]
 
-                                I_d_xyt(jt * dofs_xy + jxy, I_d_xyt(jt * dofs_xy + jxy) - negative * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * dirichlet * convection_n); // [!]
+                                I_d_xyt(jt * dofs_xy + jxy, I_d_xyt(jt * dofs_xy + jxy) - negative * e_weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * dirichlet * convection_n); // [!]
 
                                 // Neumann.
 
-                                I_n_xyt(jt * dofs_xy + jxy, I_n_xyt(jt * dofs_xy + jxy) + positive * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * neumann); // [!]
+                                I_n_xyt(jt * dofs_xy + jxy, I_n_xyt(jt * dofs_xy + jxy) + positive * e_weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * neumann); // [!]
                             }
 
                 // FACE INTEGRALS - BUILDING.
