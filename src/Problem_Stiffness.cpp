@@ -458,7 +458,7 @@ namespace ivo {
                                         nc_xyt += weights2_j(kxy) * (-n_f_phi_t(0, jt) * n_phi_s(kxy, jxy)) * f_phi_t(0, ht) * phi_s(kxy, hxy);
                                     }
                                 
-                                    E_nc_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, E_nc_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + nc_xyt);
+                                    E_nc_xyt(jt * n_dofs_xy + jxy, ht * dofs_xy + hxy, E_nc_xyt(jt * n_dofs_xy + jxy, ht * dofs_xy + hxy) + nc_xyt);
                                 }
                 }
 
