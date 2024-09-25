@@ -43,9 +43,8 @@ namespace ivo {
             Vector<T> residual = b - A * x;
 
             #ifndef NVERBOSE
-            std::cout << "[Ivo] Restarted GMRES" << std::endl;
-            std::cout << "\t[Restarted GMRES] Solving a linear system" << std::endl;
-            std::cout << "\t[Restarted GMRES] Starting, residual: " << norm(residual) << std::endl;
+            std::cout << "[Ivo] Solver, Restarted GMRES" << std::endl;
+            std::cout << "\t[Solver, Restarted GMRES] Started, residual: " << norm(residual) << std::endl;
             #endif
 
             do {
@@ -145,15 +144,20 @@ namespace ivo {
                 // Size update.
                 m = (m > constants::gmres_restart) ? 1 : m + 1;
 
-                #ifndef NVERBOSE // Updates.
+                #ifndef NVERBOSE
+                if(m == 1) {
+                    std::cout << "\t[Solver, Restarted GMRES] Restarting, residual: " << norm(residual) << std::endl;
+                    continue;
+                }
+
                 if(iterations % 25 == 0)
-                    std::cout << "\t[Restarted GMRES] Completed iteration " << iterations << ", residual: " << norm(residual) << std::endl;
+                    std::cout << "\t[Solver, Restarted GMRES] Completed iteration " << iterations << ", residual: " << norm(residual) << std::endl;
                 #endif
 
             } while(iterations < constants::solvers_stop);
 
             #ifndef NVERBOSE
-            std::cout << "\t[Restarted GMRES] Exited, iterations: " << iterations << ", " << " residual: " << norm(residual) << std::endl;
+            std::cout << "\t[Solver, Restarted GMRES] Exited, iterations: " << iterations << ", " << " residual: " << norm(residual) << std::endl;
             #endif
 
             return x;
