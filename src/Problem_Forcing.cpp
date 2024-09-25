@@ -90,7 +90,7 @@ namespace ivo {
 
                                 // Source.
 
-                                V_xyt(jt * dofs_xy + jxy, V_xyt(jt * dofs_xy + jxy) + weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * phi_s(kxy, jxy) * source);
+                                V_xyt(jt * dofs_xy + jxy, V_xyt(jt * dofs_xy + jxy) + weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * phi_s(kxy, jxy) * source); // [!]
                             }
             }
 
@@ -118,9 +118,9 @@ namespace ivo {
                 Vector<Real> e_weights2_j = weights1 * e_dxy_j;
 
                 // Subvectors.
-                Vector<Real> I_de_xyt{dofs_t * dofs_xy};
-                Vector<Real> I_d_xyt{dofs_t * dofs_xy};
-                Vector<Real> I_n_xyt{dofs_t * dofs_xy};
+                Vector<Real> I_de_xyt{dofs_t * dofs_xy}; // [!]
+                Vector<Real> I_d_xyt{dofs_t * dofs_xy}; // [!]
+                Vector<Real> I_n_xyt{dofs_t * dofs_xy}; // [!]
 
                 // FACE INTEGRALS - COMPUTING.
 
@@ -146,14 +146,14 @@ namespace ivo {
 
                                 // Dirichlet.
 
-                                I_de_xyt(jt * dofs_xy + jxy, I_de_xyt(jt * dofs_xy + jxy) + negative * e_weights2_j(kxy) / e_dxy_j * weights1_j(kt) * phi_t(kt, jt) * e_phi_s(kxy, jxy) * dirichlet);
-                                I_de_xyt(jt * dofs_xy + jxy, I_de_xyt(jt * dofs_xy + jxy) + negative * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * e_gradn_phi_s(kxy, jxy) * dirichlet);
+                                I_de_xyt(jt * dofs_xy + jxy, I_de_xyt(jt * dofs_xy + jxy) + negative * e_weights2_j(kxy) / e_dxy_j * weights1_j(kt) * phi_t(kt, jt) * e_phi_s(kxy, jxy) * dirichlet); // [!]
+                                I_de_xyt(jt * dofs_xy + jxy, I_de_xyt(jt * dofs_xy + jxy) + negative * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * e_gradn_phi_s(kxy, jxy) * dirichlet); // [!]
 
-                                I_d_xyt(jt * dofs_xy + jxy, I_d_xyt(jt * dofs_xy + jxy) - negative * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * convection_n * e_phi_s(kxy, jxy) * dirichlet);
+                                I_d_xyt(jt * dofs_xy + jxy, I_d_xyt(jt * dofs_xy + jxy) - negative * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * convection_n * e_phi_s(kxy, jxy) * dirichlet); // [!]
 
                                 // Neumann.
 
-                                I_n_xyt(jt * dofs_xy + jxy, I_n_xyt(jt * dofs_xy + jxy) + positive * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * e_phi_s(kxy, jxy) * neumann);
+                                I_n_xyt(jt * dofs_xy + jxy, I_n_xyt(jt * dofs_xy + jxy) + positive * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * e_phi_s(kxy, jxy) * neumann); // [!]
                             }
 
                 // FACE INTEGRALS - BUILDING.
@@ -168,8 +168,7 @@ namespace ivo {
                 // TIME FACE INTEGRALS - PRECOMPUTING.
 
                 // Subvectors.
-                Vector<Real> E_xy{dofs_xy};
-                Vector<Real> E_t{dofs_t};
+                Vector<Real> E_xyt{dofs_t * dofs_xy};
 
                 // Face time basis.
                 auto [f_phi_t, f_gradt_phi_t] = basis_t(mesh, j, Vector<Real>{1, -1.0L}); // [?]
@@ -181,20 +180,36 @@ namespace ivo {
                     // Nodes and basis.
                     auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
                     auto [phi_s, gradx_phi_s, grady_phi_s] = basis_s(mesh, j, nodes2xy_j);
+                    auto [nodes2x_j, nodes2y_j] = nodes2xy_j;
 
+                    // Weights, space.
                     Vector<Real> weights2_j = weights2 * dxy_j;
 
-                    // Condition.
-                    Vector<Real> condition = initial(nodes2xy_j[0], nodes2xy_j[1]);
+                    // CURRENT vs. CONDITION.
 
-                    E_xy += internal::c_scale(weights2_j, phi_s).transpose() * condition;
+                    for(Natural jt = 0; jt < dofs_t; ++jt)
+                        for(Natural jxy = 0; jxy < dofs_xy; ++jxy) {
+                            Real cc_xyt = 0.0L;
+
+                            for(Natural kxy = 0; kxy < phi_s.rows(); ++kxy) { // Brute-force integral.
+                                Real x = nodes2x_j(kxy);
+                                Real y = nodes2y_j(kxy);
+
+                                // Condition.
+                                Real condition = initial(x, y);
+
+                                // (*, *).
+
+                                cc_xyt += weights2_j(kxy) * f_phi_t(0, jt) * phi_s(kxy, jxy) * condition;
+                            }
+
+                            E_xyt(jt * dofs_xy + jxy, E_xyt(jt * dofs_xy + jxy) + cc_xyt);
+                        }
                 }
-
-                E_t = f_phi_t.row(0);
 
                 // TIME FACE INTEGRALS - BUILDING.
 
-                E(dofs_j, E(dofs_j) + kronecker(E_t, E_xy));
+                E(dofs_j, E(dofs_j) + E_xyt);
             }
         }
 
