@@ -24,7 +24,7 @@ namespace ivo {
 
         // Quadrature.
         auto [nodes1t, weights1t] = quadrature1t(constants::quadrature);
-        auto [nodes1x, weights1x] = quadrature1t(constants::quadrature);
+        auto [nodes1x, weights1x] = quadrature1x(constants::quadrature);
         auto [nodes2x, nodes2y, weights2] = quadrature2xy(constants::quadrature);
 
         // Forcing vector.
