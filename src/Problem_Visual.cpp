@@ -22,8 +22,8 @@ namespace ivo {
     void visual(const Mesh21 &mesh, const Vector<Real> &solution, const std::string &filename) {
 
         // Quadrature, visualization only.
-        auto [nodes1t, weights1] = quadrature1(3);
-        auto [nodes2x, nodes2y, weights2] = quadrature2(3);
+        auto [nodes1t, weights1] = quadrature1t(3);
+        auto [nodes2x, nodes2y, weights2] = quadrature2xy(3);
 
         // Output.
         std::ofstream output(filename);

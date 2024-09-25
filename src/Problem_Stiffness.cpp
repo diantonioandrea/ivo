@@ -23,8 +23,8 @@ namespace ivo {
     Sparse<Real> stiffness(const Mesh21 &mesh, const Equation &equation) {
 
         // Quadrature.
-        auto [nodes1t, weights1] = quadrature1(constants::quadrature);
-        auto [nodes2x, nodes2y, weights2] = quadrature2(constants::quadrature);
+        auto [nodes1t, weights1] = quadrature1t(constants::quadrature);
+        auto [nodes2x, nodes2y, weights2] = quadrature2xy(constants::quadrature);
 
         // Stiffness submatrices.
         Sparse<Real> T{mesh.dofs(), mesh.dofs()}; // Volume integrals, time.
