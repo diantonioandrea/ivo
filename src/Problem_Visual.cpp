@@ -21,12 +21,17 @@ namespace ivo {
      */
     void visual(const Mesh21 &mesh, const Vector<Real> &solution, const std::string &filename) {
 
-        // Quadrature.
-        auto [nodes1t, weights1] = quadrature1(constants::quadrature);
-        auto [nodes2x, nodes2y, weights2] = quadrature2(constants::quadrature);
+        // Quadrature, visualization only.
+        auto [nodes1t, weights1] = quadrature1(3);
+        auto [nodes2x, nodes2y, weights2] = quadrature2(3);
 
         // Output.
         std::ofstream output(filename);
+
+        #ifndef NVERBOSE
+        std::cout << "[Ivo] Visual" << std::endl;
+        std::cout << "\t[Visual] Creating the solution visualization" << std::endl;
+        #endif
 
         // Loop over elements.
         for(Natural j = 0; j < mesh.space() * mesh.time(); ++j) {
@@ -42,6 +47,8 @@ namespace ivo {
 
             // Dofs.
             std::vector<Natural> dofs_j = mesh.dofs(j);
+            Natural dofs_xy = (element.p() + 1) * (element.p() + 2) / 2;
+            Natural dofs_t = element.q() + 1;
 
             // Nodes and basis.
             auto [nodes1t_j, dt_j] = internal::reference_to_element(mesh, j, nodes1t);
@@ -54,25 +61,25 @@ namespace ivo {
                 auto [phi_s, gradx_phi_s, grady_phi_s] = basis_s(mesh, j, nodes2xy_j);
                 auto [nodes2x_j, nodes2y_j] = nodes2xy_j;
 
-                // Full basis.
-                Matrix<Real> phi = kronecker(phi_t, phi_s);
+                // Local solution.
+                Vector<Real> local = solution(dofs_j);
 
-                // Full nodes.
-                std::vector<std::array<Real, 3>> nodes;
+                for(Natural jt = 0; jt < dofs_t; ++jt)
+                    for(Natural jxy = 0; jxy < dofs_xy; ++jxy)
+                        for(Natural kt = 0; kt < phi_t.rows(); ++kt)
+                            for(Natural kxy = 0; kxy < phi_s.rows(); ++kxy) { // Brute-force integral.
+                                Real x = nodes2x_j(kxy);
+                                Real y = nodes2y_j(kxy);
+                                Real t = nodes1t_j(kt);
 
-                for(Natural l = 0; l < nodes1t_j.size(); ++l)
-                    for(Natural h = 0; h < nodes2x_j.size(); ++h)
-                        nodes.emplace_back(std::array<Real, 3>{nodes2x_j[h], nodes2y_j[h], nodes1t_j[l]});
-
-                // Evaluation.
-                Vector<Real> evaluation = phi * solution(dofs_j);
-
-                // Output.
-                for(Natural j = 0; j < nodes.size(); ++j) {
-                    output << nodes[j][0] << "," << nodes[j][1] << "," << nodes[j][2] << "," << evaluation(j) << std::endl;
-                }
+                                output << x << "," << y << "," << t << "," << phi_t(kt, jt) * phi_s(kxy, jxy) * local(jt * dofs_xy + jxy) << std::endl;
+                            }
             }
         }
+
+        #ifndef NVERBOSE
+        std::cout << "\t[Visual] Exited" << std::endl;
+        #endif
     }
 
 }
