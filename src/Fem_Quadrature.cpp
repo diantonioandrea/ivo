@@ -95,14 +95,14 @@ namespace ivo {
             mask(m - 1, false);
 
             // Nodes.
-            Vector<Real> nodes = ((b + a) / 2.0L - (b - a) / 2.0L) * stacked(z(mask), -flipped(z));
+            Vector<Real> nodes = ((b + a) / 2.0L) - ((b - a) / 2.0L) * stacked(z(mask), -flipped(z));
 
             // Reflection.
             Vector<Real> z_ref = stacked(z(mask), flipped(z));
             Vector<Real> temp_ref = stacked(temp(mask), flipped(temp));
 
             // Weights.
-            Vector<Real> weights = (b - a) / (1.0L - z_ref * z_ref) / (temp_ref * temp_ref);
+            Vector<Real> weights = (b - a) / ((1.0L - z_ref * z_ref) * (temp_ref * temp_ref));
 
             return {nodes, weights};
         }
