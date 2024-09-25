@@ -135,6 +135,7 @@ namespace ivo {
                                 // Equation coefficients.
                                 auto [convection_x, convection_y] = equation.convection(t);
                                 Real convection_n = normal(0) * convection_x + normal(1) * convection_y;
+                                Real diffusion = equation.diffusion(t);
 
                                 // Data.
                                 Real dirichlet = data.dirichlet(x, y, t);
@@ -146,10 +147,10 @@ namespace ivo {
 
                                 // Dirichlet.
 
-                                I_de_xyt(jt * dofs_xy + jxy, I_de_xyt(jt * dofs_xy + jxy) + negative * e_weights2_j(kxy) / e_dxy_j * weights1_j(kt) * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * dirichlet); // [!]
-                                I_de_xyt(jt * dofs_xy + jxy, I_de_xyt(jt * dofs_xy + jxy) + negative * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * e_gradn_phi_xy(kxy, jxy) * dirichlet); // [!]
+                                I_de_xyt(jt * dofs_xy + jxy, I_de_xyt(jt * dofs_xy + jxy) + negative * e_weights2_j(kxy) / e_dxy_j * weights1_j(kt) * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * dirichlet * diffusion); // [!]
+                                I_de_xyt(jt * dofs_xy + jxy, I_de_xyt(jt * dofs_xy + jxy) + negative * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * e_gradn_phi_xy(kxy, jxy) * dirichlet * diffusion); // [!]
 
-                                I_d_xyt(jt * dofs_xy + jxy, I_d_xyt(jt * dofs_xy + jxy) - negative * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * convection_n * e_phi_xy(kxy, jxy) * dirichlet); // [!]
+                                I_d_xyt(jt * dofs_xy + jxy, I_d_xyt(jt * dofs_xy + jxy) - negative * e_weights2_j(kxy) * weights1_j(kt) * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * dirichlet * convection_n); // [!]
 
                                 // Neumann.
 
