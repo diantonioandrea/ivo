@@ -188,7 +188,7 @@ namespace ivo {
                                             Real convection_n = normal(0) * convection_x + normal(1) * convection_y;
                                             Real diffusion = equation.diffusion(t);
 
-                                            // Sign check.
+                                            // Boundary check.
                                             Real negative = (convection_n < 0.0L) ? 1.0L : 0.0L;
 
                                             // a(*, *), diffusion.
@@ -225,7 +225,7 @@ namespace ivo {
                                             Real convection_n = normal(0) * convection_x + normal(1) * convection_y;
                                             Real diffusion = equation.diffusion(t);
 
-                                            // Sign check.
+                                            // Boundary check.
                                             Real negative = (convection_n < 0.0L) ? 1.0L : 0.0L;
 
                                             // a(*, *), diffusion.
@@ -258,7 +258,7 @@ namespace ivo {
                                             Real convection_n = normal(0) * convection_x + normal(1) * convection_y;
                                             Real diffusion = equation.diffusion(t);
 
-                                            // Sign check.
+                                            // Boundary check.
                                             Real negative = (convection_n < 0.0L) ? 1.0L : 0.0L;
 
                                             // a(*, *), diffusion.
@@ -295,7 +295,7 @@ namespace ivo {
                                             Real convection_n = normal(0) * convection_x + normal(1) * convection_y;
                                             Real diffusion = equation.diffusion(t);
 
-                                            // Sign check.
+                                            // Boundary check.
                                             Real negative = (convection_n < 0.0L) ? 1.0L : 0.0L;
 
                                             // a(*, *), diffusion.
@@ -337,7 +337,7 @@ namespace ivo {
                                             Real convection_n = normal(0) * convection_x + normal(1) * convection_y;
                                             Real diffusion = equation.diffusion(t);
 
-                                            // Sign check.
+                                            // Boundary check.
                                             Real negative = (convection_n < 0.0L) ? 1.0L : 0.0L;
 
                                             // a(*, *), diffusion.

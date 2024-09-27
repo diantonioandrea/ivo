@@ -142,7 +142,7 @@ namespace ivo {
                                 Real dirichlet = data.dirichlet(x, y, t);
                                 Real neumann = data.neumann(x, y, t);
 
-                                // Sign check.
+                                // Boundary check.
                                 Real negative = (convection_n < 0.0L) ? 1.0L : 0.0L;
                                 Real positive = (convection_n >= 0.0L) ? 1.0L : 0.0L;
 
