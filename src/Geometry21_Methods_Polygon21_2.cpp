@@ -213,10 +213,10 @@ namespace ivo {
 
         // Cells.
         std::vector<Polygon21> cells;
+        cells.resize(points.size(), polygon);
 
+        #pragma omp parallel for
         for(Natural j = 0; j < points.size(); ++j) {
-            Polygon21 cell{polygon};
-
             #ifndef NDEBUG // Integrity check.
             assert(contains2(polygon, points[j]));
             #endif
@@ -226,10 +226,8 @@ namespace ivo {
                 if(j == k)
                     continue;
                     
-                cell = reduce2(cell, bisector2(points[j], points[k]), points[j]);
+                cells[j] = reduce2(cells[j], bisector2(points[j], points[k]), points[j]);
             }
-
-            cells.emplace_back(cell);
         }
 
         return cells;
