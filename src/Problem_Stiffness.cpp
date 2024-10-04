@@ -86,10 +86,17 @@ namespace ivo {
                 // Weights, space.
                 Vector<Real> weights2_j = weights2 * dxy_j;
 
+                // CURRENT vs. CURRENT.
+
                 for(Natural jt = 0; jt < dofs_t; ++jt)
                     for(Natural ht = 0; ht < dofs_t; ++ht)
                         for(Natural jxy = 0; jxy < dofs_xy; ++jxy)
-                            for(Natural hxy = 0; hxy < dofs_xy; ++hxy)
+                            for(Natural hxy = 0; hxy < dofs_xy; ++hxy) {
+                                Real cc_T_xyt = 0.0L;
+                                Real cc_V_a_xyt = 0.0L;
+                                Real cc_V_b_xyt = 0.0L;
+                                Real cc_V_c_xyt = 0.0L;
+
                                 for(Natural kt = 0; kt < phi_t.rows(); ++kt)
                                     for(Natural kxy = 0; kxy < phi_xy.rows(); ++kxy) { // Brute-force integral.
                                         Real t = nodes1t_j(kt);
@@ -101,20 +108,27 @@ namespace ivo {
 
                                         // (*', *).
 
-                                        T_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, T_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + weights2_j(kxy) * weights1t_j(kt) * gradt_phi_t(kt, jt) * phi_xy(kxy, jxy) * phi_t(kt, ht) * phi_xy(kxy, hxy)); // [!]
+                                        cc_T_xyt += weights2_j(kxy) * weights1t_j(kt) * gradt_phi_t(kt, jt) * phi_xy(kxy, jxy) * phi_t(kt, ht) * phi_xy(kxy, hxy);
 
                                         // a(*, *), diffusion.
 
-                                        V_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + weights2_j(kxy) * weights1t_j(kt) * (phi_t(kt, jt) * gradx_phi_xy(kxy, jxy) * phi_t(kt, ht) * gradx_phi_xy(kxy, hxy) + phi_t(kt, jt) * grady_phi_xy(kxy, jxy) * phi_t(kt, ht) * grady_phi_xy(kxy, hxy)) * diffusion); // [!]
+                                        cc_V_a_xyt += weights2_j(kxy) * weights1t_j(kt) * (phi_t(kt, jt) * gradx_phi_xy(kxy, jxy) * phi_t(kt, ht) * gradx_phi_xy(kxy, hxy) + phi_t(kt, jt) * grady_phi_xy(kxy, jxy) * phi_t(kt, ht) * grady_phi_xy(kxy, hxy)) * diffusion;
 
                                         // b(*, *), convection.
 
-                                        V_b_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_b_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + weights2_j(kxy) * weights1t_j(kt) * (phi_t(kt, jt) * gradx_phi_xy(kxy, jxy) * convection_x + phi_t(kt, jt) * grady_phi_xy(kxy, jxy) * convection_y) * phi_t(kt, ht) * phi_xy(kxy, hxy)); // [!]
+                                        cc_V_b_xyt += weights2_j(kxy) * weights1t_j(kt) * (phi_t(kt, jt) * gradx_phi_xy(kxy, jxy) * convection_x + phi_t(kt, jt) * grady_phi_xy(kxy, jxy) * convection_y) * phi_t(kt, ht) * phi_xy(kxy, hxy);
 
                                         // c(*, *), reaction.
 
-                                        V_c_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_c_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, jt) * phi_xy(kxy, jxy) * phi_t(kt, ht) * phi_xy(kxy, hxy) * reaction); // [!]
+                                        cc_V_c_xyt += weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, jt) * phi_xy(kxy, jxy) * phi_t(kt, ht) * phi_xy(kxy, hxy) * reaction;
                                     }
+
+                                T_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, T_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_T_xyt);
+                                V_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_V_a_xyt);
+                                V_b_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_b_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_V_b_xyt);
+                                V_c_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_c_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_V_c_xyt);
+
+                            }
             }
 
             // VOLUME INTEGRALS - BUILDING.
