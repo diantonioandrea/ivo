@@ -78,8 +78,12 @@ namespace ivo {
 
                 Vector<Real> weights2_j = weights2 * dxy_j;
 
+                // CURRENT.
+
                 for(Natural jt = 0; jt < dofs_t; ++jt)
-                    for(Natural jxy = 0; jxy < dofs_xy; ++jxy)
+                    for(Natural jxy = 0; jxy < dofs_xy; ++jxy) {
+                        Real c_V_xyt = 0.0L;
+
                         for(Natural kt = 0; kt < phi_t.rows(); ++kt)
                             for(Natural kxy = 0; kxy < phi_xy.rows(); ++kxy) { // Brute-force integral.
                                 Real x = nodes2x_j(kxy);
@@ -91,8 +95,11 @@ namespace ivo {
 
                                 // Source.
 
-                                V_xyt(jt * dofs_xy + jxy, V_xyt(jt * dofs_xy + jxy) + weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, jt) * phi_xy(kxy, jxy) * source); // [!]
+                                c_V_xyt += weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, jt) * phi_xy(kxy, jxy) * source;
                             }
+
+                        V_xyt(jt * dofs_xy + jxy, V_xyt(jt * dofs_xy + jxy) + c_V_xyt);
+                    }
             }
 
             // VOLUME INTEGRALS - BUILDING.
