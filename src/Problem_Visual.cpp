@@ -62,18 +62,23 @@ namespace ivo {
                 auto [nodes2x_j, nodes2y_j] = nodes2xy_j;
 
                 // Local solution.
-                Vector<Real> local = solution(dofs_j);
+                Vector<Real> uh_j = solution(dofs_j);
 
-                for(Natural jt = 0; jt < dofs_t; ++jt)
-                    for(Natural jxy = 0; jxy < dofs_xy; ++jxy)
-                        for(Natural kt = 0; kt < phi_t.rows(); ++kt)
-                            for(Natural kxy = 0; kxy < phi_s.rows(); ++kxy) { // Brute-force integral.
-                                Real x = nodes2x_j(kxy);
-                                Real y = nodes2y_j(kxy);
-                                Real t = nodes1t_j(kt);
+                for(Natural kt = 0; kt < phi_t.rows(); ++kt)
+                    for(Natural kxy = 0; kxy < phi_s.rows(); ++kxy) { // Brute-force integral.
+                        Real x = nodes2x_j(kxy);
+                        Real y = nodes2y_j(kxy);
+                        Real t = nodes1t_j(kt);
 
-                                output << x << "," << y << "," << t << "," << phi_t(kt, jt) * phi_s(kxy, jxy) * local(jt * dofs_xy + jxy) << std::endl;
-                            }
+                        Real uh = 0.0L;
+
+                        for(Natural jt = 0; jt < dofs_t; ++jt)
+                            for(Natural jxy = 0; jxy < dofs_xy; ++jxy)
+                                uh += phi_t(kt, jt) * phi_s(kxy, jxy) * uh_j(jt * dofs_xy + jxy);
+
+
+                        output << x << "," << y << "," << t << "," << uh << std::endl;
+                    }
             }
         }
 
