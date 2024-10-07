@@ -951,6 +951,8 @@ namespace ivo {
 
                     this->_csr_inner[j + 1] = this->_csr_outer.size();
                 }
+
+                this->_csr = true;
             }
 
             /**
@@ -978,6 +980,8 @@ namespace ivo {
 
                     this->_csc_inner[k + 1] = this->_csc_outer.size();
                 }
+
+                this->_csc = true;
             }
     };
     
