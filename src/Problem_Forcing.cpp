@@ -28,7 +28,6 @@ namespace ivo {
         auto [nodes2x, nodes2y, weights2] = quadrature2xy(constants::quadrature);
 
         // Forcing vector.
-        Vector<Real> E{mesh.dofs()}; // Face integrals, time.
         Vector<Real> V{mesh.dofs()}; // Volume integrals.
         Vector<Real> I{mesh.dofs()}; // Face integrals.
 
@@ -48,8 +47,6 @@ namespace ivo {
 
             std::vector<std::array<Integer, 2>> facing = neighbourhood.facing();
             Natural neighbours = facing.size();
-
-            Integer bottom = neighbourhood.bottom();
 
             // Dofs.
             std::vector<Natural> dofs_j = mesh.dofs(j);
@@ -180,57 +177,6 @@ namespace ivo {
 
                 I(dofs_j, I(dofs_j) + I_de_xyt + I_d_xyt + I_n_xyt);
             }
-
-            // TIME FACE INTEGRALS.
-
-            if(bottom == -1) {
-
-                // TIME FACE INTEGRALS - PRECOMPUTING.
-
-                // Subvectors.
-                Vector<Real> E_xyt{dofs_t * dofs_xy};
-
-                // Face time basis.
-                auto [f_phi_t, f_gradt_phi_t] = basis_t(mesh, j, Vector<Real>{1, -1.0L}); // [?]
-
-                // TIME FACE INTEGRALS - COMPUTING.
-
-                for(Natural k = 0; k < neighbours; ++k) { // Sub-triangulation.
-
-                    // Nodes and basis.
-                    auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
-                    auto [phi_xy, gradx_phi_xy, grady_phi_xy] = basis_xy(mesh, j, nodes2xy_j);
-                    auto [nodes2x_j, nodes2y_j] = nodes2xy_j;
-
-                    // Weights, space.
-                    Vector<Real> weights2_j = weights2 * dxy_j;
-
-                    // CURRENT vs. CONDITION.
-
-                    for(Natural jt = 0; jt < dofs_t; ++jt)
-                        for(Natural jxy = 0; jxy < dofs_xy; ++jxy) {
-                            Real cc_xyt = 0.0L;
-
-                            for(Natural kxy = 0; kxy < phi_xy.rows(); ++kxy) { // Brute-force integral.
-                                Real x = nodes2x_j(kxy);
-                                Real y = nodes2y_j(kxy);
-
-                                // Condition.
-                                Real condition = initial(x, y);
-
-                                // (*, *).
-
-                                cc_xyt += weights2_j(kxy) * f_phi_t(0, jt) * phi_xy(kxy, jxy) * condition;
-                            }
-
-                            E_xyt(jt * dofs_xy + jxy, E_xyt(jt * dofs_xy + jxy) + cc_xyt);
-                        }
-                }
-
-                // TIME FACE INTEGRALS - BUILDING.
-
-                E(dofs_j, E(dofs_j) + E_xyt);
-            }
         }
 
         #ifndef NVERBOSE
@@ -238,7 +184,7 @@ namespace ivo {
         #endif
 
         // Building and return
-        return E + V + I;
+        return V + I;
     }
 
 }

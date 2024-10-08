@@ -216,7 +216,7 @@ namespace ivo {
 
                                             // J(*, *).
 
-                                            cc_xyt -= negative * weights1t_j(kt) * e_weights2_j(kxy) / e_dxy_j * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * phi_t(kt, ht) * e_phi_xy(kxy, hxy) * diffusion;
+                                            cc_xyt -= weights1t_j(kt) * e_weights2_j(kxy) / e_dxy_j * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * phi_t(kt, ht) * e_phi_xy(kxy, hxy) * diffusion;
                                         }
                                     
                                     I_cc_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, I_cc_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_xyt);
@@ -235,12 +235,7 @@ namespace ivo {
                                             Real t = nodes1t_j(kt);
 
                                             // Equation coefficients.
-                                            auto [convection_x, convection_y] = equation.convection(t);
-                                            Real convection_n = normal(0) * convection_x + normal(1) * convection_y;
                                             Real diffusion = equation.diffusion(t);
-
-                                            // Boundary check.
-                                            Real negative = (convection_n < 0.0L) ? 1.0L : 0.0L;
 
                                             // a(*, *), diffusion.
 
@@ -249,7 +244,7 @@ namespace ivo {
 
                                             // J(*, *).
 
-                                            cn_xyt -= negative * weights1t_j(kt) * e_weights2_j(kxy) / e_dxy_j * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * (-n_phi_t(kt, ht) * n_e_phi_xy(kxy, hxy)) * diffusion;
+                                            cn_xyt -= weights1t_j(kt) * e_weights2_j(kxy) / e_dxy_j * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * (-n_phi_t(kt, ht) * n_e_phi_xy(kxy, hxy)) * diffusion;
                                         }
                                     
                                     I_cn_xyt(jt * dofs_xy + jxy, ht * n_dofs_xy + hxy, I_cn_xyt(jt * dofs_xy + jxy, ht * n_dofs_xy + hxy) + cn_xyt);
@@ -286,7 +281,7 @@ namespace ivo {
 
                                             // J(*, *).
 
-                                            nc_xyt -= negative * weights1t_j(kt) * e_weights2_j(kxy) / e_dxy_j * (-n_phi_t(kt, jt) * n_e_phi_xy(kxy, jxy)) * phi_t(kt, ht) * e_phi_xy(kxy, hxy) * diffusion;
+                                            nc_xyt -= weights1t_j(kt) * e_weights2_j(kxy) / e_dxy_j * (-n_phi_t(kt, jt) * n_e_phi_xy(kxy, jxy)) * phi_t(kt, ht) * e_phi_xy(kxy, hxy) * diffusion;
                                         }
                                     
                                     I_nc_xyt(jt * n_dofs_xy + jxy, ht * dofs_xy + hxy, I_nc_xyt(jt * n_dofs_xy + jxy, ht * dofs_xy + hxy) + nc_xyt);
@@ -305,12 +300,7 @@ namespace ivo {
                                             Real t = nodes1t_j(kt);
 
                                             // Equation coefficients.
-                                            auto [convection_x, convection_y] = equation.convection(t);
-                                            Real convection_n = normal(0) * convection_x + normal(1) * convection_y;
                                             Real diffusion = equation.diffusion(t);
-
-                                            // Boundary check.
-                                            Real negative = (convection_n < 0.0L) ? 1.0L : 0.0L;
 
                                             // a(*, *), diffusion.
 
@@ -319,7 +309,7 @@ namespace ivo {
 
                                             // J(*, *).
 
-                                            nn_xyt -= negative * weights1t_j(kt) * e_weights2_j(kxy) / e_dxy_j * n_phi_t(kt, jt) * n_e_phi_xy(kxy, jxy) * n_phi_t(kt, ht) * n_e_phi_xy(kxy, hxy) * diffusion;
+                                            nn_xyt -= weights1t_j(kt) * e_weights2_j(kxy) / e_dxy_j * n_phi_t(kt, jt) * n_e_phi_xy(kxy, jxy) * n_phi_t(kt, ht) * n_e_phi_xy(kxy, hxy) * diffusion;
                                         }
                                     
                                     I_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy, I_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy) + nn_xyt);
@@ -448,12 +438,8 @@ namespace ivo {
                                 for(Natural hxy = 0; hxy < dofs_xy; ++hxy) {
                                     Real cc_xyt = 0.0L;
 
-                                    for(Natural kxy = 0; kxy < phi_xy.rows(); ++kxy) { // Brute-force integral.
-
-                                        // (*, *).
-
+                                    for(Natural kxy = 0; kxy < phi_xy.rows(); ++kxy) // Brute-force integral, (*, *).
                                         cc_xyt += weights2_j(kxy) * f_phi_t(0, jt) * phi_xy(kxy, jxy) * f_phi_t(0, ht) * phi_xy(kxy, hxy);
-                                    }
                                 
                                     E_cc_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, E_cc_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_xyt);
                                 }
@@ -466,12 +452,8 @@ namespace ivo {
                                 for(Natural hxy = 0; hxy < dofs_xy; ++hxy) {
                                     Real nc_xyt = 0.0L;
 
-                                    for(Natural kxy = 0; kxy < phi_xy.rows(); ++kxy) { // Brute-force integral.
-
-                                        // (*, *).
-
-                                        nc_xyt += weights2_j(kxy) * (-n_f_phi_t(0, jt) * n_phi_xy(kxy, jxy)) * f_phi_t(0, ht) * phi_xy(kxy, hxy);
-                                    }
+                                    for(Natural kxy = 0; kxy < phi_xy.rows(); ++kxy) // Brute-force integral, (*, *).
+                                        nc_xyt -= weights2_j(kxy) * n_f_phi_t(0, jt) * n_phi_xy(kxy, jxy) * f_phi_t(0, ht) * phi_xy(kxy, hxy);
                                 
                                     E_nc_xyt(jt * n_dofs_xy + jxy, ht * dofs_xy + hxy, E_nc_xyt(jt * n_dofs_xy + jxy, ht * dofs_xy + hxy) + nc_xyt);
                                 }
@@ -480,7 +462,7 @@ namespace ivo {
                 // TIME FACE INTEGRALS - BUILDING.
 
                 E(dofs_j, dofs_j, E(dofs_j, dofs_j) + E_cc_xyt);
-                E(n_dofs_j, dofs_j, E(n_dofs_j, dofs_j) + E_nc_xyt);
+                E(n_dofs_j, dofs_j, E(n_dofs_j, dofs_j) + E_nc_xyt); // [??]
 
             } else {
 
@@ -503,12 +485,8 @@ namespace ivo {
                                 for(Natural hxy = 0; hxy < dofs_xy; ++hxy) {
                                     Real cc_xyt = 0.0L;
 
-                                    for(Natural kxy = 0; kxy < phi_xy.rows(); ++kxy) { // Brute-force integral.
-
-                                        // (*, *).
-
+                                    for(Natural kxy = 0; kxy < phi_xy.rows(); ++kxy) // Brute-force integral, (*, *).
                                         cc_xyt += weights2_j(kxy) * f_phi_t(0, jt) * phi_xy(kxy, jxy) * f_phi_t(0, ht) * phi_xy(kxy, hxy);
-                                    }
                                 
                                     E_cc_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, E_cc_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_xyt);
                                 }
