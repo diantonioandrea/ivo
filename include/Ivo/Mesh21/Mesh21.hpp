@@ -106,7 +106,8 @@ namespace ivo {
             // Parameters.
 
             Natural dofs() const;
-            std::vector<Natural> dofs(const Natural &j) const;
+            std::vector<Natural> dofs(const Natural &) const;
+            std::vector<Natural> dofs_t(const Natural &) const;
 
             // Output.
 

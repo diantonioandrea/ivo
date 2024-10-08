@@ -132,6 +132,33 @@ namespace ivo {
         return dofs;
     }
 
+    /**
+     * @brief Global to local dofs.
+     * 
+     * @param j Time slab's index.
+     * @return std::vector<Natural> 
+     */
+    std::vector<Natural> Mesh21::dofs_t(const Natural &j) const {
+        #ifndef NDEBUG
+        assert(j < this->_time);
+        #endif
+
+        Natural counter = 0;
+        std::vector<Natural> dofs;
+
+        for(Natural k = 0; k < j * this->_space; ++k)
+            counter += this->_elements[k].dofs();
+
+        for(Natural k = 0; k < this->_space; ++k) {
+            for(Natural h = 0; h < this->element(j * this->_space + k).dofs(); ++h) {
+                dofs.emplace_back(counter);
+                ++counter;
+            }
+        }
+
+        return dofs;
+    }
+
     // Output.
 
     /**
