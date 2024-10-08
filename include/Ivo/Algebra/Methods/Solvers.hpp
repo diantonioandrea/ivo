@@ -43,8 +43,8 @@ namespace ivo {
             Vector<T> residual = b - A * x;
 
             #ifndef NVERBOSE
-            std::cout << "[Ivo] Solver, Restarted GMRES" << std::endl;
-            std::cout << "\t[Solver, Restarted GMRES] Started, residual: " << norm(residual) << std::endl;
+            std::cout << "\t[Solver] Restarted GMRES" << std::endl;
+            std::cout << "\t\t[Restarted GMRES] Started, residual: " << norm(residual) << std::endl;
             #endif
 
             do {
@@ -146,18 +146,18 @@ namespace ivo {
 
                 #ifndef NVERBOSE
                 if(m == 1) {
-                    std::cout << "\t[Solver, Restarted GMRES] Restarting, residual: " << norm(residual) << std::endl;
+                    std::cout << "\t\t[Restarted GMRES] Restarting, residual: " << norm(residual) << std::endl;
                     continue;
                 }
 
                 if(iterations % 25 == 0)
-                    std::cout << "\t[Solver, Restarted GMRES] Completed iteration " << iterations << ", residual: " << norm(residual) << std::endl;
+                    std::cout << "\t\t[Restarted GMRES] Completed iteration " << iterations << ", residual: " << norm(residual) << std::endl;
                 #endif
 
             } while(iterations < constants::solvers_stop);
 
             #ifndef NVERBOSE
-            std::cout << "\t[Solver, Restarted GMRES] Exited, iterations: " << iterations << ", " << " residual: " << norm(residual) << std::endl;
+            std::cout << "\t\t[Restarted GMRES] Exited, iterations: " << iterations << ", " << " residual: " << norm(residual) << std::endl;
             #endif
 
             return x;
@@ -177,7 +177,16 @@ namespace ivo {
      */
     template<Numerical T>
     Vector<T> solve(Sparse<T> &A, const Vector<T> &b) {
+        #ifndef NVERBOSE
+        std::cout << "[Ivo] Solver" << std::endl;
+        std::cout << "\t[Solver] Solving a linear system" << std::endl;
+        #endif
+
         return internal::gmres(A, b);
+
+        #ifndef NVERBOSE
+        std::cout << "\t[Solver] Exited" << std::endl;
+        #endif
     }
 
 }
