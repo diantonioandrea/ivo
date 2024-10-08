@@ -20,7 +20,7 @@ namespace ivo {
      * @param data Initial data.
      * @return Vector<Real> 
      */
-    Vector<Real> forcing(const Mesh21 &mesh, const Equation &equation, const Data &data, const Initial &initial) {
+    Vector<Real> forcing(const Mesh21 &mesh, const Equation &equation, const Data &data) {
 
         // Quadrature.
         auto [nodes1t, weights1t] = quadrature1t(constants::quadrature);

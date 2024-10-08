@@ -15,7 +15,6 @@ std::array<ivo::Real, 2> convection(const ivo::Real &);
 ivo::Real diffusion(const ivo::Real &);
 ivo::Real reaction(const ivo::Real &);
 
-ivo::Real condition(const ivo::Real &, const ivo::Real &);
 ivo::Real source(const ivo::Real &, const ivo::Real &, const ivo::Real &);
 ivo::Real dirichlet(const ivo::Real &, const ivo::Real &, const ivo::Real &);
 ivo::Real neumann(const ivo::Real &, const ivo::Real &, const ivo::Real &);
@@ -50,11 +49,8 @@ int main(int argc, char **argv) {
     // Data.
     ivo::Data data{source, dirichlet, neumann};
 
-    // Initial condition.
-    ivo::Initial initial{condition};
-
     // Forcing vector.
-    ivo::Vector<ivo::Real> F = ivo::forcing(mesh, equation, data, initial);
+    ivo::Vector<ivo::Real> F = ivo::forcing(mesh, equation, data);
 
     // Forcing vector output.
     std::cout << F << std::endl;
@@ -72,10 +68,6 @@ ivo::Real diffusion(const ivo::Real &t) {
 
 ivo::Real reaction(const ivo::Real &t) {
     return 0.0L;
-}
-
-ivo::Real condition(const ivo::Real &x, const ivo::Real &y) {
-    return x + y;
 }
 
 ivo::Real source(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
