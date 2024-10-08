@@ -46,6 +46,9 @@ namespace ivo {
             // Element.
             Element21 element = mesh.element(j);
 
+            // Time interval.
+            std::array<Real, 2> interval = element.interval();
+
             // Dofs.
             std::vector<Natural> dofs_j = mesh.dofs(j);
             Natural dofs_xy = (element.p() + 1) * (element.p() + 2) / 2;
@@ -70,7 +73,7 @@ namespace ivo {
 
             // Nodes and basis, time.
             auto [nodes1t_j, dt_j] = internal::reference_to_element(mesh, j, nodes1t);
-            auto [phi_t, gradt_phi_t] = basis_t(mesh, j, nodes1t);
+            auto [phi_t, gradt_phi_t] = basis_t(mesh, j, nodes1t_j);
 
             // Weights, time.
             Vector<Real> weights1t_j = weights1t * dt_j;
@@ -168,7 +171,7 @@ namespace ivo {
 
                     // Neighbour basis.
                     auto [n_e_phi_xy, n_e_gradx_phi_xy, n_e_grady_phi_xy] = basis_xy(mesh, facing[k][0], e_nodes2xy_j);
-                    auto [n_phi_t, n_gradt_phi_t] = basis_t(mesh, facing[k][0], nodes1t);
+                    auto [n_phi_t, n_gradt_phi_t] = basis_t(mesh, facing[k][0], nodes1t_j);
 
                     // Normal gradient.
                     Matrix<Real> n_e_gradn_phi_xy = normal(0) * n_e_gradx_phi_xy + normal(1) * n_e_grady_phi_xy;
@@ -394,7 +397,7 @@ namespace ivo {
             // TIME FACE INTEGRALS - PRECOMPUTING.
 
             // Face time basis.
-            auto [f_phi_t, f_gradt_phi_t] = basis_t(mesh, j, Vector<Real>{1, -1.0L}); // [?]
+            auto [f_phi_t, f_gradt_phi_t] = basis_t(mesh, j, Vector<Real>{1, interval[0]}); // [?]
 
             // Submatrix.
             Matrix<Real> E_cc_xyt{dofs_xyt, dofs_xyt};
@@ -404,8 +407,11 @@ namespace ivo {
                 // Neighbour element.
                 Element21 n_element = mesh.element(bottom);
 
+                // Time interval.
+                std::array<Real, 2> n_interval = n_element.interval();
+
                 // Neighbour face time basis.
-                auto [n_f_phi_t, n_f_gradt_phi_t] = basis_t(mesh, bottom, Vector<Real>{1, 1.0L}); // [?]
+                auto [n_f_phi_t, n_f_gradt_phi_t] = basis_t(mesh, bottom, Vector<Real>{1, n_interval[1]}); // [?]
 
                 // Dofs.
                 std::vector<Natural> n_dofs_j = mesh.dofs(bottom);

@@ -27,20 +27,19 @@ namespace ivo {
         std::tuple<Vector<Real>, Real> reference_to_element(const Mesh21 &mesh, const Natural &j, const Vector<Real> &nodes) {
 
             // Element.
-            Element21 element = mesh.element(j);
+            const Element21 element = mesh.element(j);
 
             // Bases.
-            Polygon21 bottom = element.b_base();
-            Polygon21 top = element.t_base();
+            const Polygon21 bottom = element.b_base();
+            const Polygon21 top = element.t_base();
 
             // Time.
-            std::array<Real, 2> t{bottom(0)(2), top(0)(2)};
-
-            // dt.
-            Real dt = (t[1] - t[0]) / 2.0L;
+            const Real a = bottom(0)(2);
+            const Real b = top(0)(2);
+            const Real dt = (b - a) / 2.0L;
 
             // Nodes and dt.
-            return {dt * nodes + (t[0] + t[1]) / 2.0L, dt};
+            return {dt * nodes + (a + b) / 2.0L, dt};
         }
 
         /**
@@ -62,16 +61,16 @@ namespace ivo {
             #endif
 
             // Element.
-            Element21 element = mesh.element(j);
+            const Element21 element = mesh.element(j);
 
             // Base.
-            Polygon21 base = element.b_base();
+            const Polygon21 base = element.b_base();
 
             // Triangles.
-            std::vector<Polygon21> triangles = triangulate(base);
+            const std::vector<Polygon21> triangles = triangulate(base);
 
             // Triangle.
-            Polygon21 triangle = triangles[k];
+            const Polygon21 triangle = triangles[k];
 
             // Jacobian.
             Matrix<Real> J{2, 2};
@@ -88,7 +87,7 @@ namespace ivo {
             T(1, triangle(0)(1));
 
             // Jacobian's determinant.
-            Real dxy = J(0, 0) * J(1, 1) - J(0, 1) * J(1, 0);
+            const Real dxy = J(0, 0) * J(1, 1) - J(0, 1) * J(1, 0);
 
             // Space.
             Vector<Real> x{nodesx.size()};
@@ -117,20 +116,20 @@ namespace ivo {
         std::tuple<std::array<Vector<Real>, 2>, Vector<Real>, Real> reference_to_element(const Mesh21 &mesh, const Natural &j, const Natural &k, const Vector<Real> &nodes) {
 
             // Element.
-            Element21 element = mesh.element(j);
+            const Element21 element = mesh.element(j);
 
             // Base.
-            Polygon21 base = element.b_base();
+            const Polygon21 base = element.b_base();
 
             // Edges.
-            std::vector<Edge21> edges = base.edges();
+            const std::vector<Edge21> edges = base.edges();
 
             #ifndef NDEBUG // Integrity check.
             assert(k < edges.size());
             #endif
 
             // Edge.
-            Edge21 edge = edges[k];
+            const Edge21 edge = edges[k];
 
             // Jacobian.
             Matrix<Real> J{2, 2};
@@ -158,7 +157,7 @@ namespace ivo {
             }
 
             // Edge size.
-            Real de = distance(edge(0), edge(1));
+            const Real de = distance(edge(0), edge(1));
 
             // Edge normal.
             Vector<Real> normal{2};
@@ -184,7 +183,17 @@ namespace ivo {
     std::array<Matrix<Real>, 2> basis_t(const Mesh21 &mesh, const Natural &j, const Vector<Real> &nodes) {
 
         // Element.
-        Element21 element = mesh.element(j);
+        const Element21 element = mesh.element(j);
+
+        // Bases.
+        const Polygon21 bottom = element.b_base();
+        const Polygon21 top = element.t_base();
+
+        // Time.
+        const Real a = bottom(0)(2);
+        const Real b = top(0)(2);
+        const Real dt = 2.0L / (b - a);
+        const Vector<Real> t = dt * (nodes - (a + b) / 2.0L);
 
         // Time degree.
         const Natural q = element.q();
@@ -200,8 +209,8 @@ namespace ivo {
         for(Natural k = 0; k < columns; ++k) {
             Real coefficient = std::sqrt(k + 0.5L);
 
-            phi.column(k, coefficient * legendre1(nodes, k));
-            gradt_phi.column(k, coefficient * legendre_grad1(nodes, k));
+            phi.column(k, coefficient * legendre1(t, k));
+            gradt_phi.column(k, dt * coefficient * legendre_grad1(t, k));
         }
 
         return {phi, gradt_phi};
@@ -225,7 +234,7 @@ namespace ivo {
         #endif
 
         // Element.
-        Element21 element = mesh.element(j);
+        const Element21 element = mesh.element(j);
 
         // Space degree.
         const Natural p = element.p();
@@ -239,13 +248,13 @@ namespace ivo {
         Matrix<Real> grady_phi{rows, columns};
 
         // Base.
-        Polygon21 base = element.b_base();
+        const Polygon21 base = element.b_base();
 
         // Box.
         auto [xy_min, xy_max] = box2(base);
 
-        Real x_min = xy_min(0), y_min = xy_min(1);
-        Real x_max = xy_max(0), y_max = xy_max(1);
+        const Real x_min = xy_min(0), y_min = xy_min(1);
+        const Real x_max = xy_max(0), y_max = xy_max(1);
 
         // Box map.
         Matrix<Real> M{2, 2};

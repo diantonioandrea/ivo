@@ -60,7 +60,7 @@ namespace ivo {
 
             // Nodes and basis, time.
             auto [nodes1t_j, dt_j] = internal::reference_to_element(mesh, j, nodes1t);
-            auto [phi_t, gradt_phi_t] = basis_t(mesh, j, nodes1t);
+            auto [phi_t, gradt_phi_t] = basis_t(mesh, j, nodes1t_j);
 
             Vector<Real> weights1t_j = weights1t * dt_j;
 

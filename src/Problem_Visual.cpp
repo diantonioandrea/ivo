@@ -52,7 +52,7 @@ namespace ivo {
 
             // Nodes and basis.
             auto [nodes1t_j, dt_j] = internal::reference_to_element(mesh, j, nodes1t);
-            auto [phi_t, gradt_phi_t] = basis_t(mesh, j, nodes1t);
+            auto [phi_t, gradt_phi_t] = basis_t(mesh, j, nodes1t_j);
 
             for(Natural k = 0; k < neighbours; ++k) { // Sub-triangulation.
 

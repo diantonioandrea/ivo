@@ -52,6 +52,9 @@ namespace ivo {
                 // Element.
                 Element21 element = mesh.element(j * mesh.space() + k);
 
+                // Time interval.
+                std::array<Real, 2> interval = element.interval();
+
                 // Neighbours.
                 Neighbour21 neighbourhood = mesh.neighbour(j * mesh.space() + k);
 
@@ -69,7 +72,7 @@ namespace ivo {
                 Vector<Real> E_xyt{dofs_t * dofs_xy};
 
                 // Face time basis.
-                auto [f_phi_t, f_gradt_phi_t] = basis_t(mesh, j * mesh.space() + k, Vector<Real>{1, -1.0L}); // [?]
+                auto [f_phi_t, f_gradt_phi_t] = basis_t(mesh, j * mesh.space() + k, Vector<Real>{1, interval[0]}); // [?]
 
                 // TIME FACE INTEGRALS - COMPUTING.
 
@@ -96,9 +99,12 @@ namespace ivo {
                         // Neighbour element.
                         Element21 n_element = mesh.element((j - 1) * mesh.space() + k);
 
+                        // Time interval.
+                        std::array<Real, 2> n_interval = n_element.interval();
+
                         // Neighbour basis.
                         auto [n_phi_xy, n_gradx_phi_xy, n_grady_phi_xy] = basis_xy(mesh, (j - 1) * mesh.space() + k, nodes2xy_k);
-                        auto [n_f_phi_t, n_f_gradt_phi_t] = basis_t(mesh, (j - 1) * mesh.space() + k, Vector<Real>{1, 1.0L}); // [?]
+                        auto [n_f_phi_t, n_f_gradt_phi_t] = basis_t(mesh, (j - 1) * mesh.space() + k, Vector<Real>{1, n_interval[1]}); // [?]
 
                         // Dofs.
                         std::vector<Natural> n_dofs_k = mesh.dofs((j - 1) * mesh.space() + k);
