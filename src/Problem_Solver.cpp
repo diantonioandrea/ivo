@@ -142,8 +142,7 @@ namespace ivo {
             Vector<Real> b_j = b(dofs_j) + E(dofs_j);
 
             // Solution update.
-            Vector<Real> x_j = internal::gmres(A_j, b_j);
-            x(dofs_j, x_j);
+            x(dofs_j, internal::gmres(A_j, b_j));
 
             #ifndef NVERBOSE
             std::cout << "\t[Solver] Solved level " << j + 1 << std::endl;
