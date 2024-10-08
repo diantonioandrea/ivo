@@ -159,10 +159,27 @@ namespace ivo {
             }
 
             /**
+             * @brief Sub-sparse constructor.
+             * 
+             * @param sparse Sparse matrix.
+             * @param J Row indices.
+             * @param K Column indices.
+             */
+            Sparse(const Sparse &sparse, const std::vector<Natural> J, const std::vector<Natural> K): _rows(J.size()), _columns(K.size()) {
+                this->_csr = false;
+                this->_csc = false;
+
+                for(Natural j = 0; j < J.size(); ++j)
+                    for(Natural k = 0; k < K.size(); ++k)
+                        if(sparse._entries.contains(J[j] * sparse._columns + K[k]))
+                            this->_entries[j * this->_columns + k] = sparse._entries[J[j] * sparse._columns + K[k]];
+            }
+
+            /**
              * @brief Copy constructor.
              * Copies 
              * 
-             * @param sparse 
+             * @param sparse Sparse matrix.
              */
             Sparse(const Sparse &sparse): _rows{sparse._rows}, _columns{sparse._columns} {
                 this->_entries = sparse._entries;
