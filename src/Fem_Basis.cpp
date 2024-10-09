@@ -29,13 +29,8 @@ namespace ivo {
             // Element.
             const Element21 element = mesh.element(j);
 
-            // Bases.
-            const Polygon21 bottom = element.b_base();
-            const Polygon21 top = element.t_base();
-
             // Time.
-            const Real a = bottom(0)(2);
-            const Real b = top(0)(2);
+            const auto [a, b] = element.interval();
             const Real dt = (b - a) / 2.0L;
 
             // Nodes and dt.
@@ -185,13 +180,8 @@ namespace ivo {
         // Element.
         const Element21 element = mesh.element(j);
 
-        // Bases.
-        const Polygon21 bottom = element.b_base();
-        const Polygon21 top = element.t_base();
-
         // Time.
-        const Real a = bottom(0)(2);
-        const Real b = top(0)(2);
+        const auto [a, b] = element.interval();
         const Real dt = 2.0L / (b - a);
         const Vector<Real> t = dt * (nodes - (a + b) / 2.0L);
 
