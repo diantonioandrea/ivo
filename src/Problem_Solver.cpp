@@ -151,7 +151,7 @@ namespace ivo {
             x(dofs_j, internal::gmres(A_j, b_j));
 
             #ifndef NVERBOSE
-            std::cout << "\t[Solver] Solved level " << j + 1 << std::endl;
+            std::cout << "\t[Solver] Progress: " << j + 1 << "/" << mesh.time() << std::endl;
             #endif
         }
 
