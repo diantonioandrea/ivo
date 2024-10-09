@@ -109,6 +109,9 @@ namespace ivo {
             std::vector<Natural> dofs(const Natural &) const;
             std::vector<Natural> dofs_t(const Natural &) const;
 
+            Real h() const;
+            Real t() const;
+
             // Output.
 
             friend std::ostream &operator <<(std::ostream &, const Mesh21 &);
