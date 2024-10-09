@@ -177,6 +177,11 @@ namespace ivo {
 
                 I(dofs_j, I(dofs_j) + I_de_xyt + I_d_xyt + I_n_xyt);
             }
+
+            #ifndef NVERBOSE
+            if((j + 1) % mesh.space() == 0)
+                std::cout << "\t[Forcing] Progress: " << j / mesh.space() + 1 << "/" << mesh.time() << std::endl;
+            #endif
         }
 
         #ifndef NVERBOSE

@@ -61,8 +61,6 @@ namespace ivo {
             std::vector<std::array<Integer, 2>> facing = neighbourhood.facing();
             Natural neighbours = facing.size();
 
-            Integer bottom = neighbourhood.bottom();
-
             // VOLUME INTEGRALS - PRECOMPUTING.
 
             // Submatrices.
@@ -111,7 +109,7 @@ namespace ivo {
 
                                         // (*', *).
 
-                                        cc_T_xyt += weights2_j(kxy) * weights1t_j(kt) * gradt_phi_t(kt, jt) * phi_xy(kxy, jxy) * phi_t(kt, ht) * phi_xy(kxy, hxy);
+                                        // cc_T_xyt += weights2_j(kxy) * weights1t_j(kt) * gradt_phi_t(kt, jt) * phi_xy(kxy, jxy) * phi_t(kt, ht) * phi_xy(kxy, hxy); // [???]
 
                                         // a(*, *), diffusion.
 
@@ -130,7 +128,6 @@ namespace ivo {
                                 V_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_V_a_xyt);
                                 V_b_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_b_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_V_b_xyt);
                                 V_c_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_c_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_V_c_xyt);
-
                             }
             }
 
@@ -402,106 +399,40 @@ namespace ivo {
             // Submatrix.
             Matrix<Real> E_cc_xyt{dofs_xyt, dofs_xyt};
 
-            if(bottom != -1) {
+            // TIME FACE INTEGRALS - COMPUTING.
 
-                // Neighbour element.
-                Element21 n_element = mesh.element(bottom);
+            for(Natural k = 0; k < neighbours; ++k) { // Sub-triangulation.
 
-                // Time interval.
-                std::array<Real, 2> n_interval = n_element.interval();
+                // Nodes and basis.
+                auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
+                auto [phi_xy, gradx_phi_xy, grady_phi_xy] = basis_xy(mesh, j, nodes2xy_j);
 
-                // Neighbour face time basis.
-                auto [n_f_phi_t, n_f_gradt_phi_t] = basis_t(mesh, bottom, Vector<Real>{1, n_interval[1]}); // [?]
+                // Weights, space.
+                Vector<Real> weights2_j = weights2 * dxy_j;
 
-                // Dofs.
-                std::vector<Natural> n_dofs_j = mesh.dofs(bottom);
-                Natural n_dofs_xy = (n_element.p() + 1) * (n_element.p() + 2) / 2;
-                Natural n_dofs_t = n_element.q() + 1;
-                Natural n_dofs_xyt = n_dofs_t * n_dofs_xy;
+                // CURRENT vs. CURRENT.
 
-                // Submatrix.
-                Matrix<Real> E_nc_xyt{n_dofs_xyt, dofs_xyt};
+                for(Natural jt = 0; jt < dofs_t; ++jt)
+                    for(Natural ht = 0; ht < dofs_t; ++ht)
+                        for(Natural jxy = 0; jxy < dofs_xy; ++jxy)
+                            for(Natural hxy = 0; hxy < dofs_xy; ++hxy) {
+                                Real cc_xyt = 0.0L;
 
-                // TIME FACE INTEGRALS - COMPUTING.
-
-                for(Natural k = 0; k < neighbours; ++k) { // Sub-triangulation.
-
-                    // Nodes and basis.
-                    auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
-                    auto [phi_xy, gradx_phi_xy, grady_phi_xy] = basis_xy(mesh, j, nodes2xy_j);
-
-                    // Neighbour basis.
-                    auto [n_phi_xy, n_gradx_phi_xy, n_grady_phi_xy] = basis_xy(mesh, bottom, nodes2xy_j);
-
-                    // Weights, space.
-                    Vector<Real> weights2_j = weights2 * dxy_j;
-
-                    // CURRENT vs. CURRENT.
-
-                    for(Natural jt = 0; jt < dofs_t; ++jt)
-                        for(Natural ht = 0; ht < dofs_t; ++ht)
-                            for(Natural jxy = 0; jxy < dofs_xy; ++jxy)
-                                for(Natural hxy = 0; hxy < dofs_xy; ++hxy) {
-                                    Real cc_xyt = 0.0L;
-
-                                    for(Natural kxy = 0; kxy < phi_xy.rows(); ++kxy) // Brute-force integral, (*, *).
-                                        cc_xyt += weights2_j(kxy) * f_phi_t(0, jt) * phi_xy(kxy, jxy) * f_phi_t(0, ht) * phi_xy(kxy, hxy);
-                                
-                                    E_cc_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, E_cc_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_xyt);
-                                }
-                    
-                    // NEIGHBOUR vs. CURRENT.
-
-                    for(Natural jt = 0; jt < n_dofs_t; ++jt)
-                        for(Natural ht = 0; ht < dofs_t; ++ht)
-                            for(Natural jxy = 0; jxy < n_dofs_xy; ++jxy)
-                                for(Natural hxy = 0; hxy < dofs_xy; ++hxy) {
-                                    Real nc_xyt = 0.0L;
-
-                                    for(Natural kxy = 0; kxy < phi_xy.rows(); ++kxy) // Brute-force integral, (*, *).
-                                        nc_xyt -= weights2_j(kxy) * n_f_phi_t(0, jt) * n_phi_xy(kxy, jxy) * f_phi_t(0, ht) * phi_xy(kxy, hxy);
-                                
-                                    E_nc_xyt(jt * n_dofs_xy + jxy, ht * dofs_xy + hxy, E_nc_xyt(jt * n_dofs_xy + jxy, ht * dofs_xy + hxy) + nc_xyt);
-                                }
-                }
-
-                // TIME FACE INTEGRALS - BUILDING.
-
-                E(dofs_j, dofs_j, E(dofs_j, dofs_j) + E_cc_xyt);
-                E(n_dofs_j, dofs_j, E(n_dofs_j, dofs_j) + E_nc_xyt); // [??]
-
-            } else {
-
-                // TIME FACE INTEGRALS - COMPUTING.
-
-                for(Natural k = 0; k < neighbours; ++k) { // Sub-triangulation.
-
-                    // Nodes and basis.
-                    auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
-                    auto [phi_xy, gradx_phi_xy, grady_phi_xy] = basis_xy(mesh, j, nodes2xy_j);
-
-                    // Weights, space.
-                    Vector<Real> weights2_j = weights2 * dxy_j;
-
-                    // CURRENT vs. CURRENT.
-
-                    for(Natural jt = 0; jt < dofs_t; ++jt)
-                        for(Natural ht = 0; ht < dofs_t; ++ht)
-                            for(Natural jxy = 0; jxy < dofs_xy; ++jxy)
-                                for(Natural hxy = 0; hxy < dofs_xy; ++hxy) {
-                                    Real cc_xyt = 0.0L;
-
-                                    for(Natural kxy = 0; kxy < phi_xy.rows(); ++kxy) // Brute-force integral, (*, *).
-                                        cc_xyt += weights2_j(kxy) * f_phi_t(0, jt) * phi_xy(kxy, jxy) * f_phi_t(0, ht) * phi_xy(kxy, hxy);
-                                
-                                    E_cc_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, E_cc_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_xyt);
-                                }
-                }
-
-                // TIME FACE INTEGRALS - BUILDING.
-
-                E(dofs_j, dofs_j, E(dofs_j, dofs_j) + E_cc_xyt);
+                                for(Natural kxy = 0; kxy < phi_xy.rows(); ++kxy) // Brute-force integral, (*, *).
+                                    cc_xyt += weights2_j(kxy) * f_phi_t(0, jt) * phi_xy(kxy, jxy) * f_phi_t(0, ht) * phi_xy(kxy, hxy);
+                            
+                                E_cc_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, E_cc_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_xyt);
+                            }
             }
+
+            // TIME FACE INTEGRALS - BUILDING.
+
+            E(dofs_j, dofs_j, E(dofs_j, dofs_j) + E_cc_xyt);
+
+            #ifndef NVERBOSE
+            if((j + 1) % mesh.space() == 0)
+                std::cout << "\t[Stiffness] Progress: " << j / mesh.space() + 1 << "/" << mesh.time() << std::endl;
+            #endif
         }
 
         #ifndef NVERBOSE

@@ -80,6 +80,11 @@ namespace ivo {
                         output << x << "," << y << "," << t << "," << uh << std::endl;
                     }
             }
+
+            #ifndef NVERBOSE
+            if((j + 1) % mesh.space() == 0)
+                std::cout << "\t[Visual] Progress: " << j / mesh.space() + 1 << "/" << mesh.time() << std::endl;
+            #endif
         }
 
         #ifndef NVERBOSE
