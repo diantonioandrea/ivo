@@ -77,7 +77,7 @@ namespace ivo {
             for(Natural j = 1; j < k; ++j)
                 power *= 0.5L * (x - 1.0L);
 
-            legendre += 0.5L * internal::binomial(n, k) * internal::binomial(n + k, k) * power;
+            legendre += 0.5L * k * internal::binomial(n, k) * internal::binomial(n + k, k) * power;
         }
 
         return legendre;
