@@ -17,6 +17,12 @@ namespace ivo {
 
     // Legendre polynomials.
 
+    namespace internal {
+
+        Vector<Real> legendre(const Vector<Real> &, const Natural &, const Natural &k = 0);
+
+    }
+
     Vector<Real> legendre1(const Vector<Real> &, const Natural &);
     Vector<Real> legendre_grad1(const Vector<Real> &, const Natural &);
 

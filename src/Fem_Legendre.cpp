@@ -33,6 +33,33 @@ namespace ivo {
             return internal::binomial(n - 1, k - 1) + internal::binomial(n - 1, k);
         }
 
+        /**
+         * @brief Legendre polynomials evaluation over a vector of points.
+         * 
+         * @param x Real points.
+         * @param n Degree.
+         * @param k Derivative.
+         * @return Vector<Real> 
+         */
+        Vector<Real> legendre(const Vector<Real> &x, const Natural &n, const Natural &k) {
+            Vector<Real> y{x.size()};
+
+            // Recursive formula.
+            for(Natural j = k; j <= n; ++j) {
+                Vector<Real> y_j{x.size(), 1.0L};
+
+                for(Natural h = 0; h < j; ++h)
+                    y_j *= 0.5L * (x - 1.0L);
+
+                for(Natural h = 0; h < k; ++h)
+                    y_j *= 0.5L * static_cast<Real>(j - h);
+
+                y += internal::binomial(n, j) * internal::binomial(n + j, j) * y_j;
+            }
+
+            return y;
+        }
+
     }
 
     // Legendre polynomials.
