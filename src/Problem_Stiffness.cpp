@@ -207,7 +207,7 @@ namespace ivo {
 
                                             // a(*, *), diffusion.
 
-                                            // if(facing[k][0] < j) // [?]
+                                            if(facing[k][0] < j) // [?]
                                                 cc_xyt += weights1t_j(kt) * e_weights2_j(kxy) * (0.5L * phi_t(kt, jt) * e_gradn_phi_xy(kxy, jxy) * phi_t(kt, ht) * e_phi_xy(kxy, hxy) - 0.5L * phi_t(kt, ht) * e_gradn_phi_xy(kxy, hxy) * phi_t(kt, jt) * e_phi_xy(kxy, jxy)) * diffusion;
 
                                             // b(*, *), convection.
@@ -239,7 +239,7 @@ namespace ivo {
 
                                             // a(*, *), diffusion.
 
-                                            // if(facing[k][0] < j) // [?]
+                                            if(facing[k][0] < j) // [?]
                                                 cn_xyt += weights1t_j(kt) * e_weights2_j(kxy) * (0.5L * phi_t(kt, jt) * e_gradn_phi_xy(kxy, jxy) * (-n_phi_t(kt, ht) * n_e_phi_xy(kxy, hxy)) - 0.5L * n_phi_t(kt, ht) * n_e_gradn_phi_xy(kxy, hxy) * phi_t(kt, jt) * e_phi_xy(kxy, jxy)) * diffusion;
 
                                             // J(*, *).
@@ -272,7 +272,7 @@ namespace ivo {
 
                                             // a(*, *), diffusion.
 
-                                            // if(facing[k][0] < j) // [?]
+                                            if(facing[k][0] < j) // [?]
                                                 nc_xyt += weights1t_j(kt) * e_weights2_j(kxy) * (0.5L * n_phi_t(kt, jt) * n_e_gradn_phi_xy(kxy, jxy) * phi_t(kt, ht) * e_phi_xy(kxy, hxy) - 0.5L * phi_t(kt, ht) * e_gradn_phi_xy(kxy, hxy) * (-n_phi_t(kt, jt) * n_e_phi_xy(kxy, jxy))) * diffusion;
 
                                             // b(*, *), convection.
@@ -304,7 +304,7 @@ namespace ivo {
 
                                             // a(*, *), diffusion.
 
-                                            // if(facing[k][0] < j) // [?]
+                                            if(facing[k][0] < j) // [?]
                                                 nn_xyt += weights1t_j(kt) * e_weights2_j(kxy) * (0.5L * n_phi_t(kt, jt) * n_e_gradn_phi_xy(kxy, jxy) * (-n_phi_t(kt, ht) * n_e_phi_xy(kxy, hxy)) - 0.5L * n_phi_t(kt, ht) * n_e_gradn_phi_xy(kxy, hxy) * (-n_phi_t(kt, jt) * n_e_phi_xy(kxy, jxy))) * diffusion;
 
                                             // J(*, *).
@@ -317,10 +317,10 @@ namespace ivo {
 
                     // FACE INTEGRALS - PREBUILDING.
 
-                    I_cc.emplace_back(0.5L * I_cc_xyt);
-                    I_cn.emplace_back(0.5L * I_cn_xyt);
-                    I_nc.emplace_back(0.5L * I_nc_xyt);
-                    I_nn.emplace_back(0.5L * I_nn_xyt);
+                    I_cc.emplace_back(I_cc_xyt);
+                    I_cn.emplace_back(I_cn_xyt);
+                    I_nc.emplace_back(I_nc_xyt);
+                    I_nn.emplace_back(I_nn_xyt);
 
                 } else {
 
@@ -346,8 +346,7 @@ namespace ivo {
 
                                             // a(*, *), diffusion.
 
-                                            // if(facing[k][0] < j) // [?]
-                                                cc_xyt += negative * weights1t_j(kt) * e_weights2_j(kxy) * (phi_t(kt, jt) * e_gradn_phi_xy(kxy, jxy) * phi_t(kt, ht) * e_phi_xy(kxy, hxy) - phi_t(kt, ht) * e_gradn_phi_xy(kxy, hxy) * phi_t(kt, jt) * e_phi_xy(kxy, jxy)) * diffusion;
+                                            cc_xyt += negative * weights1t_j(kt) * e_weights2_j(kxy) * (phi_t(kt, jt) * e_gradn_phi_xy(kxy, jxy) * phi_t(kt, ht) * e_phi_xy(kxy, hxy) - phi_t(kt, ht) * e_gradn_phi_xy(kxy, hxy) * phi_t(kt, jt) * e_phi_xy(kxy, jxy)) * diffusion;
 
                                             // b(*, *), convection.
 

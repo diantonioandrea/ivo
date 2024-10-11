@@ -65,7 +65,7 @@ std::array<ivo::Real, 2> convection(const ivo::Real &t) {
 }
 
 ivo::Real diffusion(const ivo::Real &t) {
-    return 1.0L;
+    return 0.0L;
 }
 
 ivo::Real reaction(const ivo::Real &t) {
@@ -77,7 +77,7 @@ ivo::Real condition(const ivo::Real &x, const ivo::Real &y) {
 }
 
 ivo::Real source(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
-    return condition(x, y) + t - 4.0L;
+    return condition(x, y) + t;
 }
 
 ivo::Real dirichlet(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
@@ -88,5 +88,5 @@ ivo::Real neumann(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
     if(x + y <= 1.0L - ivo::constants::algebra_zero)
         return 0.0L;
 
-    return 2.0L;
+    return 2.0L * diffusion(t);
 }
