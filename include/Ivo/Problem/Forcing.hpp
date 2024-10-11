@@ -16,7 +16,7 @@
 
 namespace ivo {
 
-    Vector<Real> forcing(const Mesh21 &, const Equation &, const Data &, const Initial &);
+    Vector<Real> forcing(const Mesh21 &, const Equation &, const Data &);
 
 }
 

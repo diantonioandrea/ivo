@@ -71,10 +71,6 @@ namespace ivo {
              */
             constexpr Real reaction(const Real &t) const { return this->_reaction(t); }
 
-            std::array<Vector<Real>, 2> convection(const Vector<Real> &) const;
-            Vector<Real> diffusion(const Vector<Real> &) const;
-            Vector<Real> reaction(const Vector<Real> &) const;
-
             // Constructor.
 
             Equation(const std::function<std::array<Real, 2> (Real)> &, const std::function<Real (Real)> &, const std::function<Real (Real)> &);

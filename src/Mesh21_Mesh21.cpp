@@ -132,6 +132,71 @@ namespace ivo {
         return dofs;
     }
 
+    /**
+     * @brief Global to local dofs.
+     * 
+     * @param j Time slab's index.
+     * @return std::vector<Natural> 
+     */
+    std::vector<Natural> Mesh21::dofs_t(const Natural &j) const {
+        #ifndef NDEBUG
+        assert(j < this->_time);
+        #endif
+
+        Natural counter = 0;
+        std::vector<Natural> dofs;
+
+        for(Natural k = 0; k < j * this->_space; ++k)
+            counter += this->_elements[k].dofs();
+
+        for(Natural k = 0; k < this->_space; ++k) {
+            for(Natural h = 0; h < this->element(j * this->_space + k).dofs(); ++h) {
+                dofs.emplace_back(counter);
+                ++counter;
+            }
+        }
+
+        return dofs;
+    }
+
+    /**
+     * @brief Mesh's space size.
+     * 
+     * @return Real 
+     */
+    Real Mesh21::h() const {
+        Real h = 0.0L;
+
+        for(Natural j = 0; j < this->_space; ++j) {
+            const Element21 element = this->_elements[j];
+            const Polygon21 b_base = element.b_base();
+
+            for(const auto &p: b_base.points())
+                for(const auto &q: b_base.points())
+                    h = (distance(p, q) > h) ? distance(p, q) : h;
+        }
+
+        return h;
+    }
+
+    /**
+     * @brief Mesh's time size.
+     * 
+     * @return Real 
+     */
+    Real Mesh21::t() const {
+        Real t = 0.0L;
+
+        for(Natural j = 0; j < this->_time; ++j) {
+            const Element21 element = this->_elements[j * this->_space];
+            const auto [a, b] = element.interval();
+
+            t = ((b - a) > t) ? b - a : t;
+        }
+
+        return t;
+    }
+    
     // Output.
 
     /**

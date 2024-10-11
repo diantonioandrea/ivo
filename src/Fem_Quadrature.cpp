@@ -95,14 +95,14 @@ namespace ivo {
             mask(m - 1, false);
 
             // Nodes.
-            Vector<Real> nodes = ((b + a) / 2.0L - (b - a) / 2.0L) * stacked(z(mask), -flipped(z));
+            Vector<Real> nodes = ((b + a) / 2.0L) - ((b - a) / 2.0L) * stacked(z(mask), -flipped(z));
 
             // Reflection.
             Vector<Real> z_ref = stacked(z(mask), flipped(z));
             Vector<Real> temp_ref = stacked(temp(mask), flipped(temp));
 
             // Weights.
-            Vector<Real> weights = (b - a) / (1.0L - z_ref * z_ref) / (temp_ref * temp_ref);
+            Vector<Real> weights = (b - a) / ((1.0L - z_ref * z_ref) * (temp_ref * temp_ref));
 
             return {nodes, weights};
         }
@@ -117,7 +117,15 @@ namespace ivo {
      * @param n Order.
      * @return std::array<Vector<Real>, 2> 
      */
-    std::array<Vector<Real>, 2> quadrature1(const Natural &n) { return internal::gauss1(n, -1.0L, 1.0L); }
+    std::array<Vector<Real>, 2> quadrature1t(const Natural &n) { return internal::gauss1(n, -1.0L, 1.0L); }
+
+    /**
+     * @brief Gauss-Legendre nodes and weights over the reference interval [0, 1].
+     * 
+     * @param n Order.
+     * @return std::array<Vector<Real>, 2> 
+     */
+    std::array<Vector<Real>, 2> quadrature1x(const Natural &n) { return internal::gauss1(n, 0.0L, 1.0L); }
 
     /**
      * @brief Gauss-Legendre nodes and weights over the reference triangle {(0, 0), (0, 1), (1, 0)}.
@@ -125,10 +133,10 @@ namespace ivo {
      * @param n 
      * @return std::array<Vector<Real>, 3> 
      */
-    std::array<Vector<Real>, 3> quadrature2(const Natural &n) {
+    std::array<Vector<Real>, 3> quadrature2xy(const Natural &n) {
 
         // Square nodes and weights.
-        auto [nodes1, weights1] = quadrature1(n);
+        auto [nodes1, weights1] = quadrature1t(n);
 
         // Temporary nodes and weights.
         Vector<Real> nodes2_x{n * n};

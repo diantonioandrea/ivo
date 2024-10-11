@@ -5,6 +5,16 @@ ifneq ($(shell $(CXX) --version | grep -i "clang"),)
 CXXFLAGS += -ffp-model=precise
 endif
 
+ifeq ($(shell uname),Darwin) # Apple's Clang, custom OpenMP installation under $OpenMP.
+CXXFLAGS += -Xclang -fopenmp
+CPPFLAGS += -I$(OpenMP)/include
+LDFLAGS += -L$(OpenMP)/lib
+LDLIBS += -lomp
+else # GCC.
+CXXFLAGS += -fopenmp
+LDLIBS += -lgomp
+endif
+
 # Headers, recompilation purposes.
 HEADERS = ./include/*.hpp
 HEADERS = ./include/Ivo/*.hpp

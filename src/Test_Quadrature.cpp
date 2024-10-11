@@ -12,7 +12,7 @@
 
 int main(int argc, char **argv) {
 
-    auto [nodes2t_x, nodes2t_y, weights2t] = ivo::quadrature2(3);
+    auto [nodes2t_x, nodes2t_y, weights2t] = ivo::quadrature2xy(3);
 
     std::cout << "Nodes (x): " << nodes2t_x << std::endl;
     std::cout << "Nodes (y): " << nodes2t_y << std::endl;

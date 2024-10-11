@@ -31,4 +31,9 @@
 #include <cmath>
 #include <complex>
 
+// Parallelisation.
+#ifdef _OPENMP
+#include "omp.h"
+#endif
+
 #endif

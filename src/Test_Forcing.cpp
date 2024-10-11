@@ -2,7 +2,7 @@
  * @file Test_Forcing.cpp
  * @author Andrea Di Antonio (github.com/diantonioandrea)
  * @brief Simple forcing testing.
- * @date 2024-09-18
+ * @date 2024-09-24
  * 
  * @copyright Copyright (c) 2024
  * 
@@ -15,10 +15,9 @@ std::array<ivo::Real, 2> convection(const ivo::Real &);
 ivo::Real diffusion(const ivo::Real &);
 ivo::Real reaction(const ivo::Real &);
 
-ivo::Real condition(const ivo::Real &, const ivo::Real &);
-ivo::Real source(const ivo::Real &, const ivo::Real &);
-ivo::Real dirichlet(const ivo::Real &, const ivo::Real &);
-ivo::Real neumann(const ivo::Real &, const ivo::Real &);
+ivo::Real source(const ivo::Real &, const ivo::Real &, const ivo::Real &);
+ivo::Real dirichlet(const ivo::Real &, const ivo::Real &, const ivo::Real &);
+ivo::Real neumann(const ivo::Real &, const ivo::Real &, const ivo::Real &);
 
 int main(int argc, char **argv) {
 
@@ -50,13 +49,10 @@ int main(int argc, char **argv) {
     // Data.
     ivo::Data data{source, dirichlet, neumann};
 
-    // Initial condition.
-    ivo::Initial initial{condition};
-
     // Forcing vector.
-    ivo::Vector<ivo::Real> F = ivo::forcing(mesh, equation, data, initial);
+    ivo::Vector<ivo::Real> F = ivo::forcing(mesh, equation, data);
 
-    // Stiffness matrix output.
+    // Forcing vector output.
     std::cout << F << std::endl;
 
     return 0;
@@ -74,18 +70,14 @@ ivo::Real reaction(const ivo::Real &t) {
     return 0.0L;
 }
 
-ivo::Real condition(const ivo::Real &x, const ivo::Real &y) {
-    return x + y;
-}
-
-ivo::Real source(const ivo::Real &x, const ivo::Real &y) {
+ivo::Real source(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
     return 1.0L;
 }
 
-ivo::Real dirichlet(const ivo::Real &x, const ivo::Real &y) {
+ivo::Real dirichlet(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
     return 0.0L;
 }
 
-ivo::Real neumann(const ivo::Real &x, const ivo::Real &y) {
+ivo::Real neumann(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
     return 0.0L;
 }

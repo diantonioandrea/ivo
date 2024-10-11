@@ -25,8 +25,9 @@ namespace ivo {
 
     // Gauss-Legendre nodes and weights over reference structures.
 
-    std::array<Vector<Real>, 2> quadrature1(const Natural &);
-    std::array<Vector<Real>, 3> quadrature2(const Natural &);
+    std::array<Vector<Real>, 2> quadrature1t(const Natural &);
+    std::array<Vector<Real>, 2> quadrature1x(const Natural &);
+    std::array<Vector<Real>, 3> quadrature2xy(const Natural &);
 
 }
 

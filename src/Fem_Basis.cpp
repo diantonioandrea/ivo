@@ -27,20 +27,14 @@ namespace ivo {
         std::tuple<Vector<Real>, Real> reference_to_element(const Mesh21 &mesh, const Natural &j, const Vector<Real> &nodes) {
 
             // Element.
-            Element21 element = mesh.element(j);
-
-            // Bases.
-            Polygon21 bottom = element.b_base();
-            Polygon21 top = element.t_base();
+            const Element21 element = mesh.element(j);
 
             // Time.
-            std::array<Real, 2> t{bottom(0)(2), top(0)(2)};
-
-            // dt.
-            Real dt = (t[1] - t[0]) / 2.0L;
+            const auto [a, b] = element.interval();
+            const Real dt = (b - a) / 2.0L;
 
             // Nodes and dt.
-            return {dt * nodes + (t[0] + t[1]) / 2.0L, dt};
+            return {dt * nodes + (a + b) / 2.0L, dt};
         }
 
         /**
@@ -62,16 +56,16 @@ namespace ivo {
             #endif
 
             // Element.
-            Element21 element = mesh.element(j);
+            const Element21 element = mesh.element(j);
 
             // Base.
-            Polygon21 base = element.b_base();
+            const Polygon21 base = element.b_base();
 
             // Triangles.
-            std::vector<Polygon21> triangles = triangulate(base);
+            const std::vector<Polygon21> triangles = triangulate(base);
 
             // Triangle.
-            Polygon21 triangle = triangles[k];
+            const Polygon21 triangle = triangles[k];
 
             // Jacobian.
             Matrix<Real> J{2, 2};
@@ -88,17 +82,17 @@ namespace ivo {
             T(1, triangle(0)(1));
 
             // Jacobian's determinant.
-            Real dxy = J(0, 0) * J(1, 1) - J(0, 1) * J(1, 0);
+            const Real dxy = J(0, 0) * J(1, 1) - J(0, 1) * J(1, 0);
 
             // Space.
             Vector<Real> x{nodesx.size()};
             Vector<Real> y{nodesy.size()};
 
-            for(Natural k = 0; k < nodesx.size(); ++k) {
-                Vector<Real> xy = J * Vector<Real>{{nodesx(k), nodesy(k)}} + T;
+            for(Natural h = 0; h < nodesx.size(); ++h) {
+                Vector<Real> xy = J * Vector<Real>{{nodesx(h), nodesy(h)}} + T;
 
-                x(k, xy(0));
-                y(k, xy(1));
+                x(h, xy(0));
+                y(h, xy(1));
             }
 
             // Nodes and dxy.
@@ -117,20 +111,20 @@ namespace ivo {
         std::tuple<std::array<Vector<Real>, 2>, Vector<Real>, Real> reference_to_element(const Mesh21 &mesh, const Natural &j, const Natural &k, const Vector<Real> &nodes) {
 
             // Element.
-            Element21 element = mesh.element(j);
+            const Element21 element = mesh.element(j);
 
             // Base.
-            Polygon21 base = element.b_base();
+            const Polygon21 base = element.b_base();
 
             // Edges.
-            std::vector<Edge21> edges = base.edges();
+            const std::vector<Edge21> edges = base.edges();
 
             #ifndef NDEBUG // Integrity check.
             assert(k < edges.size());
             #endif
 
             // Edge.
-            Edge21 edge = edges[k];
+            const Edge21 edge = edges[k];
 
             // Jacobian.
             Matrix<Real> J{2, 2};
@@ -158,7 +152,7 @@ namespace ivo {
             }
 
             // Edge size.
-            Real de = distance(edge(0), edge(1));
+            const Real de = distance(edge(0), edge(1));
 
             // Edge normal.
             Vector<Real> normal{2};
@@ -184,7 +178,12 @@ namespace ivo {
     std::array<Matrix<Real>, 2> basis_t(const Mesh21 &mesh, const Natural &j, const Vector<Real> &nodes) {
 
         // Element.
-        Element21 element = mesh.element(j);
+        const Element21 element = mesh.element(j);
+
+        // Time.
+        const auto [a, b] = element.interval();
+        const Real dt = 2.0L / (b - a);
+        const Vector<Real> t = dt * (nodes - (a + b) / 2.0L);
 
         // Time degree.
         const Natural q = element.q();
@@ -200,8 +199,8 @@ namespace ivo {
         for(Natural k = 0; k < columns; ++k) {
             Real coefficient = std::sqrt(k + 0.5L);
 
-            phi.column(k, coefficient * legendre1(nodes, k));
-            gradt_phi.column(k, coefficient * legendre_grad1(nodes, k));
+            phi.column(k, coefficient * legendre1(t, k));
+            gradt_phi.column(k, dt * coefficient * legendre_grad1(t, k));
         }
 
         return {phi, gradt_phi};
@@ -215,7 +214,7 @@ namespace ivo {
      * @param nodes Nodes.
      * @return std::tuple<Matrix<Real>, Matrix<Real>, Matrix<Real>, Real> 
      */
-    std::array<Matrix<Real>, 3> basis_s(const Mesh21 &mesh, const Natural &j, const std::array<Vector<Real>, 2> &nodes) {
+    std::array<Matrix<Real>, 3> basis_xy(const Mesh21 &mesh, const Natural &j, const std::array<Vector<Real>, 2> &nodes) {
         
         // Nodes.
         auto [nodesx, nodesy] = nodes;
@@ -225,7 +224,7 @@ namespace ivo {
         #endif
 
         // Element.
-        Element21 element = mesh.element(j);
+        const Element21 element = mesh.element(j);
 
         // Space degree.
         const Natural p = element.p();
@@ -239,26 +238,26 @@ namespace ivo {
         Matrix<Real> grady_phi{rows, columns};
 
         // Base.
-        Polygon21 base = element.b_base();
+        const Polygon21 base = element.b_base();
 
         // Box.
         auto [xy_min, xy_max] = box2(base);
 
-        Real x_min = xy_min(0), y_min = xy_min(1);
-        Real x_max = xy_max(0), y_max = xy_max(1);
+        const Real x_min = xy_min(0), y_min = xy_min(1);
+        const Real x_max = xy_max(0), y_max = xy_max(1);
 
         // Box map.
         Matrix<Real> M{2, 2};
 
-        M(0, 0, (x_max - x_min) / 2.0L);
-        M(1, 1, (y_max - y_min) / 2.0L);
+        M(0, 0, 0.5L * (x_max - x_min));
+        M(1, 1, 0.5L * (y_max - y_min));
 
         Real M_det = M(0, 0) * M(1, 1);
 
         Vector<Real> T{2};
 
-        T(0, (x_max + x_min) / 2.0L);
-        T(1, (y_max + y_min) / 2.0L);
+        T(0, 0.5L * (x_max + x_min));
+        T(1, 0.5L * (y_max + y_min));
 
         // Inverse map.
         Matrix<Real> M_inv{2, 2};
