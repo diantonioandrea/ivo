@@ -64,7 +64,6 @@ namespace ivo {
             // VOLUME INTEGRALS - PRECOMPUTING.
 
             // Submatrices.
-            Matrix<Real> T_xyt{dofs_xyt, dofs_xyt};
             Matrix<Real> V_T_xyt{dofs_xyt, dofs_xyt};
             Matrix<Real> V_a_xyt{dofs_xyt, dofs_xyt};
             Matrix<Real> V_b_xyt{dofs_xyt, dofs_xyt};
@@ -94,10 +93,6 @@ namespace ivo {
                     for(Natural ht = 0; ht < dofs_t; ++ht)
                         for(Natural jxy = 0; jxy < dofs_xy; ++jxy)
                             for(Natural hxy = 0; hxy < dofs_xy; ++hxy) {
-                                Real cc_T_xyt = 0.0L;
-                                Real cc_V_a_xyt = 0.0L;
-                                Real cc_V_b_xyt = 0.0L;
-                                Real cc_V_c_xyt = 0.0L;
                                 Real V_T_cc = 0.0L;
                                 Real V_a_cc = 0.0L;
                                 Real V_b_cc = 0.0L;
@@ -114,29 +109,21 @@ namespace ivo {
 
                                         // (*', *).
 
-                                        // cc_T_xyt += weights2_j(kxy) * weights1t_j(kt) * gradt_phi_t(kt, jt) * phi_xy(kxy, jxy) * phi_t(kt, ht) * phi_xy(kxy, hxy); // [???]
                                         V_T_cc += weights2_j(kxy) * weights1t_j(kt) * gradt_phi_t(kt, jt) * phi_xy(kxy, jxy) * phi_t(kt, ht) * phi_xy(kxy, hxy); // [?]
 
                                         // a(*, *), diffusion.
 
-                                        cc_V_a_xyt += weights2_j(kxy) * weights1t_j(kt) * (phi_t(kt, jt) * gradx_phi_xy(kxy, jxy) * phi_t(kt, ht) * gradx_phi_xy(kxy, hxy) + phi_t(kt, jt) * grady_phi_xy(kxy, jxy) * phi_t(kt, ht) * grady_phi_xy(kxy, hxy)) * diffusion;
                                         V_a_cc += weights2_j(kxy) * weights1t_j(kt) * (phi_t(kt, jt) * gradx_phi_xy(kxy, jxy) * phi_t(kt, ht) * gradx_phi_xy(kxy, hxy) + phi_t(kt, jt) * grady_phi_xy(kxy, jxy) * phi_t(kt, ht) * grady_phi_xy(kxy, hxy)) * diffusion;
 
                                         // b(*, *), convection.
 
-                                        cc_V_b_xyt += weights2_j(kxy) * weights1t_j(kt) * (phi_t(kt, jt) * gradx_phi_xy(kxy, jxy) * convection_x + phi_t(kt, jt) * grady_phi_xy(kxy, jxy) * convection_y) * phi_t(kt, ht) * phi_xy(kxy, hxy);
                                         V_b_cc += weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, jt) * (gradx_phi_xy(kxy, jxy) * convection_x + grady_phi_xy(kxy, jxy) * convection_y) * phi_t(kt, ht) * phi_xy(kxy, hxy);
 
                                         // c(*, *), reaction.
 
-                                        cc_V_c_xyt += weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, jt) * phi_xy(kxy, jxy) * phi_t(kt, ht) * phi_xy(kxy, hxy) * reaction;
                                         V_c_cc += weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, jt) * phi_xy(kxy, jxy) * phi_t(kt, ht) * phi_xy(kxy, hxy) * reaction;
                                     }
 
-                                T_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, T_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_T_xyt);
-                                V_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_V_a_xyt);
-                                V_b_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_b_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_V_b_xyt);
-                                V_c_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_c_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + cc_V_c_xyt);
                                 V_T_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_T_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + V_T_cc);
                                 V_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_a_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + V_a_cc);
                                 V_b_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy, V_b_xyt(jt * dofs_xy + jxy, ht * dofs_xy + hxy) + V_b_cc);
@@ -146,7 +133,6 @@ namespace ivo {
 
             // VOLUME INTEGRALS - BUILDING.
 
-            T(dofs_j, dofs_j, T(dofs_j, dofs_j) + T_xyt);
             T(dofs_j, dofs_j, T(dofs_j, dofs_j) + V_T_xyt);
             V(dofs_j, dofs_j, V(dofs_j, dofs_j) + V_a_xyt);
             V(dofs_j, dofs_j, V(dofs_j, dofs_j) + V_b_xyt);
