@@ -338,6 +338,8 @@ namespace ivo {
 
                                     I_J_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy, I_J_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy) + a_nn_xyt);
                                     I_J_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy, I_J_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy) + b_nn_xyt);
+                                    I_a_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy, I_a_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy) + a_nn_xyt);
+                                    I_b_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy, I_b_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy) + b_nn_xyt);
                                     I_J_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy, I_J_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy) + J_nn_xyt);
                                 }
 
