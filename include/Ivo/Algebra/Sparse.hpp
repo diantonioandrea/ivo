@@ -793,7 +793,7 @@ namespace ivo {
             }
 
             /**
-             * @brief Sparse + sparse.
+             * @brief Sparse - sparse.
              * 
              * @param sparse Sparse matrix.
              * @return Sparse 
