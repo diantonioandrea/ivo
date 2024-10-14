@@ -485,7 +485,9 @@ namespace ivo {
         #endif
 
         // Building and return.
-        return T + E + V - I;
+
+        // return T + E + V - I; [?]
+        return V - I + E;
     }
 
 }
