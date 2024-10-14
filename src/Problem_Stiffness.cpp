@@ -350,8 +350,6 @@ namespace ivo {
                                             J_nn_xyt -= weights1t_j(kt) * e_weights2_j(kxy) / e_dxy_j * n_phi_t(kt, jt) * n_e_phi_xy(kxy, jxy) * n_phi_t(kt, ht) * n_e_phi_xy(kxy, hxy) * diffusion;
                                         }
 
-                                    I_J_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy, I_J_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy) + a_nn_xyt);
-                                    I_J_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy, I_J_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy) + b_nn_xyt);
                                     I_a_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy, I_a_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy) + a_nn_xyt);
                                     I_b_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy, I_b_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy) + b_nn_xyt);
                                     I_J_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy, I_J_nn_xyt(jt * n_dofs_xy + jxy, ht * n_dofs_xy + hxy) + J_nn_xyt);
