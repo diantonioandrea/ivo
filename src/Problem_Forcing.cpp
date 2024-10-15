@@ -52,6 +52,7 @@ namespace ivo {
             std::vector<Natural> dofs_j = mesh.dofs(j);
             Natural dofs_xy = (element.p() + 1) * (element.p() + 2) / 2;
             Natural dofs_t = element.q() + 1;
+            Natural dofs_xyt = dofs_t * dofs_xy;
 
             // VOLUME INTEGRALS - PRECOMPUTING.
 
@@ -123,9 +124,9 @@ namespace ivo {
                 Vector<Real> e_weights2_j = weights1x * e_dxy_j;
 
                 // Subvectors.
-                Vector<Real> I_de_xyt{dofs_t * dofs_xy}; // [!]
-                Vector<Real> I_d_xyt{dofs_t * dofs_xy}; // [!]
-                Vector<Real> I_n_xyt{dofs_t * dofs_xy}; // [!]
+                Vector<Real> I_de_xyt{dofs_xyt}; // [!]
+                Vector<Real> I_d_xyt{dofs_xyt}; // [!]
+                Vector<Real> I_n_xyt{dofs_xyt}; // [!]
 
                 // FACE INTEGRALS - COMPUTING.
 
