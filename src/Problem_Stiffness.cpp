@@ -263,7 +263,7 @@ namespace ivo {
 
                                             // J(*, *).
 
-                                            J_cn_xyt += weights1t_j(kt) * e_weights2_j(kxy) / e_dxy_j * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * (-n_phi_t(kt, ht) * n_e_phi_xy(kxy, hxy)) * diffusion;
+                                            J_cn_xyt -= weights1t_j(kt) * e_weights2_j(kxy) / e_dxy_j * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * n_phi_t(kt, ht) * n_e_phi_xy(kxy, hxy) * diffusion;
                                         }
 
                                     I_a_cn_xyt(jt * dofs_xy + jxy, ht * n_dofs_xy + hxy, I_a_cn_xyt(jt * dofs_xy + jxy, ht * n_dofs_xy + hxy) + a_cn_xyt);
@@ -304,7 +304,7 @@ namespace ivo {
 
                                             // J(*, *).
 
-                                            J_nc_xyt += weights1t_j(kt) * e_weights2_j(kxy) / e_dxy_j * (-n_phi_t(kt, jt) * n_e_phi_xy(kxy, jxy)) * phi_t(kt, ht) * e_phi_xy(kxy, hxy) * diffusion;
+                                            J_nc_xyt -= weights1t_j(kt) * e_weights2_j(kxy) / e_dxy_j * n_phi_t(kt, jt) * n_e_phi_xy(kxy, jxy) * phi_t(kt, ht) * e_phi_xy(kxy, hxy) * diffusion;
                                         }
 
                                     I_a_nc_xyt(jt * n_dofs_xy + jxy, ht * dofs_xy + hxy, I_a_nc_xyt(jt * n_dofs_xy + jxy, ht * dofs_xy + hxy) + a_nc_xyt);
