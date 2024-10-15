@@ -109,8 +109,7 @@ namespace ivo {
 
                                         // (*', *).
 
-                                        // V_T_cc += weights2_j(kxy) * weights1t_j(kt) * gradt_phi_t(kt, jt) * phi_xy(kxy, jxy) * phi_t(kt, ht) * phi_xy(kxy, hxy); // [?]
-                                        V_T_cc += weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, jt) * phi_xy(kxy, jxy) * gradt_phi_t(kt, ht) * phi_xy(kxy, hxy); // [?]
+                                        V_T_cc += weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, jt) * phi_xy(kxy, jxy) * gradt_phi_t(kt, ht) * phi_xy(kxy, hxy); // [!?]
 
                                         // a(*, *), diffusion.
 
