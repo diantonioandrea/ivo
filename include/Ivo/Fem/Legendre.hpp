@@ -23,9 +23,6 @@ namespace ivo {
 
     }
 
-    Vector<Real> legendre1(const Vector<Real> &, const Natural &);
-    Vector<Real> legendre_grad1(const Vector<Real> &, const Natural &);
-
 }
 
 #endif
