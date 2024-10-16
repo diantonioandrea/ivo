@@ -26,7 +26,7 @@ namespace ivo {
         
         #ifndef NVERBOSE
         std::cout << "[Ivo] Mesh21" << std::endl;
-        std::cout << "\t[Mesh21] Evaluating elements" << std::endl;
+        std::cout << "\t[Mesh21] Evaluating " << this->_space * this->_time << " elements" << std::endl;
         #endif
 
         // Elements.
