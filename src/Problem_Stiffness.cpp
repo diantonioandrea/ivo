@@ -117,7 +117,7 @@ namespace ivo {
 
                                         // b(*, *), convection.
 
-                                        V_b_cc += weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, jt) * (gradx_phi_xy(kxy, jxy) * convection_x + grady_phi_xy(kxy, jxy) * convection_y) * phi_t(kt, ht) * phi_xy(kxy, hxy);
+                                        V_b_cc += weights2_j(kxy) * weights1t_j(kt) * phi_t(kt, ht) * (gradx_phi_xy(kxy, hxy) * convection_x + grady_phi_xy(kxy, hxy) * convection_y) * phi_t(kt, jt) * phi_xy(kxy, jxy);
 
                                         // c(*, *), reaction.
 
@@ -254,12 +254,21 @@ namespace ivo {
                                             Real t = nodes1t_j(kt);
 
                                             // Equation coefficients.
+                                            auto [convection_x, convection_y] = equation.convection(t);
+                                            Real convection_n = normal(0) * convection_x + normal(1) * convection_y;
                                             Real diffusion = equation.diffusion(t);
+
+                                            // Boundary check.
+                                            Real negative = (convection_n < 0.0L) ? 1.0L : 0.0L;
 
                                             // a(*, *), diffusion.
 
                                             if(i < j) // [?]
                                                 a_cn_xyt -= weights1t_j(kt) * e_weights2_j(kxy) * (0.5L * phi_t(kt, jt) * e_gradn_phi_xy(kxy, jxy) * (-n_phi_t(kt, ht) * n_e_phi_xy(kxy, hxy)) - 0.5L * n_phi_t(kt, ht) * n_e_gradn_phi_xy(kxy, hxy) * phi_t(kt, jt) * e_phi_xy(kxy, jxy)) * diffusion;
+
+                                            // b(*, *), convection.
+
+                                            b_cn_xyt += negative * weights1t_j(kt) * e_weights2_j(kxy) * n_phi_t(kt, ht) * n_e_phi_xy(kxy, hxy) * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * convection_n;
 
                                             // J(*, *).
 
@@ -298,9 +307,9 @@ namespace ivo {
                                             if(i < j) // [?]
                                                 a_nc_xyt -= weights1t_j(kt) * e_weights2_j(kxy) * (0.5L * n_phi_t(kt, jt) * n_e_gradn_phi_xy(kxy, jxy) * phi_t(kt, ht) * e_phi_xy(kxy, hxy) - 0.5L * phi_t(kt, ht) * e_gradn_phi_xy(kxy, hxy) * (-n_phi_t(kt, jt) * n_e_phi_xy(kxy, jxy))) * diffusion;
 
-                                            // b(*, *), convection.
+                                            // // b(*, *), convection.
 
-                                            b_nc_xyt += negative * weights1t_j(kt) * e_weights2_j(kxy) * n_phi_t(kt, jt) * n_e_phi_xy(kxy, jxy) * phi_t(kt, ht) * e_phi_xy(kxy, hxy) * convection_n;
+                                            // b_nc_xyt += negative * weights1t_j(kt) * e_weights2_j(kxy) * n_phi_t(kt, ht) * n_e_phi_xy(kxy, hxy) * phi_t(kt, jt) * e_phi_xy(kxy, jxy) * convection_n;
 
                                             // J(*, *).
 
@@ -411,9 +420,9 @@ namespace ivo {
                     std::vector<Natural> n_dofs_j = mesh.dofs(facing[k][0]);
 
                     // Building.
-                    I(dofs_j, dofs_j, I(dofs_j, dofs_j) + I_cc[k]);
+                    I(dofs_j, dofs_j, I(dofs_j, dofs_j) + I_cc[k]); // [!?]
                     I(dofs_j, n_dofs_j, I(dofs_j, n_dofs_j) + I_cn[k]);
-                    I(n_dofs_j, dofs_j, I(n_dofs_j, dofs_j) + I_nc[k]);
+                    I(n_dofs_j, dofs_j, I(n_dofs_j, dofs_j) + I_nc[k]); // [!?]
                     I(n_dofs_j, n_dofs_j, I(n_dofs_j, n_dofs_j) + I_nn[k]); // [?]
                     
                 } else {
