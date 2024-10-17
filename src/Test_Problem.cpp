@@ -15,9 +15,13 @@ std::array<ivo::Real, 2> convection(const ivo::Real &);
 ivo::Real diffusion(const ivo::Real &);
 ivo::Real reaction(const ivo::Real &);
 
+ivo::Real exact(const ivo::Real &, const ivo::Real &, const ivo::Real &);
+
+ivo::Real exact_t(const ivo::Real &, const ivo::Real &, const ivo::Real &);
+std::array<ivo::Real, 2> exact_xy(const ivo::Real &, const ivo::Real &, const ivo::Real &);
+
 ivo::Real condition(const ivo::Real &, const ivo::Real &);
 ivo::Real source(const ivo::Real &, const ivo::Real &, const ivo::Real &);
-ivo::Real dirichlet(const ivo::Real &, const ivo::Real &, const ivo::Real &);
 ivo::Real neumann(const ivo::Real &, const ivo::Real &, const ivo::Real &);
 
 int main(int argc, char **argv) {
@@ -38,11 +42,11 @@ int main(int argc, char **argv) {
     std::vector<ivo::Real> time{0.0L, 0.2L, 0.4L, 0.6L, 0.8L, 1.0L};
 
     // Mesh.
-    ivo::Mesh21 mesh{space, time, 2, 2};
+    ivo::Mesh21 mesh{space, time, 3, 3};
 
     // Problem.
     ivo::Equation equation{convection, diffusion, reaction};
-    ivo::Data data{source, dirichlet, neumann};
+    ivo::Data data{source, exact, neumann};
     ivo::Initial initial{condition};
 
     // Stiffness matrix.
@@ -61,7 +65,7 @@ int main(int argc, char **argv) {
 }
 
 std::array<ivo::Real, 2> convection(const ivo::Real &t) {
-    return {0.0L, 0.0L};
+    return {0.5L, 0.5L};
 }
 
 ivo::Real diffusion(const ivo::Real &t) {
@@ -73,20 +77,39 @@ ivo::Real reaction(const ivo::Real &t) {
 }
 
 ivo::Real condition(const ivo::Real &x, const ivo::Real &y) {
-    return x * x + y * y;
+    return exact(x, y, 0.0L);
+}
+
+ivo::Real exact(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) { // Dirichlet.
+    return std::sin(x) * std::sin(y) * std::sin(t);
+}
+
+ivo::Real exact_t(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
+    return std::sin(x) * std::sin(y) * std::cos(t);
+}
+
+std::array<ivo::Real, 2> exact_xy(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
+    return {std::cos(x) * std::sin(y) * std::sin(t), std::sin(x) * std::cos(y) * std::sin(t)};
 }
 
 ivo::Real source(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
-    return condition(x, y) + t;
-}
+    auto [convection_x, convection_y] = convection(t);
+    auto [exact_x, exact_y] = exact_xy(x, y, t);
 
-ivo::Real dirichlet(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
-    return condition(x, y) + t;
+    return exact_t(x, y, t) + reaction(t) * exact(x, y, t) + convection_x * exact_x + convection_y * exact_y;
 }
 
 ivo::Real neumann(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
-    if(x + y <= 1.0L - ivo::constants::algebra_zero)
-        return 0.0L;
+    auto [exact_x, exact_y] = exact_xy(x, y, t);
 
-    return 2.0L * diffusion(t);
+    if(x <= ivo::constants::algebra_zero)
+        return -1.0L * diffusion(t) * exact_x;
+
+    if(x >= 1.0L - ivo::constants::algebra_zero)
+        return diffusion(t) * exact_x;
+    
+    if(y <= ivo::constants::algebra_zero)
+        return 1.0L * diffusion(t) * exact_y;
+    
+    return diffusion(t) * exact_y;
 }
