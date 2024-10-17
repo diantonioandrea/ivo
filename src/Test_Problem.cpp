@@ -19,6 +19,7 @@ ivo::Real exact(const ivo::Real &, const ivo::Real &, const ivo::Real &);
 
 ivo::Real exact_t(const ivo::Real &, const ivo::Real &, const ivo::Real &);
 std::array<ivo::Real, 2> exact_xy(const ivo::Real &, const ivo::Real &, const ivo::Real &);
+ivo::Real exact_xxyy(const ivo::Real &, const ivo::Real &, const ivo::Real &);
 
 ivo::Real condition(const ivo::Real &, const ivo::Real &);
 ivo::Real source(const ivo::Real &, const ivo::Real &, const ivo::Real &);
@@ -69,7 +70,7 @@ std::array<ivo::Real, 2> convection(const ivo::Real &t) {
 }
 
 ivo::Real diffusion(const ivo::Real &t) {
-    return 0.0L;
+    return 1.0L;
 }
 
 ivo::Real reaction(const ivo::Real &t) {
@@ -92,11 +93,15 @@ std::array<ivo::Real, 2> exact_xy(const ivo::Real &x, const ivo::Real &y, const 
     return {std::cos(x) * std::sin(y) * std::sin(t), std::sin(x) * std::cos(y) * std::sin(t)};
 }
 
+ivo::Real exact_xxyy(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
+    return -2.0L * exact(x, y, t);
+}
+
 ivo::Real source(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
     auto [convection_x, convection_y] = convection(t);
     auto [exact_x, exact_y] = exact_xy(x, y, t);
 
-    return exact_t(x, y, t) + reaction(t) * exact(x, y, t) + convection_x * exact_x + convection_y * exact_y;
+    return exact_t(x, y, t) - diffusion(t) * exact_xxyy(x, y, t) + reaction(t) * exact(x, y, t) + convection_x * exact_x + convection_y * exact_y;
 }
 
 ivo::Real neumann(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
@@ -109,7 +114,7 @@ ivo::Real neumann(const ivo::Real &x, const ivo::Real &y, const ivo::Real &t) {
         return diffusion(t) * exact_x;
     
     if(y <= ivo::constants::algebra_zero)
-        return 1.0L * diffusion(t) * exact_y;
+        return -1.0L * diffusion(t) * exact_y;
     
     return diffusion(t) * exact_y;
 }
