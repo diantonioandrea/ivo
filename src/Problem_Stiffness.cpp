@@ -17,7 +17,6 @@ namespace ivo {
      * 
      * @param mesh Mesh.
      * @param equation Equation.
-     * @param initial Initial condition.
      * @return Sparse<Real> 
      */
     Sparse<Real> stiffness(const Mesh21 &mesh, const Equation &equation) {
