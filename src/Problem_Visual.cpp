@@ -77,7 +77,8 @@ namespace ivo {
                                 uh += phi_t(kt, jt) * phi_s(kxy, jxy) * uh_j(jt * dofs_xy + jxy);
 
 
-                        output << x << "," << y << "," << t << "," << uh << std::endl;
+                        output << x << "," << y << "," << t << "," << std::abs(uh - std::sin(x) * std::sin(y) * std::sin(t)) << std::endl;
+                        // output << x << "," << y << "," << t << "," << uh << std::endl;
                     }
             }
 
