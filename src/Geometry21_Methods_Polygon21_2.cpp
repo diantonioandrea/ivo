@@ -26,7 +26,7 @@ namespace ivo {
 
         #ifndef NVERBOSE
         std::cout << "[Ivo] Mesher2" << std::endl;
-        std::cout << "\t[Mesher2] Building a diagram for: " << polygon << std::endl;
+        std::cout << "\t[Mesher2] Building a diagram of " << number <<  " cells for: " << polygon << std::endl;
         #endif
 
         // Initial diagram.

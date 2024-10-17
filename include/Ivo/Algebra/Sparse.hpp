@@ -431,6 +431,26 @@ namespace ivo {
                 return column;
             }
 
+            // Methods.
+
+            /**
+             * @brief 
+             * 
+             * @return Sparse 
+             */
+            Sparse transpose() const {
+                Sparse transpose{this->_columns, this->_rows};
+
+                for(const auto &[index, entry]: this->_entries) {
+                    Natural row = index / this->_columns;
+                    Natural column = index % this->_columns;
+
+                    transpose._entries[column * this->_rows + row] = entry;
+                }
+
+                return transpose;
+            }
+
             // Operations.
 
             /**
@@ -773,7 +793,7 @@ namespace ivo {
             }
 
             /**
-             * @brief Sparse + sparse.
+             * @brief Sparse - sparse.
              * 
              * @param sparse Sparse matrix.
              * @return Sparse 

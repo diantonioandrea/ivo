@@ -199,8 +199,8 @@ namespace ivo {
         for(Natural k = 0; k < columns; ++k) {
             Real coefficient = std::sqrt(k + 0.5L);
 
-            phi.column(k, coefficient * legendre1(t, k));
-            gradt_phi.column(k, dt * coefficient * legendre_grad1(t, k));
+            phi.column(k, coefficient * internal::legendre(t, k, 0));
+            gradt_phi.column(k, dt * coefficient * internal::legendre(t, k, 1));
         }
 
         return {phi, gradt_phi};
@@ -289,13 +289,13 @@ namespace ivo {
 
         // Polynomial evaluations.
         for(Natural k = 0; k < columns; ++k) {
-            Vector<Real> legendre_x = legendre1(x, px[k]);
-            Vector<Real> legendre_y = legendre1(y, py[k]);
+            Vector<Real> legendre_x = internal::legendre(x, px[k], 0);
+            Vector<Real> legendre_y = internal::legendre(y, py[k], 0);
 
             Real coefficient = std::sqrt((2.0L * px[k] + 1.0L) * (2.0L * py[k] + 1.0L)) / 2.0L;
 
-            Vector<Real> grad_legendre_x = legendre_grad1(x, px[k]);
-            Vector<Real> grad_legendre_y = legendre_grad1(y, py[k]);
+            Vector<Real> grad_legendre_x = internal::legendre(x, px[k], 1);
+            Vector<Real> grad_legendre_y = internal::legendre(y, py[k], 1);
 
             phi.column(k, coefficient * legendre_x * legendre_y);
             gradx_phi.column(k, coefficient * grad_legendre_x * legendre_y);

@@ -48,7 +48,7 @@ namespace ivo {
             for(Natural j = k; j <= n; ++j) {
                 Vector<Real> y_j{x.size(), 1.0L};
 
-                for(Natural h = 0; h < j; ++h)
+                for(Natural h = 0; h < j - k; ++h)
                     y_j *= 0.5L * (x - 1.0L);
 
                 for(Natural h = 0; h < k; ++h)
@@ -60,54 +60,6 @@ namespace ivo {
             return y;
         }
 
-    }
-
-    // Legendre polynomials.
-
-    /**
-     * @brief 1D Legendre polynomials evaluation over a vector of points.
-     * 
-     * @param x Real points.
-     * @param n Degree.
-     * @return Vector<Real> 
-     */
-    Vector<Real> legendre1(const Vector<Real> &x, const Natural &n) {
-        Vector<Real> legendre{x.size()};
-
-        // Recursive formula.
-        for(Natural k = 0; k <= n; ++k) {
-            Vector<Real> power{x.size(), 1.0L};
-
-            for(Natural j = 0; j < k; ++j)
-                power *= 0.5L * (x - 1.0L);
-
-            legendre += internal::binomial(n, k) * internal::binomial(n + k, k) * power;
-        }
-
-        return legendre;
-    }
-
-    /**
-     * @brief 1D Legendre polynomials evaluation over a vector of points. First derivative.
-     * 
-     * @param x Real points.
-     * @param n Degree.
-     * @return Vector<Real> 
-     */
-    Vector<Real> legendre_grad1(const Vector<Real> &x, const Natural &n) {
-        Vector<Real> legendre{x.size()};
-
-        // Recursive formula.
-        for(Natural k = 1; k <= n; ++k) {
-            Vector<Real> power{x.size(), 1.0L};
-
-            for(Natural j = 1; j < k; ++j)
-                power *= 0.5L * (x - 1.0L);
-
-            legendre += 0.5L * k * internal::binomial(n, k) * internal::binomial(n + k, k) * power;
-        }
-
-        return legendre;
     }
 
 }
