@@ -29,8 +29,10 @@ namespace ivo {
         std::vector<Real> intervals;
         intervals.resize(n + 1, a);
 
+        Real step = (b - a) / static_cast<Real>(n);
+
         for(Natural j = 1; j <= n; ++j)
-            intervals[j] += j * (b - a) / static_cast<Real>(n);
+            intervals[j] += j * step;
 
         return intervals;
     }
