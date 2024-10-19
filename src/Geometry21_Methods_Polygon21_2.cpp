@@ -73,7 +73,7 @@ namespace ivo {
         assert(spatial(polygon));
         assert(spatial(line));
         assert(contains2(polygon, point));
-        assert(std::abs(line(2, 1) - p_points[0](2)) <= constants::geometrical_zero);
+        assert(std::abs(line(2, 1) - p_points[0](2)) <= constants::geometry_zero);
         #endif
         
         // Not enough intersections.
@@ -434,7 +434,7 @@ namespace ivo {
 
         // First check.
         std::vector<Point21> points = polygon.points();
-        if(std::abs(point(2) - points[0](2)) > constants::geometrical_zero)
+        if(std::abs(point(2) - points[0](2)) > constants::geometry_zero)
             return false;
 
         // Second check.

@@ -23,19 +23,19 @@ namespace ivo {
          * @brief Zero tolerance.
          * 
          */
-        constexpr Real zero = 1E-16;
+        constexpr Real zero = 1E-20;
 
         /**
          * @brief Algebra zero tolerance (solvers).
          * 
          */
-        constexpr Real algebra_zero = 1E-8;
+        constexpr Real algebra_zero = 1E-12;
 
         /**
          * @brief Geometrical zero tolerance.
          * 
          */
-        constexpr Real geometrical_zero = 1E-12;
+        constexpr Real geometry_zero = 1E-12;
         
         /**
          * @brief Quadrature zero tolerance.
@@ -49,7 +49,7 @@ namespace ivo {
          * @brief Lloyd stopping multiplier.
          * 
          */
-        constexpr Real diagram_stop = 1E-6;
+        constexpr Real diagram_stop = 1E-4;
 
         /**
          * @brief Collapse multiplier.
@@ -63,7 +63,7 @@ namespace ivo {
          * @brief Quadrature order.
          * 
          */
-        constexpr Natural quadrature = 7;
+        constexpr Natural quadrature = 21;
 
         // Solvers.
 

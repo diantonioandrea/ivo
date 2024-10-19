@@ -83,7 +83,7 @@ namespace ivo {
         Real ap = distance(ab(0), p);
         Real bp = distance(ab(1), p);
 
-        return std::abs(distance(ab(0), ab(1)) - (ap + bp)) <= constants::geometrical_zero;
+        return std::abs(distance(ab(0), ab(1)) - (ap + bp)) <= constants::geometry_zero;
     }
 
     /**
@@ -108,7 +108,7 @@ namespace ivo {
      * @return false 
      */
     bool spatial(const Edge21 &edge) {
-        return std::abs(edge(0)(2) - edge(1)(2)) <= constants::geometrical_zero;
+        return std::abs(edge(0)(2) - edge(1)(2)) <= constants::geometry_zero;
     }
 
 }
