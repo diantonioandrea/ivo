@@ -91,7 +91,6 @@ namespace ivo {
                         uh_j(kt, kxy, uh_xyt);
                     }
 
-
                 // CURRENT ERROR.
 
                 for(Natural kt = 0; kt < phi_t.rows(); ++kt)
@@ -106,6 +105,7 @@ namespace ivo {
                     }
             }
 
+            // Error update.
             this->l2l2 += this->l2l2s[j];
 
             #ifndef NVERBOSE
@@ -114,6 +114,7 @@ namespace ivo {
             #endif
         }
 
+        // Error.
         this->l2l2 = std::sqrt(this->l2l2);
 
         #ifndef NVERBOSE
