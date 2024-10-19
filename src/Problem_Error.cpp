@@ -114,13 +114,32 @@ namespace ivo {
             #endif
         }
 
-
-
         this->l2l2 = std::sqrt(this->l2l2);
 
         #ifndef NVERBOSE
         std::cout << "\t[Error] Exited" << std::endl;
         #endif
+    }
+
+    // Output.
+
+    /**
+     * @brief Error output.
+     * 
+     * @param ost 
+     * @param error 
+     * @return std::ostream 
+     */
+    std::ostream &operator <<(std::ostream &ost, const Error &error) {
+        ost << "[Ivo] Error" << std::endl;
+        ost << "\t[Error] DoFs: " << error.dofs << std::endl;
+        ost << "\t[Error] Space diagram size, h: " << error.h << std::endl;
+        ost << "\t[Error] Time diagram size, t: " << error.t << std::endl;
+        ost << "\t[Error] (Highest) space degree, p: " << error.p << std::endl;
+        ost << "\t[Error] (Highest) time degree, q: " << error.q << std::endl;
+        ost << "\t[Error] L2(L2) error, l2l2: " << error.l2l2 << std::flush;
+
+        return ost;
     }
 
 }

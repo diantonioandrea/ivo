@@ -70,6 +70,10 @@ namespace ivo {
             // Constructor.
 
             Error(const Mesh21 &, const Vector<Real> &, const std::function<Real (Real, Real, Real)> &, const std::function<std::array<Real, 2> (Real, Real, Real)> &);
+
+            // Output.
+
+            friend std::ostream &operator <<(std::ostream &, const Error &);
     };
 
 }

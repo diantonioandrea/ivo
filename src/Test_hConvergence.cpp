@@ -24,6 +24,9 @@ int main(int argc, char **argv) {
     assert(p > 0);
     assert(q > 0);
 
+    // Output.
+    std::ofstream output{"output/hConvergence_" + std::to_string(p) + "_" + std::to_string(q) + ".e21"};
+
     // Elements.
     ivo::Natural Ns = 16;
     const ivo::Natural Nt = 256;
@@ -57,6 +60,12 @@ int main(int argc, char **argv) {
 
         // Solution.
         ivo::Vector<ivo::Real> x = ivo::solve(mesh, A, b, initial);
+
+        // Error.
+        ivo::Error error{mesh, x, ivo::square::u, ivo::square::u_xy};
+
+        // Output.
+        output << error << "\n" << std::endl;
 
         #ifndef NVERBOSE
         std::cout << "\t[TEST] Completed iteration " << j + 1 << std::endl;
