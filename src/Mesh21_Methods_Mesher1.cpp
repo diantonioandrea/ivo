@@ -27,10 +27,10 @@ namespace ivo {
         #endif
 
         std::vector<Real> intervals;
-        intervals.resize(n + 1);
+        intervals.resize(n + 1, a);
 
-        for(Natural j = 0; j <= n; ++j)
-            intervals[j] = a + j * (b - a) / static_cast<Real>(n);
+        for(Natural j = 1; j <= n; ++j)
+            intervals[j] += j * (b - a) / static_cast<Real>(n);
 
         return intervals;
     }
