@@ -26,6 +26,11 @@ namespace ivo {
         assert(n > 0);
         #endif
 
+        #ifndef NVERBOSE
+        std::cout << "[Ivo] Mesher1" << std::endl;
+        std::cout << "\t[Mesher1] Building a diagram of " << n <<  " cells for: [" << a << ", " << b << "]" << std::endl;
+        #endif
+
         std::vector<Real> intervals;
         intervals.resize(n + 1, a);
 
@@ -33,6 +38,10 @@ namespace ivo {
 
         for(Natural j = 1; j <= n; ++j)
             intervals[j] += j * step;
+
+        #ifndef NVERBOSE
+        std::cout << "\t[Mesher1] Exited" << std::endl;
+        #endif
 
         return intervals;
     }

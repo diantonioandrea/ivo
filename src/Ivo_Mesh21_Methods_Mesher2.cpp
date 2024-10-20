@@ -20,10 +20,48 @@ namespace ivo {
      */
     std::vector<Polygon21> mesher2(const std::string &filename) {
 
+        #ifndef NVERBOSE
+        std::cout << "[Ivo] Mesher2" << std::endl;
+        std::cout << "\t[Mesher2] Reading a diagram from: " << filename << std::endl;
+        #endif
+
         // File.
         std::ifstream file{filename};
+
+        // Diagram.
+        std::vector<Polygon21> diagram;
+
+        // Reading.
+        std::string line;
+
+        // Reading loop.
+        while(std::getline(file, line)) {
+
+            // Skip lines starting with '@'
+            if (!line.empty() && line[0] == '@') {
+                continue;
+            }
+
+            // Reading inside the line.
+            std::istringstream lineStream{line};
+
+            // Points.
+            std::vector<Point21> points;
+            Real x, y, t;
+
+            while(lineStream >> x >> y >> t) {
+                points.emplace_back(x, y, t);
+            }
+
+            // Diagram update.
+            diagram.emplace_back(points);
+        }
+
+        #ifndef NVERBOSE
+        std::cout << "\t[Mesher2] Exited" << std::endl;
+        #endif
         
-        return {};
+        return diagram;
     }
 
     /**
@@ -34,6 +72,11 @@ namespace ivo {
      */
     void mesher2(const std::string &filename, const std::vector<Polygon21> &diagram) {
 
+        #ifndef NVERBOSE
+        std::cout << "[Ivo] Mesher2" << std::endl;
+        std::cout << "\t[Mesher2] Writing a diagram to: " << filename << std::endl;
+        #endif
+
         // File.
         std::ofstream file{filename};
 
@@ -42,8 +85,21 @@ namespace ivo {
         file << "@ " << diagram.size() << " cells." << std::endl;
 
         // Writing.
-        for(const auto &cell: diagram)
-            file << cell << std::endl;
+        for(const auto &polygon: diagram) {
+            for(const auto &point: polygon.points()) {
+                const Real x = point(0);
+                const Real y = point(1);
+                const Real t = point(2);
+
+                file << std::setprecision(14) << x << " " << y << " " << t << " " << std::flush;
+            }
+
+            file << std::endl;
+        }
+
+        #ifndef NVERBOSE
+        std::cout << "\t[Mesher2] Exited" << std::endl;
+        #endif
     }
 
 }
