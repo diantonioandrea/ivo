@@ -33,9 +33,20 @@ int main(int argc, char **argv) {
     std::cout << "[Ivo] TEST, Testing space-time convergence" << std::endl;
     #endif
 
-    // Elements.
-    ivo::Natural Ns = 16;
-    ivo::Natural Nt = 4;
+    // Space diagrams.
+    std::vector<std::string> diagrams;
+
+    diagrams.emplace_back("data/square/Square_8.s2");
+    diagrams.emplace_back("data/square/Square_16.s2");
+    diagrams.emplace_back("data/square/Square_32.s2");
+    diagrams.emplace_back("data/square/Square_64.s2");
+    diagrams.emplace_back("data/square/Square_128.s2");
+    diagrams.emplace_back("data/square/Square_256.s2");
+    diagrams.emplace_back("data/square/Square_512.s2");
+    diagrams.emplace_back("data/square/Square_1024.s2");
+
+    // Time elements.
+    std::vector<ivo::Natural> Nt = {2, 3, 4, 5, 7, 10, 15, 21};
 
     // Equation.
     const ivo::Equation equation{ivo::square::convection, ivo::square::diffusion, ivo::square::reaction};
@@ -43,13 +54,13 @@ int main(int argc, char **argv) {
     const ivo::Data data{ivo::square::g, ivo::square::gd, ivo::square::gn};
 
     // Tests.
-    for(ivo::Natural j = 0; j < 6; ++j) {
+    for(ivo::Natural j = 0; j < diagrams.size(); ++j) {
 
         // Space.
-        const std::vector<ivo::Polygon21> space = ivo::mesher2(ivo::square::abcd, Ns);
+        const std::vector<ivo::Polygon21> space = ivo::mesher2(diagrams[j]);
 
         // Time.
-        const std::vector<ivo::Real> time = ivo::mesher1(0.0L, 1.0L, Nt);
+        const std::vector<ivo::Real> time = ivo::mesher1(0.0L, 1.0L, Nt[j]);
 
         // Mesh.
         const ivo::Mesh21 mesh{space, time, p, q};
@@ -72,10 +83,6 @@ int main(int argc, char **argv) {
         #else
         std::cout << "\t[TEST] Completed iteration " << j + 1 << std::endl;
         #endif
-
-        // Update.
-        Ns *= 2;
-        Nt *= 1.25;
     }
 
     std::cout << "\t[TEST] Exited" << std::endl;
