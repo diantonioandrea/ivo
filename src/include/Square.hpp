@@ -84,7 +84,7 @@ namespace ivo {
          * @return std::array<Real, 2> 
          */
         std::array<Real, 2> convection(const Real &t) {
-            return {0.5L, 0.5L};
+            return {1.0L, 1.0L};
         }
 
         /**
@@ -94,7 +94,7 @@ namespace ivo {
          * @return Real 
          */
         Real diffusion(const Real &t) {
-            return 1.0L;
+            return 0.0L;
         }
 
         /**
@@ -104,7 +104,7 @@ namespace ivo {
          * @return Real 
          */
         Real reaction(const Real &t) {
-            return 1.0L;
+            return 0.5L;
         }
 
         // Data.
