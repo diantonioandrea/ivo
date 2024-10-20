@@ -1,7 +1,7 @@
 /**
  * @file Test_hConvergence.cpp
  * @author Andrea Di Antonio (github.com/diantonioandrea)
- * @brief h convergence test.
+ * @brief t convergence test.
  * @date 2024-10-19
  * 
  * @copyright Copyright (c) 2024
@@ -25,31 +25,31 @@ int main(int argc, char **argv) {
     assert(q > 0);
 
     // Output.
-    std::ofstream output{"output/hConvergence_" + std::to_string(p) + "_" + std::to_string(q) + ".e21"};
+    std::ofstream output{"output/thConvergence_" + std::to_string(p) + "_" + std::to_string(q) + ".e21"};
+
+    #ifndef NVERBOSE
+    std::cout << "[Ivo] TEST, th convergence\n" << std::endl;
+    #else
+    std::cout << "[Ivo] TEST, th convergence" << std::endl;
+    #endif
 
     // Elements.
     ivo::Natural Ns = 16;
-    const ivo::Natural Nt = 256;
-
-    // Time.
-    const std::vector<ivo::Real> time = ivo::mesher1(0.0L, 1.0L, Nt);
+    ivo::Natural Nt = 4;
 
     // Equation.
     const ivo::Equation equation{ivo::square::convection, ivo::square::diffusion, ivo::square::reaction};
     const ivo::Initial initial{ivo::square::u0};
     const ivo::Data data{ivo::square::g, ivo::square::gd, ivo::square::gn};
 
-    #ifndef NVERBOSE
-    std::cout << "[Ivo] TEST, h convergence\n" << std::endl;
-    #else
-    std::cout << "[Ivo] TEST, h convergence" << std::endl;
-    #endif
-
     // Tests.
-    for(ivo::Natural j = 0; j < 4; ++j) {
+    for(ivo::Natural j = 0; j < 6; ++j) {
 
         // Space.
         const std::vector<ivo::Polygon21> space = ivo::mesher2(ivo::square::abcd, Ns);
+
+        // Time.
+        const std::vector<ivo::Real> time = ivo::mesher1(0.0L, 1.0L, Nt);
 
         // Mesh.
         const ivo::Mesh21 mesh{space, time, p, q};
@@ -74,7 +74,8 @@ int main(int argc, char **argv) {
         #endif
 
         // Update.
-        Ns += 16;
+        Ns *= 2;
+        Nt *= 1.25;
     }
 
     std::cout << "\t[TEST] Exited" << std::endl;
