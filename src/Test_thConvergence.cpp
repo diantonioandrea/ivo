@@ -28,9 +28,9 @@ int main(int argc, char **argv) {
     std::ofstream output{"output/thConvergence_" + std::to_string(p) + "_" + std::to_string(q) + ".e21"};
 
     #ifndef NVERBOSE
-    std::cout << "[Ivo] TEST, th convergence\n" << std::endl;
+    std::cout << "[Ivo] TEST, Testing space-time convergence\n" << std::endl;
     #else
-    std::cout << "[Ivo] TEST, th convergence" << std::endl;
+    std::cout << "[Ivo] TEST, Testing space-time convergence" << std::endl;
     #endif
 
     // Elements.
