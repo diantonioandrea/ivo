@@ -45,19 +45,30 @@ LIBRARY = ./lib/lib$(LIBRARY_NAME).a
 INCLUDE_DESTINATION = $(HOME)/include
 LIB_DESTINATION = $(HOME)/lib
 
-# Tests.
+# Tests and scripts.
 TESTS = $(subst src/,executables/,$(subst .cpp,.out,$(shell find src -name "Test_*.cpp")))
+SCRIPTS = $(subst src/,executables/,$(subst .cpp,.out,$(shell find src -name "Script_*.cpp")))
 
 # Source.
 T_OBJECTS = $(subst src/,objects/,$(subst .cpp,.o,$(shell find src -name "Test_*")))
-OBJECTS = $(subst src/,objects/,$(subst .cpp,.o,$(shell find src -name "*.cpp" -not -name "Test_*")))
+S_OBJECTS = $(subst src/,objects/,$(subst .cpp,.o,$(shell find src -name "Script_*")))
+
+OBJECTS = $(subst src/,objects/,$(subst .cpp,.o,$(shell find src -name "Ivo_*")))
 
 # Directories.
 DIRECTORIES = ./output ./objects ./executables
 
 # All.
-all: $(DIRECTORIES) $(TESTS)
+all: $(DIRECTORIES) $(TESTS) $(SCRIPTS)
 	@echo "Compiled everything!"
+
+# Tests.
+tests: $(DIRECTORIES) $(TESTS)
+	@echo "Compiled tests!"
+
+# Scripts.
+scripts: $(DIRECTORIES) $(SCRIPTS)
+	@echo "Compiled scripts!"
 
 # Library.
 lib: $(LIBRARY)
@@ -81,12 +92,20 @@ install: # Manual spacing for consistency between platforms.
 	@cp $(LIBRARY) $(LIB_DESTINATION)/
 endif
 
-# Tests.
+# Tests and scripts.
 $(TESTS): executables/Test_%.out: objects/Test_%.o $(OBJECTS) 
 	@if [ "$(LDFLAGS) $(LDLIBS)" = " " ]; then echo "Linking to $@"; else echo "Linking to $@ with: $(LDFLAGS) $(LDLIBS)"; fi
 	@$(CXX) $(LDFLAGS) $(LDLIBS) $^ -o $@
 
+$(SCRIPTS): executables/Script_%.out: objects/Script_%.o $(OBJECTS) 
+	@if [ "$(LDFLAGS) $(LDLIBS)" = " " ]; then echo "Linking to $@"; else echo "Linking to $@ with: $(LDFLAGS) $(LDLIBS)"; fi
+	@$(CXX) $(LDFLAGS) $(LDLIBS) $^ -o $@
+
 $(T_OBJECTS): objects/%.o: src/%.cpp $(HEADERS)
+	@echo "Compiling $< using $(CXX) with: $(CXXFLAGS) $(CPPFLAGS)"
+	@$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+
+$(S_OBJECTS): objects/%.o: src/%.cpp $(HEADERS)
 	@echo "Compiling $< using $(CXX) with: $(CXXFLAGS) $(CPPFLAGS)"
 	@$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 
