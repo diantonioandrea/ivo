@@ -10,6 +10,3 @@ lib
 
 # Executables' output.
 **/output
-
-# Local scripts.
-/scripts
