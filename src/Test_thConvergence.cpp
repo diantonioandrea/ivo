@@ -36,16 +36,15 @@ int main(int argc, char **argv) {
     // Space diagrams.
     std::vector<std::string> diagrams;
 
-    diagrams.emplace_back("data/square/Square_32.s2");
     diagrams.emplace_back("data/square/Square_64.s2");
     diagrams.emplace_back("data/square/Square_128.s2");
     diagrams.emplace_back("data/square/Square_256.s2");
     diagrams.emplace_back("data/square/Square_512.s2");
-    // diagrams.emplace_back("data/square/Square_1024.s2");
-    // diagrams.emplace_back("data/square/Square_2048.s2");
+    diagrams.emplace_back("data/square/Square_1024.s2");
+    diagrams.emplace_back("data/square/Square_2048.s2");
 
     // Time elements.
-    std::vector<ivo::Natural> Nt = {4, 9, 16, 27, 36};
+    std::vector<ivo::Natural> Nt = {2, 4, 9, 16, 27, 36};
 
     // Equation.
     const ivo::Equation equation{ivo::square::convection, ivo::square::diffusion, ivo::square::reaction};
