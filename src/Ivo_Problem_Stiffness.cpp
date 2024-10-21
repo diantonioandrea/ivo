@@ -82,6 +82,7 @@ namespace ivo {
                 // Nodes and basis, space.
                 auto [nodes2xy_j, dxy_j] = internal::reference_to_element(mesh, j, k, {nodes2x, nodes2y});
                 auto [phi_xy, gradx_phi_xy, grady_phi_xy] = basis_xy(mesh, j, nodes2xy_j);
+                auto [nodes2x_j, nodes2y_j] = nodes2xy_j;
 
                 // Weights, space.
                 Vector<Real> weights2_j = weights2 * dxy_j;
@@ -99,12 +100,14 @@ namespace ivo {
 
                                 for(Natural kt = 0; kt < phi_t.rows(); ++kt)
                                     for(Natural kxy = 0; kxy < phi_xy.rows(); ++kxy) { // Brute-force integral.
+                                        Real x = nodes2x_j(kxy);
+                                        Real y = nodes2y_j(kxy);
                                         Real t = nodes1t_j(kt);
 
                                         // Equation coefficients.
-                                        auto [convection_x, convection_y] = equation.convection(t);
-                                        Real diffusion = equation.diffusion(t);
-                                        Real reaction = equation.reaction(t);
+                                        auto [convection_x, convection_y] = equation.convection(x, y, t);
+                                        Real diffusion = equation.diffusion();
+                                        Real reaction = equation.reaction(x, y, t);
 
                                         // (*', *).
 
@@ -150,6 +153,7 @@ namespace ivo {
                 // Nodes and basis, space.
                 auto [e_nodes2xy_j, normal, e_dxy_j] = internal::reference_to_element(mesh, j, k, nodes1x);
                 auto [e_phi_xy, e_gradx_phi_xy, e_grady_phi_xy] = basis_xy(mesh, j, e_nodes2xy_j);
+                auto [e_nodes2x_j, e_nodes2y_j] = e_nodes2xy_j;
 
                 // Normal gradient.
                 Matrix<Real> e_gradn_phi_xy = normal(0) * e_gradx_phi_xy + normal(1) * e_grady_phi_xy;
@@ -209,12 +213,14 @@ namespace ivo {
 
                                     for(Natural kt = 0; kt < phi_t.rows(); ++kt)
                                         for(Natural kxy = 0; kxy < e_phi_xy.rows(); ++kxy) { // Brute-force integral.
+                                            Real x = e_nodes2x_j(kxy);
+                                            Real y = e_nodes2y_j(kxy);
                                             Real t = nodes1t_j(kt);
 
                                             // Equation coefficients.
-                                            auto [convection_x, convection_y] = equation.convection(t);
+                                            auto [convection_x, convection_y] = equation.convection(x, y, t);
                                             Real convection_n = normal(0) * convection_x + normal(1) * convection_y;
-                                            Real diffusion = equation.diffusion(t);
+                                            Real diffusion = equation.diffusion();
 
                                             // Boundary check.
                                             Real negative = (convection_n < 0.0L) ? 1.0L : 0.0L;
@@ -250,12 +256,14 @@ namespace ivo {
 
                                     for(Natural kt = 0; kt < phi_t.rows(); ++kt)
                                         for(Natural kxy = 0; kxy < e_phi_xy.rows(); ++kxy) { // Brute-force integral.
+                                            Real x = e_nodes2x_j(kxy);
+                                            Real y = e_nodes2y_j(kxy);
                                             Real t = nodes1t_j(kt);
 
                                             // Equation coefficients.
-                                            auto [convection_x, convection_y] = equation.convection(t);
+                                            auto [convection_x, convection_y] = equation.convection(x, y, t);
                                             Real convection_n = normal(0) * convection_x + normal(1) * convection_y;
-                                            Real diffusion = equation.diffusion(t);
+                                            Real diffusion = equation.diffusion();
 
                                             // Boundary check.
                                             Real negative = (convection_n < 0.0L) ? 1.0L : 0.0L;
@@ -291,10 +299,9 @@ namespace ivo {
 
                                     for(Natural kt = 0; kt < phi_t.rows(); ++kt)
                                         for(Natural kxy = 0; kxy < e_phi_xy.rows(); ++kxy) { // Brute-force integral.
-                                            Real t = nodes1t_j(kt);
 
                                             // Equation coefficients.
-                                            Real diffusion = equation.diffusion(t);
+                                            Real diffusion = equation.diffusion();
 
                                             // a(*, *), diffusion.
 
@@ -323,10 +330,9 @@ namespace ivo {
 
                                     for(Natural kt = 0; kt < phi_t.rows(); ++kt)
                                         for(Natural kxy = 0; kxy < e_phi_xy.rows(); ++kxy) { // Brute-force integral.
-                                            Real t = nodes1t_j(kt);
 
                                             // Equation coefficients.
-                                            Real diffusion = equation.diffusion(t);
+                                            Real diffusion = equation.diffusion();
 
                                             // a(*, *), diffusion.
 
@@ -364,12 +370,14 @@ namespace ivo {
 
                                     for(Natural kt = 0; kt < phi_t.rows(); ++kt)
                                         for(Natural kxy = 0; kxy < e_phi_xy.rows(); ++kxy) { // Brute-force integral.
+                                            Real x = e_nodes2x_j(kxy);
+                                            Real y = e_nodes2y_j(kxy);
                                             Real t = nodes1t_j(kt);
 
                                             // Equation coefficients.
-                                            auto [convection_x, convection_y] = equation.convection(t);
+                                            auto [convection_x, convection_y] = equation.convection(x, y, t);
                                             Real convection_n = normal(0) * convection_x + normal(1) * convection_y;
-                                            Real diffusion = equation.diffusion(t);
+                                            Real diffusion = equation.diffusion();
 
                                             // Boundary check.
                                             Real negative = (convection_n < 0.0L) ? 1.0L : 0.0L;

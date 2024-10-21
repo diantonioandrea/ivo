@@ -29,19 +29,19 @@ namespace ivo {
              * @brief Convection coefficient.
              * 
              */
-            const std::function<std::array<Real, 2> (Real)> _convection;
+            const std::function<std::array<Real, 2> (Real, Real, Real)> _convection;
 
             /**
              * @brief Diffusion coefficient.
              * 
              */
-            const std::function<Real (Real)> _diffusion;
+            const Real _diffusion;
 
             /**
              * @brief Reaction coefficient.
              * 
              */
-            const std::function<Real (Real)> _reaction;
+            const std::function<Real (Real, Real, Real)> _reaction;
 
         public:
 
@@ -53,7 +53,7 @@ namespace ivo {
              * @param t Time.
              * @return constexpr Real 
              */
-            constexpr std::array<Real, 2> convection(const Real &t) const { return this->_convection(t); }
+            constexpr std::array<Real, 2> convection(const Real &x, const Real &y, const Real &t) const { return this->_convection(x, y, t); }
 
             /**
              * @brief Diffusion coefficient.
@@ -61,7 +61,7 @@ namespace ivo {
              * @param t Time.
              * @return constexpr Real 
              */
-            constexpr Real diffusion(const Real &t) const { return this->_diffusion(t); }
+            constexpr Real diffusion() const { return this->_diffusion; }
 
             /**
              * @brief Reaction coefficient.
@@ -69,11 +69,11 @@ namespace ivo {
              * @param t Time.
              * @return constexpr Real 
              */
-            constexpr Real reaction(const Real &t) const { return this->_reaction(t); }
+            constexpr Real reaction(const Real &x, const Real &y, const Real &t) const { return this->_reaction(x, y, t); }
 
             // Constructor.
 
-            Equation(const std::function<std::array<Real, 2> (Real)> &, const std::function<Real (Real)> &, const std::function<Real (Real)> &);
+            Equation(const std::function<std::array<Real, 2> (Real, Real, Real)> &, const Real &, const std::function<Real (Real, Real, Real)> &);
 
     };
 

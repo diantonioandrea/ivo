@@ -86,19 +86,15 @@ namespace ivo {
          * @param t 
          * @return std::array<Real, 2> 
          */
-        std::array<Real, 2> convection(const Real &t) {
+        std::array<Real, 2> convection(const Real &x, const Real &y, const Real &t) {
             return {1.0L, 1.0L};
         }
 
         /**
          * @brief Diffusion coefficient.
          * 
-         * @param t 
-         * @return Real 
          */
-        Real diffusion(const Real &t) {
-            return 0.005L;
-        }
+        const Real diffusion = 0.005L;
 
         /**
          * @brief Reaction coefficient.
@@ -106,7 +102,7 @@ namespace ivo {
          * @param t 
          * @return Real 
          */
-        Real reaction(const Real &t) {
+        Real reaction(const Real &x, const Real &y, const Real &t) {
             return 0.5L;
         }
 
@@ -147,15 +143,15 @@ namespace ivo {
             auto [u_x, u_y] = u_xy(x, y, t);
 
             if(x <= ivo::constants::algebra_zero)
-                return -1.0L * diffusion(t) * u_x;
+                return -1.0L * diffusion * u_x;
 
             if(x >= 1.0L - ivo::constants::algebra_zero)
-                return diffusion(t) * u_x;
+                return diffusion * u_x;
             
             if(y <= ivo::constants::algebra_zero)
-                return -1.0L * diffusion(t) * u_y;
+                return -1.0L * diffusion * u_y;
             
-            return diffusion(t) * u_y;
+            return diffusion * u_y;
         }
 
         // Source.
@@ -170,9 +166,9 @@ namespace ivo {
          */
         Real g(const Real &x, const Real &y, const Real &t) {
             auto [u_x, u_y] = u_xy(x, y, t);
-            auto [convection_x, convection_y] = convection(t);
+            auto [convection_x, convection_y] = convection(x, y, t);
 
-            return u_t(x, y, t) - diffusion(t) * u_xxyy(x, y, t) + convection_x * u_x + convection_y * u_y + reaction(t) * u(x, y, t);
+            return u_t(x, y, t) - diffusion * u_xxyy(x, y, t) + convection_x * u_x + convection_y * u_y + reaction(x, y, t) * u(x, y, t);
         }
 
     }
