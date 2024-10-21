@@ -36,11 +36,13 @@ int main(int argc, char **argv) {
     // Space diagrams.
     std::vector<std::string> diagrams;
 
+    diagrams.emplace_back("data/square/Square_32.s2");
+    diagrams.emplace_back("data/square/Square_64.s2");
     diagrams.emplace_back("data/square/Square_128.s2");
     diagrams.emplace_back("data/square/Square_256.s2");
     diagrams.emplace_back("data/square/Square_512.s2");
-    diagrams.emplace_back("data/square/Square_1024.s2");
-    diagrams.emplace_back("data/square/Square_2048.s2");
+    // diagrams.emplace_back("data/square/Square_1024.s2");
+    // diagrams.emplace_back("data/square/Square_2048.s2");
 
     // Time elements.
     std::vector<ivo::Natural> Nt = {4, 9, 16, 27, 36};
@@ -51,37 +53,37 @@ int main(int argc, char **argv) {
     const ivo::Data data{ivo::square::g, ivo::square::gd, ivo::square::gn};
 
     // Tests.
-    for(ivo::Natural jxy = 0; jxy < diagrams.size(); ++jxy)
-        for(ivo::Natural jt = 0; jt < Nt.size(); ++jt) {
+    for(ivo::Natural j = 0; j < diagrams.size(); ++j) {
 
-            // Space.
-            const std::vector<ivo::Polygon21> space = ivo::mesher2(diagrams[jxy]);
+        // Space.
+        std::vector<ivo::Polygon21> space = ivo::mesher2(diagrams[j]);
+        space = ivo::triangulate(space);
 
-            // Time.
-            const std::vector<ivo::Real> time = ivo::mesher1(0.0L, 1.0L, Nt[jt]);
+        // Time.
+        const std::vector<ivo::Real> time = ivo::mesher1(0.0L, 1.0L, Nt[j]);
 
-            // Mesh.
-            const ivo::Mesh21 mesh{space, time, p, q};
+        // Mesh.
+        const ivo::Mesh21 mesh{space, time, p, q};
 
-            // Matrix and vector.
-            const ivo::Sparse<ivo::Real> A = ivo::stiffness(mesh, equation);
-            const ivo::Vector<ivo::Real> b = ivo::forcing(mesh, equation, data);
+        // Matrix and vector.
+        const ivo::Sparse<ivo::Real> A = ivo::stiffness(mesh, equation);
+        const ivo::Vector<ivo::Real> b = ivo::forcing(mesh, equation, data);
 
-            // Solution.
-            const ivo::Vector<ivo::Real> x = ivo::solve(mesh, A, b, initial);
+        // Solution.
+        const ivo::Vector<ivo::Real> x = ivo::solve(mesh, A, b, initial);
 
-            // Error.
-            const ivo::Error error{mesh, x, ivo::square::u, ivo::square::u_xy};
+        // Error.
+        const ivo::Error error{mesh, equation, x, ivo::square::u, ivo::square::u_xy};
 
-            // Output.
-            output << error << "\n" << std::endl;
+        // Output.
+        output << error << "\n" << std::endl;
 
-            #ifndef NVERBOSE
-            std::cout << "\n\t[TEST] Completed iteration " << jxy * Nt.size() + jt + 1 << "\n" << std::endl;
-            #else
-            std::cout << "\t[TEST] Completed iteration " << jxy * Nt.size() + jt + 1 << std::endl;
-            #endif
-        }
+        #ifndef NVERBOSE
+        std::cout << "\n\t[TEST] Completed iteration " << j + 1 << "\n" << std::endl;
+        #else
+        std::cout << "\t[TEST] Completed iteration " << j + 1 << std::endl;
+        #endif
+    }
 
     std::cout << "\t[TEST] Exited" << std::endl;
 
