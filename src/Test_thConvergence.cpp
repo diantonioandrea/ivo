@@ -55,6 +55,9 @@ int main(int argc, char **argv) {
     // Tests.
     for(ivo::Natural j = 0; j < diagrams.size(); ++j) {
 
+        // Timer.
+        auto start = std::chrono::high_resolution_clock::now();
+
         // Space.
         std::vector<ivo::Polygon21> space = ivo::mesher2(diagrams[j]);
 
@@ -74,13 +77,16 @@ int main(int argc, char **argv) {
         // Error.
         const ivo::Error error{mesh, equation, x, ivo::square::u, ivo::square::u_xy};
 
+        // Timer.
+        auto timer = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
+
         // Output.
         output << error << "\n" << std::endl;
 
         #ifndef NVERBOSE
-        std::cout << "\n\t[TEST] Completed iteration " << j + 1 << "\n" << std::endl;
+        std::cout << "\n\t[TEST] Completed iteration " << j + 1 << " in " << timer.count() / 1.0E3L << " seconds\n" << std::endl;
         #else
-        std::cout << "\t[TEST] Completed iteration " << j + 1 << std::endl;
+        std::cout << "\t[TEST] Completed iteration " << j + 1 << " in " << timer.count() / 1.0E3L << " seconds" << std::endl;
         #endif
     }
 

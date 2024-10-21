@@ -11,6 +11,9 @@
 #ifndef SRC_SQUARE
 #define SRC_SQUARE
 
+// Testing.
+#include "./Test.hpp"
+
 #include <Ivo.hpp>
 
 namespace ivo {
