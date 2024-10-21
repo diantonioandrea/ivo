@@ -36,24 +36,29 @@ int main(int argc, char **argv) {
     // Space diagrams.
     std::vector<std::string> diagrams;
 
-    diagrams.emplace_back("data/square/Square_64.s2");
-    diagrams.emplace_back("data/square/Square_128.s2");
-    diagrams.emplace_back("data/square/Square_256.s2");
-    diagrams.emplace_back("data/square/Square_512.s2");
-    diagrams.emplace_back("data/square/Square_1024.s2");
-    diagrams.emplace_back("data/square/Square_2048.s2");
-
-    // Time elements.
-    std::vector<ivo::Natural> Nt = {2, 4, 9, 16, 27, 36};
+    diagrams.emplace_back("data/square/Square_128.p2");
+    diagrams.emplace_back("data/square/Square_192.p2");
+    diagrams.emplace_back("data/square/Square_256.p2");
+    diagrams.emplace_back("data/square/Square_384.p2");
+    diagrams.emplace_back("data/square/Square_512.p2");
+    diagrams.emplace_back("data/square/Square_768.p2");
+    diagrams.emplace_back("data/square/Square_1024.p2");
+    diagrams.emplace_back("data/square/Square_1536.p2");
+    diagrams.emplace_back("data/square/Square_2048.p2");
+    diagrams.emplace_back("data/square/Square_3072.p2");
 
     // Equation.
     const ivo::Equation equation{ivo::square::convection, ivo::square::diffusion, ivo::square::reaction};
     const ivo::Initial initial{ivo::square::u0};
     const ivo::Data data{ivo::square::g, ivo::square::gd, ivo::square::gn};
 
+    // Time coefficient.
+    const ivo::Real Ct = std::sqrt(8.0L / (3.0L * std::sqrt(3.0L)));
+
     // Tests.
     const ivo::Natural tests = diagrams.size();
 
+    // Main loop.
     for(ivo::Natural j = 0; j < tests; ++j) {
 
         // Timer.
@@ -62,8 +67,11 @@ int main(int argc, char **argv) {
         // Space.
         std::vector<ivo::Polygon21> space = ivo::mesher2(diagrams[j]);
 
+        // Time elements, empirical.
+        const ivo::Natural Nt = std::sqrt(static_cast<ivo::Real>(space.size())) / Ct;
+
         // Time.
-        const std::vector<ivo::Real> time = ivo::mesher1(0.0L, 1.0L, Nt[j]);
+        const std::vector<ivo::Real> time = ivo::mesher1(0.0L, 1.0L, Nt);
 
         // Mesh.
         const ivo::Mesh21 mesh{space, time, p, q};
@@ -78,7 +86,7 @@ int main(int argc, char **argv) {
         // Error.
         const ivo::Error error{mesh, equation, x, ivo::square::u, ivo::square::u_xy};
 
-        // Timer.
+        // Elapsed time.
         auto timer = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
         ivo::Real elapsed = timer.count() / 1.0E3L;
 
