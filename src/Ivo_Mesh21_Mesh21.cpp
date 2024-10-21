@@ -160,6 +160,44 @@ namespace ivo {
     }
 
     /**
+     * @brief (Highest) space degree.
+     * 
+     * @return Natural 
+     */
+    Natural Mesh21::p() const {
+        Natural p = 1;
+
+        for(Natural j = 0; j < this->_space * this->_time; ++j) {
+
+            // Element.
+            Element21 element = this->_elements[j];
+
+            p = (element.p() > p) ? element.p() : p;
+        }
+
+        return p;
+    }
+
+    /**
+     * @brief (Highest) time degree.
+     * 
+     * @return Natural 
+     */
+    Natural Mesh21::q() const {
+        Natural q = 1;
+
+        for(Natural j = 0; j < this->_space * this->_time; ++j) {
+
+            // Element.
+            Element21 element = this->_elements[j];
+
+            q = (element.q() > q) ? element.q() : q;
+        }
+
+        return q;
+    }
+
+    /**
      * @brief Mesh's space size.
      * 
      * @return Real 

@@ -17,6 +17,7 @@
 // Mesh.
 #include "./Mesh21/Mesh21.hpp"
 #include "./Mesh21/Methods/Mesher1.hpp"
+#include "./Mesh21/Methods/Mesher2.hpp"
 
 // Elements.
 #include "./Mesh21/Element21.hpp"

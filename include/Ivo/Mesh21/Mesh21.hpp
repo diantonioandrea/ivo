@@ -109,6 +109,9 @@ namespace ivo {
             std::vector<Natural> dofs(const Natural &) const;
             std::vector<Natural> dofs_t(const Natural &) const;
 
+            Natural p() const;
+            Natural q() const;
+
             Real h() const;
             Real t() const;
 
