@@ -21,6 +21,6 @@ namespace ivo {
      * @param diffusion Diffusion coefficient.
      * @param reaction Reaction coefficient.
      */
-    Equation::Equation(const std::function<std::array<Real, 2> (Real)> &convection, const std::function<Real (Real)> &diffusion, const std::function<Real (Real)> &reaction): _convection{convection}, _diffusion{diffusion}, _reaction{reaction} {}
+    Equation::Equation(const std::function<std::array<Real, 2> (Real, Real, Real)> &convection, const Real &diffusion, const std::function<Real (Real, Real, Real)> &reaction): _convection{convection}, _diffusion{diffusion}, _reaction{reaction} {}
 
 }

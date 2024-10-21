@@ -121,12 +121,14 @@ namespace ivo {
 
                         // L2(H1) error.
 
-                        this->l2h1s[j] += weights2_j(kxy) * weights1t_j(kt) * (u_x - uh_x_j(kt, kxy)) * (u_x - uh_x_j(kt, kxy)) * std::sqrt(equation.diffusion(t));
-                        this->l2h1s[j] += weights2_j(kxy) * weights1t_j(kt) * (u_y - uh_y_j(kt, kxy)) * (u_y - uh_y_j(kt, kxy)) * std::sqrt(equation.diffusion(t));
+                        this->l2h1s[j] += weights2_j(kxy) * weights1t_j(kt) * (u_x - uh_x_j(kt, kxy)) * (u_x - uh_x_j(kt, kxy));
+                        this->l2h1s[j] += weights2_j(kxy) * weights1t_j(kt) * (u_y - uh_y_j(kt, kxy)) * (u_y - uh_y_j(kt, kxy));
                     }
             }
 
             // Error update.
+            this->l2h1s[j] *= equation.diffusion();
+
             this->l2l2 += this->l2l2s[j];
             this->l2h1 += this->l2h1s[j];
 

@@ -145,9 +145,9 @@ namespace ivo {
                                 Real t = nodes1t_j(kt);
 
                                 // Equation coefficients.
-                                auto [convection_x, convection_y] = equation.convection(t);
+                                auto [convection_x, convection_y] = equation.convection(x, y, t);
                                 Real convection_n = normal(0) * convection_x + normal(1) * convection_y;
-                                Real diffusion = equation.diffusion(t);
+                                Real diffusion = equation.diffusion();
 
                                 // Data.
                                 Real dirichlet = data.dirichlet(x, y, t);
