@@ -104,7 +104,9 @@ if "--plot1" in sys.argv: # l2l2 only.
     # L2(L2).
     ax.plot(dofs, l2l2, color=black, marker="*", linewidth=1, label="$L^2(L^2)$ error")
 
-    ax.plot(dofs, l2l2fc, color=green, linestyle="-", linewidth=0.75, label="$h^{" + str(p[0] + 1) + "} + \\tau^{" + str(q[0] + 1) + "}$")
+    if p[0] == q[0]:
+        ax.plot(dofs, l2l2fc, color=green, linestyle="-", linewidth=0.75, label="$h^{" + str(p[0] + 1) + "} + \\tau^{" + str(q[0] + 1) + "}$")
+    
     ax.plot(dofs, l2l2hc, color=red, linestyle="-.", linewidth=0.5, label="$h^{" + str(p[0] + 1) + "}$")
     ax.plot(dofs, l2l2tc, color=red, linestyle="--", linewidth=0.5, label="$\\tau^{" + str(q[0] + 1) + "}$")
 
@@ -139,14 +141,18 @@ elif "--plot2" in sys.argv: # l2l2 and l2h1.
     # L2(L2).
     ax[0].plot(dofs, l2l2, color=black, marker="*", linewidth=1, label="$L^2(L^2)$ error")
 
-    ax[0].plot(dofs, l2l2fc, color=green, linestyle="-", linewidth=0.75, label="$h^{" + str(p[0] + 1) + "} + \\tau^{" + str(q[0] + 1) + "}$")
+    if p[0] == q[0]:
+        ax[0].plot(dofs, l2l2fc, color=green, linestyle="-", linewidth=0.75, label="$h^{" + str(p[0] + 1) + "} + \\tau^{" + str(q[0] + 1) + "}$")
+
     ax[0].plot(dofs, l2l2hc, color=red, linestyle="-.", linewidth=0.5, label="$h^{" + str(p[0] + 1) + "}$")
     ax[0].plot(dofs, l2l2tc, color=red, linestyle="--", linewidth=0.5, label="$\\tau^{" + str(q[0] + 1) + "}$")
 
     # L2(H1).
     ax[1].plot(dofs, l2h1, color=black, marker="*", linewidth=1, label="$\\sqrt{\\varepsilon}L^2(H^1)$ error")
 
-    ax[1].plot(dofs, l2h1fc, color=green, linestyle="-", linewidth=0.75, label="$h^{" + str(p[0]) + "} + \\tau^{" + str(q[0]) + "}$")
+    if p[0] == q[0]:
+        ax[1].plot(dofs, l2h1fc, color=green, linestyle="-", linewidth=0.75, label="$h^{" + str(p[0]) + "} + \\tau^{" + str(q[0]) + "}$")
+    
     ax[1].plot(dofs, l2h1hc, color=red, linestyle="-.", linewidth=0.5, label="$h^{" + str(p[0]) + "}$")
     ax[1].plot(dofs, l2h1tc, color=red, linestyle="--", linewidth=0.5, label="$\\tau^{" + str(q[0]) + "}$")
 
