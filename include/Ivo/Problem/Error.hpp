@@ -65,11 +65,23 @@ namespace ivo {
              */
             std::vector<Real> l2l2s;
 
+            /**
+             * @brief H1 error.
+             * 
+             */
+            Real l2h1;
+
+            /**
+             * @brief L2(H1) errors.
+             * 
+             */
+            std::vector<Real> l2h1s;
+
         public: 
 
             // Constructor.
 
-            Error(const Mesh21 &, const Vector<Real> &, const std::function<Real (Real, Real, Real)> &, const std::function<std::array<Real, 2> (Real, Real, Real)> &);
+            Error(const Mesh21 &, const Equation &, const Vector<Real> &, const std::function<Real (Real, Real, Real)> &, const std::function<std::array<Real, 2> (Real, Real, Real)> &);
 
             // Output.
 
