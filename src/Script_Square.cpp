@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     const std::vector<ivo::Polygon21> diagram = ivo::mesher2(ivo::square::abcd, Ns);
 
     // Output.
-    ivo::mesher2("output/Square_" + std::to_string(Ns) + ".s2", diagram);
+    ivo::mesher2("output/Square_" + std::to_string(Ns) + ".p2", diagram);
 
     return 0;
 }
