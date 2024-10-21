@@ -94,7 +94,7 @@ namespace ivo {
          * @return Real 
          */
         Real diffusion(const Real &t) {
-            return 0.0L;
+            return 0.005L;
         }
 
         /**
