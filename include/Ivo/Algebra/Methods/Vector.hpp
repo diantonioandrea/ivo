@@ -95,69 +95,73 @@ namespace ivo {
         return *std::max_element(x_entries.begin(), x_entries.end());
     }
 
-    /**
-     * @brief Flips a vector.
-     * 
-     * @tparam T Numerical type.
-     * @param x Vector.
-     * @return Vector<T> 
-     */
-    template<Numerical T>
-    Vector<T> flipped(const Vector<T> &x) {
-        Vector<T> _flipped{x.size()};
+    
+    namespace internal {
+        /**
+        * @brief Flips a vector.
+        * 
+        * @tparam T Numerical type.
+        * @param x Vector.
+        * @return Vector<T> 
+        */
+        template<Numerical T>
+        Vector<T> flipped(const Vector<T> &x) {
+            Vector<T> _flipped{x.size()};
 
-        for(Natural j = 0; j < x.size(); ++j)
-            _flipped(j, x(x.size() - j - 1));
+            for(Natural j = 0; j < x.size(); ++j)
+                _flipped(j, x(x.size() - j - 1));
 
-        return _flipped;
-    }
+            return _flipped;
+        }
 
-    /**
-     * @brief Stacks two vectors.
-     * 
-     * @tparam T Numerical type.
-     * @param x First vector.
-     * @param y Second vector.
-     * @return Vector<T> 
-     */
-    template<Numerical T>
-    Vector<T> stacked(const Vector<T> &x, const Vector<T> &y) {
-        Vector<T> _stacked{x.size() + y.size()};
+        /**
+         * @brief Stacks two vectors.
+         * 
+         * @tparam T Numerical type.
+         * @param x First vector.
+         * @param y Second vector.
+         * @return Vector<T> 
+         */
+        template<Numerical T>
+        Vector<T> stacked(const Vector<T> &x, const Vector<T> &y) {
+            Vector<T> _stacked{x.size() + y.size()};
 
-        for(Natural j = 0; j < x.size(); ++j)
-            _stacked(j, x(j));
-        
-        for(Natural j = 0; j < y.size(); ++j)
-            _stacked(x.size() + j, y(j));
+            for(Natural j = 0; j < x.size(); ++j)
+                _stacked(j, x(j));
+            
+            for(Natural j = 0; j < y.size(); ++j)
+                _stacked(x.size() + j, y(j));
 
-        return _stacked;
-    }
+            return _stacked;
+        }
 
-    /**
-     * @brief Stepped vector [a, a + step, ..., b].
-     * 
-     * @tparam T Numerical type.
-     * @param a Start.
-     * @param b End.
-     * @param step Step.
-     * @return Vector<Real> 
-     */
-    template<Numerical T>
-    Vector<T> stepped(const T &a, const T &b, const T &step = static_cast<T>(1)) {
-        #ifndef NDEBUG // Integrity check.
-        assert(((a < b) && (step > constants::zero)) || ((a > b) && (step < -constants::zero)));
-        #endif
+        /**
+         * @brief Stepped vector [a, a + step, ..., b].
+         * 
+         * @tparam T Numerical type.
+         * @param a Start.
+         * @param b End.
+         * @param step Step.
+         * @return Vector<Real> 
+         */
+        template<Numerical T>
+        Vector<T> stepped(const T &a, const T &b, const T &step = static_cast<T>(1)) {
+            #ifndef NDEBUG // Integrity check.
+            assert(((a < b) && (step > constants::zero)) || ((a > b) && (step < -constants::zero)));
+            #endif
 
-        std::vector<T> _stepped;
+            std::vector<T> _stepped;
 
-        if(step > constants::zero)
-            for(T j = a; j <= b + constants::zero; j += step)
-                _stepped.emplace_back(j);
-        else
-            for(T j = a; j >= b - constants::zero; j += step)
-                _stepped.emplace_back(j);
+            if(step > constants::zero)
+                for(T j = a; j <= b + constants::zero; j += step)
+                    _stepped.emplace_back(j);
+            else
+                for(T j = a; j >= b - constants::zero; j += step)
+                    _stepped.emplace_back(j);
 
-        return Vector{_stepped};
+            return Vector{_stepped};
+        }
+    
     }
 
     /**
