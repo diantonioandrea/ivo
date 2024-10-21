@@ -52,7 +52,9 @@ int main(int argc, char **argv) {
     const ivo::Data data{ivo::square::g, ivo::square::gd, ivo::square::gn};
 
     // Tests.
-    for(ivo::Natural j = 0; j < diagrams.size(); ++j) {
+    const ivo::Natural tests = diagrams.size();
+
+    for(ivo::Natural j = 0; j < tests; ++j) {
 
         // Timer.
         auto start = std::chrono::high_resolution_clock::now();
@@ -78,14 +80,15 @@ int main(int argc, char **argv) {
 
         // Timer.
         auto timer = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
+        ivo::Real elapsed = timer.count() / 1.0E3L;
 
         // Output.
         output << error << "\n" << std::endl;
 
         #ifndef NVERBOSE
-        std::cout << "\n\t[TEST] Completed iteration " << j + 1 << " in " << timer.count() / 1.0E3L << " seconds\n" << std::endl;
+        std::cout << "\n\t[TEST] Progress: " << j + 1 << "/" << tests << ", " << elapsed << "s\n" << std::endl;
         #else
-        std::cout << "\t[TEST] Completed iteration " << j + 1 << " in " << timer.count() / 1.0E3L << " seconds" << std::endl;
+        std::cout << "\t[TEST] Progress: " << j + 1 << "/" << tests << ", " << elapsed << "s" << std::endl;
         #endif
     }
 
