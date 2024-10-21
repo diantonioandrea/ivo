@@ -23,13 +23,13 @@ namespace ivo {
          * @brief Zero tolerance.
          * 
          */
-        constexpr Real zero = 1E-20;
+        constexpr Real zero = 1E-24;
 
         /**
          * @brief Algebra zero tolerance (solvers).
          * 
          */
-        constexpr Real algebra_zero = 1E-12;
+        constexpr Real algebra_zero = 1E-18;
 
         /**
          * @brief Geometrical zero tolerance.
