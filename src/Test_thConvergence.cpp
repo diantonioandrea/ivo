@@ -57,7 +57,6 @@ int main(int argc, char **argv) {
 
         // Space.
         std::vector<ivo::Polygon21> space = ivo::mesher2(diagrams[j]);
-        space = ivo::triangulate(space);
 
         // Time.
         const std::vector<ivo::Real> time = ivo::mesher1(0.0L, 1.0L, Nt[j]);
