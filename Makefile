@@ -39,6 +39,9 @@ HEADERS += ./include/Ivo/Fem/*.hpp
 # Headers, Problem.
 HEADERS += ./include/Ivo/Problem/*.hpp
 
+# Headers, Tests.
+HEADERS += ./src/include/*.hpp
+
 # Library.
 LIBRARY_NAME = Ivo
 LIBRARY = ./lib/lib$(LIBRARY_NAME).a
