@@ -17,22 +17,29 @@ Named after [**Ivo Babuška**](https://en.wikipedia.org/wiki/Ivo_Babuška).
 
 ### Key Components
 
-- `include/`: Holds declarations for the classes and methods utilized in the library.
+- `include/`: Holds declarations and definitions for the classes and methods utilized in the library.
+    - `include/Ivo/Base`: Holds declarations and definitions for the base types, concepts, and classes.
+    - `include/Ivo/Algebra`: Holds definitions for the algebra classes and methods.
+    - `include/Ivo/Geometry21`: Holds declarations for the `2+1` geometry classes and methods.
+    - `include/Ivo/Mesh21`: Holds declarations for the `2+1` mesh.
+    - `include/Ivo/Fem`: Holds declarations for the multi-purpose **FEM** tools.
+    - `include/Ivo/Problem`: Holds declarations for the `2+1` problem.
 - `src/`: Holds definitions for the structures and methods utilized in the library, along with custom tests and scripts.
 
 ### Key Features
 
 - **Algebra**
     - _Support for **dense** vectors and matrices_
-    - _Support for **sparse** matrix and linear systems_
+    - _Support for **sparse** matrices and linear systems_
 - **Geometry**
-    - _Methods for points, edges, lines, and polygons_
-    - _Mesh generation_
-- **Finite Element Methods**
-    - _Legendre polynomials_
-    - _Gauss-Legendre quadrature methods_
-    - _Stiffness matrix and force vector assembly_
-    - _Custom solver for the **FEM** problem_
+    - _Support for `2+1` points, edges, lines, and polygons_
+    - _Generation of `1` and `2` Mesh diagrams_
+    - _Support for `2+1` meshes_
+- **DGFEM**
+    - _Support for Legendre polynomials_
+    - _Support for Gauss-Legendre quadrature_
+    - _Assembly of the `2+1` **DGFE** problem_
+    - _Solution of the `2+1` **DGFE** problem_
 
 ## Setup
 
