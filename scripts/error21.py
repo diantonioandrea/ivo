@@ -90,11 +90,19 @@ l2h1 = np.array(l2h1).ravel()
 
 # Plots.
 
-if "--plot1" in sys.argv: # l2l2 only.
+# Plot flag.
+pflag: bool = False
 
-    # Plot.
-    fig, ax = plt.subplots()
-    fig.suptitle("$L^2(L^2)$ error vs. $DoFs$ on $p = " + str(p[0]) + "$ and $q = " + str(q[0]) + "$")
+if "--l2l2" in sys.argv: # l2l2 only.
+
+    # Figure and axes.
+    fig_l2l2 = plt.figure(0)
+    ax_l2l2 = fig_l2l2.gca()
+
+    # Plot flag.
+    pflag = True
+
+    fig_l2l2.suptitle("$L^2(L^2)$ error vs. $DoFs$ on $p = " + str(p[0]) + "$ and $q = " + str(q[0]) + "$")
 
     # Comparisons.
     l2l2hc = (h / h[-1]) ** (p[0] + 1) * l2l2[-1]
@@ -102,76 +110,58 @@ if "--plot1" in sys.argv: # l2l2 only.
     l2l2fc = ((h / h[-1]) ** (p[0] + 1) + (t / t[-1]) ** (q[0] + 1)) * l2l2[-1] / 2
 
     # L2(L2).
-    ax.plot(dofs, l2l2, color=black, marker="*", linewidth=1, label="$L^2(L^2)$ error")
+    ax_l2l2.plot(dofs, l2l2, color=black, marker="*", linewidth=1, label="$L^2(L^2)$ error")
 
     if p[0] == q[0]:
-        ax.plot(dofs, l2l2fc, color=green, linestyle="-", linewidth=0.75, label="$h^{" + str(p[0] + 1) + "} + \\tau^{" + str(q[0] + 1) + "}$")
+        ax_l2l2.plot(dofs, l2l2fc, color=green, linestyle="-", linewidth=0.75, label="$h^{" + str(p[0] + 1) + "} + \\tau^{" + str(q[0] + 1) + "}$")
     
-    ax.plot(dofs, l2l2hc, color=red, linestyle="-.", linewidth=0.5, label="$h^{" + str(p[0] + 1) + "}$")
-    ax.plot(dofs, l2l2tc, color=red, linestyle="--", linewidth=0.5, label="$\\tau^{" + str(q[0] + 1) + "}$")
+    ax_l2l2.plot(dofs, l2l2hc, color=red, linestyle="-.", linewidth=0.5, label="$h^{" + str(p[0] + 1) + "}$")
+    ax_l2l2.plot(dofs, l2l2tc, color=red, linestyle="--", linewidth=0.5, label="$\\tau^{" + str(q[0] + 1) + "}$")
 
     # Scale.
-    ax.set_xscale("log")
-    ax.set_yscale("log")
+    ax_l2l2.set_xscale("log")
+    ax_l2l2.set_yscale("log")
 
     # Label.
-    ax.set_xlabel("$DoFs$")
+    ax_l2l2.set_xlabel("$DoFs$")
 
     # Legend.
-    ax.legend(loc="best")
+    ax_l2l2.legend(loc="best")
 
-    # Output.
-    plt.show()
+if "--l2h1" in sys.argv: # l2h1.
 
-elif "--plot2" in sys.argv: # l2l2 and l2h1.
+    # Figure and axes.
+    fig_l2h1 = plt.figure(1)
+    ax_l2h1 = fig_l2h1.gca()
 
-    # Plot.
-    fig, ax = plt.subplots(1, 2)
-    fig.suptitle("$L^2(L^2)$ and $\\sqrt{\\epsilon}L^2(H^1)$ errors vs. $DoFs$ on $p = " + str(p[0]) + "$ and $q = " + str(q[0]) + "$")
+    # Plot flag.
+    pflag = True
 
-    # Comparisons.
-    l2l2hc = (h / h[-1]) ** (p[0] + 1) * l2l2[-1]
-    l2l2tc = (t / t[-1]) ** (q[0] + 1) * l2l2[-1]
-    l2l2fc = ((h / h[-1]) ** (p[0] + 1) + (t / t[-1]) ** (q[0] + 1)) * l2l2[-1] / 2
+    fig_l2h1.suptitle("$\\sqrt{\\varepsilon}L^2(H^1)$ error vs. $DoFs$ on $p = " + str(p[0]) + "$ and $q = " + str(q[0]) + "$")
 
     l2h1hc = (h / h[-1]) ** p[0] * l2h1[-1]
     l2h1tc = (t / t[-1]) ** q[0] * l2h1[-1]
     l2h1fc = ((h / h[-1]) ** p[0] + (t / t[-1]) ** q[0]) * l2h1[-1] / 2
 
-    # L2(L2).
-    ax[0].plot(dofs, l2l2, color=black, marker="*", linewidth=1, label="$L^2(L^2)$ error")
-
-    if p[0] == q[0]:
-        ax[0].plot(dofs, l2l2fc, color=green, linestyle="-", linewidth=0.75, label="$h^{" + str(p[0] + 1) + "} + \\tau^{" + str(q[0] + 1) + "}$")
-
-    ax[0].plot(dofs, l2l2hc, color=red, linestyle="-.", linewidth=0.5, label="$h^{" + str(p[0] + 1) + "}$")
-    ax[0].plot(dofs, l2l2tc, color=red, linestyle="--", linewidth=0.5, label="$\\tau^{" + str(q[0] + 1) + "}$")
-
     # L2(H1).
-    ax[1].plot(dofs, l2h1, color=black, marker="*", linewidth=1, label="$\\sqrt{\\varepsilon}L^2(H^1)$ error")
+    ax_l2h1.plot(dofs, l2h1, color=black, marker="*", linewidth=1, label="$\\sqrt{\\varepsilon}L^2(H^1)$ error")
 
     if p[0] == q[0]:
-        ax[1].plot(dofs, l2h1fc, color=green, linestyle="-", linewidth=0.75, label="$h^{" + str(p[0]) + "} + \\tau^{" + str(q[0]) + "}$")
+        ax_l2h1.plot(dofs, l2h1fc, color=green, linestyle="-", linewidth=0.75, label="$h^{" + str(p[0]) + "} + \\tau^{" + str(q[0]) + "}$")
     
-    ax[1].plot(dofs, l2h1hc, color=red, linestyle="-.", linewidth=0.5, label="$h^{" + str(p[0]) + "}$")
-    ax[1].plot(dofs, l2h1tc, color=red, linestyle="--", linewidth=0.5, label="$\\tau^{" + str(q[0]) + "}$")
+    ax_l2h1.plot(dofs, l2h1hc, color=red, linestyle="-.", linewidth=0.5, label="$h^{" + str(p[0]) + "}$")
+    ax_l2h1.plot(dofs, l2h1tc, color=red, linestyle="--", linewidth=0.5, label="$\\tau^{" + str(q[0]) + "}$")
 
-    # Styling.
-    for j in range(2):
+    # Scale.
+    ax_l2h1.set_xscale("log")
+    ax_l2h1.set_yscale("log")
 
-        # Scale.
-        ax[j].set_xscale("log")
-        ax[j].set_yscale("log")
+    # Label.
+    ax_l2h1.set_xlabel("$DoFs$")
 
-        # Label.
-        ax[j].set_xlabel("$DoFs$")
+    # Legend.
+    ax_l2h1.legend(loc="best")
 
-        # Legend.
-        ax[j].legend(loc="best")
-
-    # Right graph ticks.
-    ax[1].yaxis.tick_right()
-    ax[1].yaxis.set_label_position("right")
-
-    # Output.
+# Output.
+if pflag:
     plt.show()
