@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
         auto start = std::chrono::high_resolution_clock::now();
 
         // Space.
-        std::vector<ivo::Polygon21> space = ivo::mesher2(diagrams[j]);
+        const std::vector<ivo::Polygon21> space = ivo::mesher2(diagrams[j]);
 
         // Time elements, empirical.
         const ivo::Natural Nt = std::sqrt(static_cast<ivo::Real>(space.size())) / Ct;
@@ -87,8 +87,8 @@ int main(int argc, char **argv) {
         const ivo::Error error{mesh, equation, x, ivo::square::u, ivo::square::u_xy};
 
         // Elapsed time.
-        auto timer = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
-        ivo::Real elapsed = timer.count() / 1.0E3L;
+        const auto timer = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
+        const ivo::Real elapsed = timer.count() / 1.0E3L;
 
         // Output.
         output << error << "\n" << std::endl;
