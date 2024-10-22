@@ -23,6 +23,9 @@ namespace ivo {
      * @return Polygon21 
      */
     std::vector<Polygon21> mesher2(const Polygon21 &polygon, const Natural &number) {
+        #ifndef NDEBUG // Integrity check.
+        assert(number > 0);
+        #endif
 
         #ifndef NVERBOSE
         std::cout << "[Ivo] Mesher2" << std::endl;
