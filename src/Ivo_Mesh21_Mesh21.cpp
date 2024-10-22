@@ -45,48 +45,98 @@ namespace ivo {
         #endif
 
         // Neighbours.
-        for(Natural j = 0; j < this->_time; ++j)
+
+        // Bottom elements.
+        for(Natural k = 0; k < this->_space; ++k) {
+
+            // Current element.
+            Element21 current = this->_elements[k];
+            std::vector<Edge21> current_edges = current.b_edges();
+
+            // Neighbours parameters.
+            Integer top = this->_space + k;
+            Integer bottom = -1;
+            std::vector<std::array<Integer, 2>> facing(current_edges.size(), std::array<Integer, 2>{-1, -1});
+
+            for(Natural e = 0; e < current_edges.size(); ++e) {
+
+                // Edge flag.
+                bool found_edge = false;
+
+                for(Natural i = 0; i < this->_space; ++i) {
+                    if(i == k)
+                        continue;
+
+                    // Candidate.
+                    Element21 candidate = this->_elements[i];
+                    std::vector<Edge21> candidate_edges = candidate.b_edges();
+
+                    for(Natural ce = 0; ce < candidate_edges.size(); ++ce) {
+                        if(current_edges[e] == candidate_edges[ce]) {
+                            facing[e][0] = static_cast<Integer>(i);
+                            facing[e][1] = static_cast<Integer>(ce);
+
+                            found_edge = true;
+                            break;
+                        }
+                    }
+
+                    if(found_edge)
+                        break;
+                }
+            }
+            
+            this->_neighbours.emplace_back(top, bottom, facing);
+        }
+
+        // Middle elements.
+        for(Natural j = 1; j < this->_time - 1; ++j)
             for(Natural k = 0; k < this->_space; ++k) {
 
                 // Current element.
                 Element21 current = this->_elements[j * this->_space + k];
                 std::vector<Edge21> current_edges = current.b_edges();
 
+                // Bottom neighbours.
+                Neighbour21 neighbours = this->_neighbours[(j - 1) * this->_space + k];
+
                 // Neighbours parameters.
-                Integer top = (j == this->_time - 1) ? -1 :  (j + 1) * this->_space + k;
-                Integer bottom = (j == 0) ? -1 : (j - 1) * this->_space + k;
-                std::vector<std::array<Integer, 2>> facing(current_edges.size(), std::array<Integer, 2>{-1, -1});
+                Integer top = (j + 1) * this->_space + k;
+                Integer bottom = (j - 1) * this->_space + k;
+                std::vector<std::array<Integer, 2>> facing = neighbours.facing();
 
+                // Facing update.
                 for(Natural e = 0; e < current_edges.size(); ++e) {
-
-                    // Edge flag.
-                    bool found_edge = false;
-
-                    for(Natural i = 0; i < this->_space; ++i) {
-                        if(i == k)
-                            continue;
-
-                        // Candidate.
-                        Element21 candidate = this->_elements[j * this->_space + i];
-                        std::vector<Edge21> candidate_edges = candidate.b_edges();
-
-                        for(Natural ce = 0; ce < candidate_edges.size(); ++ce) {
-                            if(current_edges[e] == candidate_edges[ce]) {
-                                facing[e][0] = static_cast<Integer>(j * this->_space + i);
-                                facing[e][1] = static_cast<Integer>(ce);
-
-                                found_edge = true;
-                                break;
-                            }
-                        }
-
-                        if(found_edge)
-                            break;
-                    }
+                    if(facing[e][0] != -1)
+                        facing[e][0] += this->_space;
                 }
                 
                 this->_neighbours.emplace_back(top, bottom, facing);
             }
+
+        // Top elements.
+        for(Natural k = 0; k < this->_space; ++k) {
+
+            // Current element.
+            Element21 current = this->_elements[(this->_time - 1) * this->_space + k];
+            std::vector<Edge21> current_edges = current.b_edges();
+
+            // Bottom neighbours.
+            Neighbour21 neighbours = this->_neighbours[(this->_time - 2) * this->_space + k];
+
+            // Neighbours parameters.
+            Integer top = -1;
+            Integer bottom = (this->_time - 2) * this->_space + k;
+            std::vector<std::array<Integer, 2>> facing = neighbours.facing();
+
+            // Facing update.
+            for(Natural e = 0; e < current_edges.size(); ++e) {
+                if(facing[e][0] != -1)
+                    facing[e][0] += this->_space;
+            }
+            
+            this->_neighbours.emplace_back(top, bottom, facing);
+        }
 
         #ifndef NVERBOSE
         std::cout << "\t[Mesh21] Exited" << std::endl;
