@@ -89,8 +89,8 @@ namespace ivo {
             this->_neighbours.emplace_back(top, bottom, facing);
         }
 
-        // Middle elements.
-        for(Natural j = 1; j < this->_time - 1; ++j)
+        // Other elements.
+        for(Natural j = 1; j < this->_time; ++j)
             for(Natural k = 0; k < this->_space; ++k) {
 
                 // Current element.
@@ -101,7 +101,7 @@ namespace ivo {
                 Neighbour21 neighbours = this->_neighbours[(j - 1) * this->_space + k];
 
                 // Neighbours parameters.
-                Integer top = (j + 1) * this->_space + k;
+                Integer top = (j != this->_time - 1) ? (j + 1) * this->_space + k : -1;
                 Integer bottom = (j - 1) * this->_space + k;
                 std::vector<std::array<Integer, 2>> facing = neighbours.facing();
 
@@ -113,30 +113,6 @@ namespace ivo {
                 
                 this->_neighbours.emplace_back(top, bottom, facing);
             }
-
-        // Top elements.
-        for(Natural k = 0; k < this->_space; ++k) {
-
-            // Current element.
-            Element21 current = this->_elements[(this->_time - 1) * this->_space + k];
-            std::vector<Edge21> current_edges = current.b_edges();
-
-            // Bottom neighbours.
-            Neighbour21 neighbours = this->_neighbours[(this->_time - 2) * this->_space + k];
-
-            // Neighbours parameters.
-            Integer top = -1;
-            Integer bottom = (this->_time - 2) * this->_space + k;
-            std::vector<std::array<Integer, 2>> facing = neighbours.facing();
-
-            // Facing update.
-            for(Natural e = 0; e < current_edges.size(); ++e) {
-                if(facing[e][0] != -1)
-                    facing[e][0] += this->_space;
-            }
-            
-            this->_neighbours.emplace_back(top, bottom, facing);
-        }
 
         #ifndef NVERBOSE
         std::cout << "\t[Mesh21] Exited" << std::endl;
