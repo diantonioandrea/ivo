@@ -1,7 +1,7 @@
 /**
  * @file Test_hConvergence.cpp
  * @author Andrea Di Antonio (github.com/diantonioandrea)
- * @brief t convergence test.
+ * @brief th convergence test.
  * @date 2024-10-19
  * 
  * @copyright Copyright (c) 2024
