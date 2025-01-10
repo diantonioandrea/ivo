@@ -1,21 +1,12 @@
 .PHONY: all lib distclean
 CXXFLAGS = -std=c++23 -Wall -pedantic -I./include
 
-CXXFLAGS += -fPIC -march=native -mcpu=native
-CXXFLAGS += -O3 -fno-unsafe-math-optimizations -fno-fast-math
-ifneq ($(shell $(CXX) --version | grep -i "clang"),)
-CXXFLAGS += -ffp-model=precise
+ifeq ($(shell uname),Darwin) # Forces GCC (g++-14, homebrew) instead of Clang.
+CXX = g++-14
 endif
 
-ifeq ($(shell uname),Darwin) # Apple's Clang, custom OpenMP installation under $OpenMP.
-CXXFLAGS += -Xclang -fopenmp
-CPPFLAGS += -I$(OpenMP)/include
-LDFLAGS += -L$(OpenMP)/lib
-LDLIBS += -lomp
-else # GCC.
-CXXFLAGS += -fopenmp
+CXXFLAGS += -Wall -std=c++23 -pedantic -I./include -fPIC -march=native -Ofast -fopenmp
 LDLIBS += -lgomp
-endif
 
 # Headers, recompilation purposes.
 HEADERS = ./include/*.hpp
