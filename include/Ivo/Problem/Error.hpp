@@ -15,6 +15,12 @@
 
 namespace ivo {
 
+    namespace internal {
+        
+        Real error_at_time(const Mesh21 &, const Vector<Real> &, const std::function<Real (Real, Real, Real)> &, const Real &);
+
+    }
+
     class Error {
 
         private:
@@ -88,6 +94,12 @@ namespace ivo {
              * 
              */
             std::vector<Real> l2h1s;
+
+            /**
+             * @brief Linf(L2) error.
+             * 
+             */
+            Real linfl2;
 
         public: 
 
