@@ -48,6 +48,7 @@ h: list[float] = []
 t: list[float] = []
 
 l2l2: list[float] = []
+l2T: list[float] = []
 l2h1: list[float] = []
 
 # Reading.
@@ -75,6 +76,9 @@ for line in lines:
     if "l2l2" in line:
         l2l2.append(float(data))
     
+    if "l2T" in line:
+        l2T.append(float(data))
+    
     if "l2h1" in line:
         l2h1.append(float(data))
 
@@ -86,6 +90,7 @@ h = np.array(h).ravel()
 t = np.array(t).ravel()
 
 l2l2 = np.array(l2l2).ravel()
+l2T = np.array(l2T).ravel()
 l2h1 = np.array(l2h1).ravel()
 
 # Plots.
@@ -128,10 +133,45 @@ if "--l2l2" in sys.argv: # l2l2 only.
     # Legend.
     ax_l2l2.legend(loc="best")
 
+if "--l2T" in sys.argv: # l2T.
+
+    # Figure and axes.
+    fig_l2T = plt.figure(1)
+    ax_l2T = fig_l2T.gca()
+
+    # Plot flag.
+    pflag = True
+
+    fig_l2T.suptitle("$L^2(T)$ error vs. $DoFs$ on $p = " + str(p[0]) + "$ and $q = " + str(q[0]) + "$")
+
+    # Comparisons.
+    l2Thc = (h / h[-1]) ** (p[0] + 1) * l2T[-1]
+    l2Ttc = (t / t[-1]) ** (q[0] + 1) * l2T[-1]
+    l2Tfc = ((h / h[-1]) ** (p[0] + 1) + (t / t[-1]) ** (q[0] + 1)) * l2T[-1] / 2
+
+    # L2(T).
+    ax_l2T.plot(dofs, l2T, color=black, marker="*", linewidth=1, label="$L^2(T)$ error")
+
+    if p[0] == q[0]:
+        ax_l2T.plot(dofs, l2Tfc, color=green, linestyle="-", linewidth=0.75, label="$h^{" + str(p[0] + 1) + "} + \\tau^{" + str(q[0] + 1) + "}$")
+
+    ax_l2T.plot(dofs, l2Thc, color=red, linestyle="-.", linewidth=0.5, label="$h^{" + str(p[0] + 1) + "}$")
+    ax_l2T.plot(dofs, l2Ttc, color=red, linestyle="--", linewidth=0.5, label="$\\tau^{" + str(q[0] + 1) + "}$")
+
+    # Scale.
+    ax_l2T.set_xscale("log")
+    ax_l2T.set_yscale("log")
+
+    # Label.
+    ax_l2T.set_xlabel("$DoFs$")
+
+    # Legend.
+    ax_l2T.legend(loc="best")
+    
 if "--l2h1" in sys.argv: # l2h1.
 
     # Figure and axes.
-    fig_l2h1 = plt.figure(1)
+    fig_l2h1 = plt.figure(2)
     ax_l2h1 = fig_l2h1.gca()
 
     # Plot flag.
