@@ -66,7 +66,19 @@ namespace ivo {
             std::vector<Real> l2l2s;
 
             /**
-             * @brief H1 error.
+             * @brief L2(T) error.
+             * 
+             */
+            Real l2T;
+
+            /**
+             * @brief L2(T) errors.
+             * 
+             */
+            std::vector<Real> l2Ts;
+
+            /**
+             * @brief L2(H1) error.
              * 
              */
             Real l2h1;
