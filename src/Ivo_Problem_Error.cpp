@@ -334,9 +334,9 @@ namespace ivo {
         t1 = mesh.element(mesh.space() * mesh.time() - 1).interval()[1];
 
         // Steps.
-        Natural steps = static_cast<Natural>(100.0 * (t1 - t0));
+        Natural steps = (constants::quadrature + 1) * (mesh.time() + 1);
 
-        while(std::abs(t1 - t0) > 1.0E-4L) {
+        while(std::abs(t1 - t0) > 1.0E-3L) {
 
             // Max.
             Real t_max = t0;
