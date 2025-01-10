@@ -50,6 +50,7 @@ t: list[float] = []
 l2l2: list[float] = []
 l2T: list[float] = []
 l2h1: list[float] = []
+linfl2: list[float] = []
 
 # Reading.
 for line in lines:
@@ -82,6 +83,9 @@ for line in lines:
     if "l2h1" in line:
         l2h1.append(float(data))
 
+    if "linfl2" in line:
+        linfl2.append(float(data))
+
 # Tests.
 tests: int = len(dofs)
 
@@ -92,6 +96,7 @@ t = np.array(t).ravel()
 l2l2 = np.array(l2l2).ravel()
 l2T = np.array(l2T).ravel()
 l2h1 = np.array(l2h1).ravel()
+linfl2 = np.array(linfl2).ravel()
 
 # Plots.
 
@@ -201,6 +206,40 @@ if "--l2h1" in sys.argv: # l2h1.
 
     # Legend.
     ax_l2h1.legend(loc="best")
+
+if "--linfl2" in sys.argv: # linfl2.
+
+    # Figure and axes.
+    fig_linfL2 = plt.figure(3)
+    ax_linfL2 = fig_linfL2.gca()
+
+    # Plot flag.
+    pflag = True
+
+    fig_linfL2.suptitle("$L^\\infty(L^2)$ error vs. $DoFs$ on $p = " + str(p[0]) + "$ and $q = " + str(q[0]) + "$")
+
+    linfl2hc = (h / h[-1]) ** (p[0] + 1) * linfl2[-1]
+    linfl2tc = (t / t[-1]) ** (q[0] + 1) * linfl2[-1]
+    linfl2fc = ((h / h[-1]) ** (p[0] + 1) + (t / t[-1]) ** (q[0] + 1)) * linfl2[-1] / 2
+
+    # Linf(L2).
+    ax_linfL2.plot(dofs, linfl2, color=black, marker="*", linewidth=1, label="$L^\\infty(L^2)$ error")
+
+    if p[0] == q[0]:
+        ax_linfL2.plot(dofs, linfl2fc, color=green, linestyle="-", linewidth=0.75, label="$h^{" + str(p[0] + 1) + "} + \\tau^{" + str(q[0] + 1) + "}$")
+
+    ax_linfL2.plot(dofs, linfl2hc, color=red, linestyle="-.", linewidth=0.5, label="$h^{" + str(p[0] + 1) + "}$")
+    ax_linfL2.plot(dofs, linfl2tc, color=red, linestyle="--", linewidth=0.5, label="$\\tau^{" + str(q[0] + 1) + "}$")
+
+    # Scale.
+    ax_linfL2.set_xscale("log")
+    ax_linfL2.set_yscale("log")
+
+    # Label.
+    ax_linfL2.set_xlabel("$DoFs$")
+
+    # Legend.
+    ax_linfL2.legend(loc="best")
 
 # Output.
 if pflag:
