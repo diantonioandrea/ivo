@@ -28,56 +28,6 @@ namespace ivo {
 
         const ivo::Polygon21 abcd = {a, b, c, d};
 
-        // Solution.
-        
-        /**
-         * @brief Exact solution.
-         * 
-         * @param x 
-         * @param y 
-         * @param t 
-         * @return Real 
-         */
-        Real u(const Real &x, const Real &y, const Real &t) {
-            return std::sin(x) * std::sin(y) * std::sin(t);
-        }
-
-        /**
-         * @brief Exact solution's gradient.
-         * 
-         * @param x 
-         * @param y 
-         * @param t 
-         * @return std::array<Real, 2> 
-         */
-        std::array<Real, 2> u_xy(const Real &x, const Real &y, const Real &t) {
-            return {std::cos(x) * std::sin(y) * std::sin(t), std::sin(x) * std::cos(y) * std::sin(t)};
-        }
-        
-        /**
-         * @brief Exact solution's time derivative.
-         * 
-         * @param x 
-         * @param y 
-         * @param t 
-         * @return Real 
-         */
-        Real u_t(const Real &x, const Real &y, const Real &t) {
-            return std::sin(x) * std::sin(y) * std::cos(t);
-        }
-
-        /**
-         * @brief Exact solution's laplacian.
-         * 
-         * @param x 
-         * @param y 
-         * @param t 
-         * @return Real 
-         */
-        Real u_xxyy(const Real &x, const Real &y, const Real &t) {
-            return -2.0L * u(x, y, t);
-        }
-
         // Coefficients.
 
         /**
@@ -104,6 +54,76 @@ namespace ivo {
          */
         Real reaction(const Real &x, const Real &y, const Real &t) {
             return 0.5L;
+        }
+
+        /**
+         * @brief Boundary layer coefficient.
+         * 
+         */
+        const Real boundary = 0.05L;
+
+        // Solution.
+        
+        /**
+         * @brief Exact solution.
+         * 
+         * @param x 
+         * @param y 
+         * @param t 
+         * @return Real 
+         */
+        Real u(const Real &x, const Real &y, const Real &t) {
+            const Real b = boundary;
+            const auto [c_x, c_y] = convection(x, y, t);
+
+            return (1.0L - std::exp(-t)) * (2.0L * x + 2.0L * y - x * y * (1.0L - std::exp(c_x * (x - 1) / b)) * (1.0L - std::exp(c_y * (y - 1) / b)));
+        }
+
+        /**
+         * @brief Exact solution's gradient.
+         * 
+         * @param x 
+         * @param y 
+         * @param t 
+         * @return std::array<Real, 2> 
+         */
+        std::array<Real, 2> u_xy(const Real &x, const Real &y, const Real &t) {
+            const Real b = boundary;
+            const auto [c_x, c_y] = convection(x, y, t);
+
+            return {(1.0L - std::exp(-t)) * (2.0L - (1.0L - std::exp(c_y * (y - 1) / b)) * (y * (1.0L - std::exp(c_x * (x - 1) / b)) + x * y * (-c_x / b * std::exp(c_x * (x - 1) / b)))), (1.0L - std::exp(-t)) * (2.0L - (1.0L - std::exp(c_x * (x - 1) / b)) * (x * (1.0L - std::exp(c_y * (y - 1) / b)) + x * y * (-c_y / b * std::exp(c_y * (y - 1) / b))))};
+        }
+        
+        /**
+         * @brief Exact solution's time derivative.
+         * 
+         * @param x 
+         * @param y 
+         * @param t 
+         * @return Real 
+         */
+        Real u_t(const Real &x, const Real &y, const Real &t) {
+            const Real b = boundary;
+            const auto [c_x, c_y] = convection(x, y, t);
+
+            return std::exp(-t) * (2.0L * x + 2.0L * y - x * y * (1.0L - std::exp(c_x * (x - 1) / b)) * (1.0L - std::exp(c_y * (y - 1) / b)));
+        }
+
+        /**
+         * @brief Exact solution's laplacian.
+         * 
+         * @param x 
+         * @param y 
+         * @param t 
+         * @return Real 
+         */
+        Real u_xxyy(const Real &x, const Real &y, const Real &t) {
+            const Real b = boundary;
+            const auto [c_x, c_y] = convection(x, y, t);
+            const Real cb_x = c_x / b;
+            const Real cb_y = c_y / b;
+
+            return (std::exp(-t) - 1.0L) * (x * (1.0L - std::exp(cb_x * (x - 1.0L))) * (2.0L * (-cb_y * std::exp(cb_y * (y - 1.0L))) + y * (-cb_y * cb_y * std::exp(cb_y * (y - 1.0L)))) + y * (1.0L - std::exp(cb_y * (y - 1.0L))) * (2.0L * (-cb_x * std::exp(cb_x * (x - 1.0L))) + x * (-cb_x * cb_x * std::exp(cb_x * (x - 1.0L)))));
         }
 
         // Data.
@@ -140,7 +160,7 @@ namespace ivo {
          * @return Real 
          */
         Real gn(const Real &x, const Real &y, const Real &t) {
-            auto [u_x, u_y] = u_xy(x, y, t);
+            const auto [u_x, u_y] = u_xy(x, y, t);
 
             if(x <= ivo::constants::algebra_zero)
                 return -1.0L * diffusion * u_x;
@@ -165,10 +185,10 @@ namespace ivo {
          * @return Real 
          */
         Real g(const Real &x, const Real &y, const Real &t) {
-            auto [u_x, u_y] = u_xy(x, y, t);
-            auto [convection_x, convection_y] = convection(x, y, t);
+            const auto [u_x, u_y] = u_xy(x, y, t);
+            const auto [c_x, c_y] = convection(x, y, t);
 
-            return u_t(x, y, t) - diffusion * u_xxyy(x, y, t) + convection_x * u_x + convection_y * u_y + reaction(x, y, t) * u(x, y, t);
+            return u_t(x, y, t) - diffusion * u_xxyy(x, y, t) + c_x * u_x + c_y * u_y + reaction(x, y, t) * u(x, y, t);
         }
 
     }
