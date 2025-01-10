@@ -145,8 +145,8 @@ if "--l2T" in sys.argv: # l2T.
     fig_l2T.suptitle("$L^2(T)$ error vs. $DoFs$ on $p = " + str(p[0]) + "$ and $q = " + str(q[0]) + "$")
 
     # Comparisons.
-    l2Thc = (h / h[-1]) ** (p[0] + 1) * l2T[-1]
     l2Ttc = (t / t[-1]) ** (q[0] + 1) * l2T[-1]
+    l2Thc = (h / h[-1]) ** (p[0] + 1) * l2T[-1]
     l2Tfc = ((h / h[-1]) ** (p[0] + 1) + (t / t[-1]) ** (q[0] + 1)) * l2T[-1] / 2
 
     # L2(T).
@@ -204,4 +204,8 @@ if "--l2h1" in sys.argv: # l2h1.
 
 # Output.
 if pflag:
-    plt.show()
+    try:
+        plt.show()
+
+    except KeyboardInterrupt:
+        sys.exit(0)
