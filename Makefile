@@ -1,5 +1,4 @@
 .PHONY: all lib distclean
-CXXFLAGS = -std=c++23 -Wall -pedantic -I./include
 
 ifeq ($(shell uname),Darwin) # Forces GCC (g++-14, homebrew) instead of Clang.
 CXX = g++-14
