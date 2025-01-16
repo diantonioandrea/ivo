@@ -40,6 +40,7 @@ Named after [**Ivo Babuška**](https://en.wikipedia.org/wiki/Ivo_Babuška).
     - _Support for Gauss-Legendre quadrature_
     - _Assembly of the `2+1` **DGFE** problem_
     - _Solution of the `2+1` **DGFE** problem_
+    - _Error analysis of the `2+1` **DGFE** problem_
 
 ## Setup
 
