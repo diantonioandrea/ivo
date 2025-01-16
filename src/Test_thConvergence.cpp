@@ -36,24 +36,21 @@ int main(int argc, char **argv) {
     // Space diagrams.
     std::vector<std::string> diagrams;
 
-    diagrams.emplace_back("data/square/Square_128.p2");
-    diagrams.emplace_back("data/square/Square_192.p2");
-    diagrams.emplace_back("data/square/Square_256.p2");
-    diagrams.emplace_back("data/square/Square_384.p2");
-    diagrams.emplace_back("data/square/Square_512.p2");
-    diagrams.emplace_back("data/square/Square_768.p2");
-    diagrams.emplace_back("data/square/Square_1024.p2");
-    diagrams.emplace_back("data/square/Square_1536.p2");
-    diagrams.emplace_back("data/square/Square_2048.p2");
-    diagrams.emplace_back("data/square/Square_3072.p2");
+    diagrams.emplace_back("data/square/Square_125.p2");
+    diagrams.emplace_back("data/square/Square_250.p2");
+    diagrams.emplace_back("data/square/Square_500.p2");
+    diagrams.emplace_back("data/square/Square_1000.p2");
+    diagrams.emplace_back("data/square/Square_2000.p2");
+    // diagrams.emplace_back("data/square/Square_5000.p2"); // Expensive.
+    // diagrams.emplace_back("data/square/Square_8000.p2"); // Expensive.
 
     // Equation.
     const ivo::Equation equation{ivo::square::convection, ivo::square::diffusion, ivo::square::reaction};
     const ivo::Initial initial{ivo::square::u0};
     const ivo::Data data{ivo::square::g, ivo::square::gd, ivo::square::gn};
 
-    // Time coefficient.
-    const ivo::Real Ct = std::sqrt(8.0L / (3.0L * std::sqrt(3.0L)));
+    // Time coefficient, empirical scaling.
+    const ivo::Real Ct = std::sqrt(3.0L * std::sqrt(3.0L)) / std::sqrt(8.0L) / 1.25L;
 
     // Tests.
     const ivo::Natural tests = diagrams.size();
@@ -68,7 +65,7 @@ int main(int argc, char **argv) {
         const std::vector<ivo::Polygon21> space = ivo::mesher2(diagrams[j]);
 
         // Time elements, empirical.
-        const ivo::Natural Nt = std::sqrt(static_cast<ivo::Real>(space.size())) / Ct;
+        const ivo::Natural Nt = Ct * std::sqrt(static_cast<ivo::Real>(space.size()));
 
         // Time.
         const std::vector<ivo::Real> time = ivo::mesher1(0.0L, 1.0L, Nt);
