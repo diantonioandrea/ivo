@@ -12,6 +12,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 import sys
+import os
+
+# Output directory.
+os.makedirs("output", exist_ok=True)
 
 if len(sys.argv) <= 1:
     print(f"Usage: {sys.argv[0]} /path/to/file.e21.")
@@ -98,6 +102,9 @@ l2T = np.array(l2T).ravel()
 l2h1 = np.array(l2h1).ravel()
 linfl2 = np.array(linfl2).ravel()
 
+# Output filename.
+filename: str = f"output/{p[0]}_{q[0]}_" + ("par" if sum(l2h1) > 0.0 else "hyp") + "_"
+
 # Plots.
 
 # Plot flag.
@@ -138,6 +145,9 @@ if "--l2l2" in sys.argv: # l2l2 only.
     # Legend.
     ax_l2l2.legend(loc="best")
 
+    # Output.
+    fig_l2l2.savefig(filename + "l2l2.pdf", format="pdf", bbox_inches="tight")
+
 if "--l2T" in sys.argv: # l2T.
 
     # Figure and axes.
@@ -172,6 +182,9 @@ if "--l2T" in sys.argv: # l2T.
 
     # Legend.
     ax_l2T.legend(loc="best")
+
+    # Output.
+    fig_l2T.savefig(filename + "l2T.pdf", format="pdf", bbox_inches="tight")
     
 if "--l2h1" in sys.argv: # l2h1.
 
@@ -207,6 +220,9 @@ if "--l2h1" in sys.argv: # l2h1.
     # Legend.
     ax_l2h1.legend(loc="best")
 
+    # Output.
+    fig_l2h1.savefig(filename + "l2h1.pdf", format="pdf", bbox_inches="tight")
+
 if "--linfl2" in sys.argv: # linfl2.
 
     # Figure and axes.
@@ -241,8 +257,11 @@ if "--linfl2" in sys.argv: # linfl2.
     # Legend.
     ax_linfL2.legend(loc="best")
 
+    # Output.
+    fig_linfL2.savefig(filename + "linfl2.pdf", format="pdf", bbox_inches="tight")
+
 # Output.
-if pflag:
+if pflag and "--show" in sys.argv:
     try:
         plt.show()
 
