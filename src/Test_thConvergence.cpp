@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
     diagrams.emplace_back("data/square/Square_500.p2");
     diagrams.emplace_back("data/square/Square_1000.p2");
     diagrams.emplace_back("data/square/Square_2000.p2");
-    // diagrams.emplace_back("data/square/Square_5000.p2"); // Expensive.
+    // diagrams.emplace_back("data/square/Square_4000.p2"); // Expensive.
     // diagrams.emplace_back("data/square/Square_8000.p2"); // Expensive.
 
     // Equation.
