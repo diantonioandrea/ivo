@@ -116,9 +116,6 @@ if "--l2l2" in sys.argv: # l2l2 only.
 
     # Replacements.
 
-    # Label.
-    text = text.replace(" _LHP ", f"$h^{p[0]}$", 1)
-
     # Plots.
     text = text.replace(" _H_COMPARISON ", " ".join(str(_) for _ in zip(dofs, l2l2hc)))
     text = text.replace(" _T_COMPARISON ", " ".join(str(_) for _ in zip(dofs, l2l2tc)))
@@ -126,13 +123,103 @@ if "--l2l2" in sys.argv: # l2l2 only.
     text = text.replace(" _ERROR ", " ".join(str(_) for _ in zip(dofs, l2l2)))
 
     # Legend.
-    text = text.replace(" _LHP ", f"$h^{p[0]}$", 1)
-    text = text.replace(" _LTQ ", f"$\\tau^{q[0]}$")
-    text = text.replace(" _LHPTQ ", f"$h^{p[0]} + \\tau^{q[0]}$")
+    text = text.replace(" _LHP ", f"$h^{p[0] + 1}$", 1)
+    text = text.replace(" _LTQ ", f"$\\tau^{q[0] + 1}$")
+    text = text.replace(" _LHPTQ ", f"$h^{p[0] + 1} + \\tau^{q[0] + 1}$")
     text = text.replace(" _LERROR ", "$\\Norm{\\Error}_{\\SpaceLp{2}(I; \\SpaceLp{2}(\\Omega))}$")
+
 
     # Output.
     output = open(filename + "l2l2.tex", "w")
     output.write(text)
     output.close()
 
+if "--l2T" in sys.argv: # l2T.
+
+    # Text.
+    text: str = template
+
+    # Comparisons.
+    l2Ttc = (t / t[-1]) ** (q[0] + 1) * l2T[-1]
+    l2Thc = (h / h[-1]) ** (p[0] + 1) * l2T[-1]
+    l2Tfc = ((h / h[-1]) ** (p[0] + 1) + (t / t[-1]) ** (q[0] + 1)) * l2T[-1] / 2
+
+    # Replacements.
+
+    # Plots.
+    text = text.replace(" _H_COMPARISON ", " ".join(str(_) for _ in zip(dofs, l2Thc)))
+    text = text.replace(" _T_COMPARISON ", " ".join(str(_) for _ in zip(dofs, l2Ttc)))
+    text = text.replace(" _HT_COMPARISON ", " ".join(str(_) for _ in zip(dofs, l2Tfc)))
+    text = text.replace(" _ERROR ", " ".join(str(_) for _ in zip(dofs, l2T)))
+
+    # Legend.
+    text = text.replace(" _LHP ", f"$h^{p[0] + 1}$", 1)
+    text = text.replace(" _LTQ ", f"$\\tau^{q[0] + 1}$")
+    text = text.replace(" _LHPTQ ", f"$h^{p[0] + 1} + \\tau^{q[0] + 1}$")
+    text = text.replace(" _LERROR ", "$\\Norm{\\Error}_{\\SpaceLp{2}(\\left\\{ T \\right\\} \\times \\Omega)}$")
+
+
+    # Output.
+    output = open(filename + "l2T.tex", "w")
+    output.write(text)
+    output.close()
+
+if "--l2h1" in sys.argv: # l2h1.
+
+    # Text.
+    text: str = template
+
+    # Comparisons.
+    l2h1hc = (h / h[-1]) ** p[0] * l2h1[-1]
+    l2h1tc = (t / t[-1]) ** q[0] * l2h1[-1]
+    l2h1fc = ((h / h[-1]) ** p[0] + (t / t[-1]) ** q[0]) * l2h1[-1] / 2
+
+    # Replacements.
+
+    # Plots.
+    text = text.replace(" _H_COMPARISON ", " ".join(str(_) for _ in zip(dofs, l2h1hc)))
+    text = text.replace(" _T_COMPARISON ", " ".join(str(_) for _ in zip(dofs, l2h1tc)))
+    text = text.replace(" _HT_COMPARISON ", " ".join(str(_) for _ in zip(dofs, l2h1fc)))
+    text = text.replace(" _ERROR ", " ".join(str(_) for _ in zip(dofs, l2h1)))
+
+    # Legend.
+    text = text.replace(" _LHP ", f"$h^{p[0]}$", 1)
+    text = text.replace(" _LTQ ", f"$\\tau^{q[0]}$")
+    text = text.replace(" _LHPTQ ", f"$h^{p[0]} + \\tau^{q[0]}$")
+    text = text.replace(" _LERROR ", "$\\Norm{\\Error}_{\\SpaceLp{2}(I; \\SpaceHk{1}(\\Omega))}$")
+
+
+    # Output.
+    output = open(filename + "l2h1.tex", "w")
+    output.write(text)
+    output.close()
+
+if "--linfl2" in sys.argv: # linfl2.
+
+    # Text.
+    text: str = template
+
+    # Comparisons.
+    linfl2hc = (h / h[-1]) ** (p[0] + 1) * linfl2[-1]
+    linfl2tc = (t / t[-1]) ** (q[0] + 1) * linfl2[-1]
+    linfl2fc = ((h / h[-1]) ** (p[0] + 1) + (t / t[-1]) ** (q[0] + 1)) * linfl2[-1] / 2
+
+    # Replacements.
+
+    # Plots.
+    text = text.replace(" _H_COMPARISON ", " ".join(str(_) for _ in zip(dofs, linfl2hc)))
+    text = text.replace(" _T_COMPARISON ", " ".join(str(_) for _ in zip(dofs, linfl2tc)))
+    text = text.replace(" _HT_COMPARISON ", " ".join(str(_) for _ in zip(dofs, linfl2fc)))
+    text = text.replace(" _ERROR ", " ".join(str(_) for _ in zip(dofs, linfl2)))
+
+    # Legend.
+    text = text.replace(" _LHP ", f"$h^{p[0] + 1}$", 1)
+    text = text.replace(" _LTQ ", f"$\\tau^{q[0] + 1}$")
+    text = text.replace(" _LHPTQ ", f"$h^{p[0] + 1} + \\tau^{q[0] + 1}$")
+    text = text.replace(" _LERROR ", "$\\Norm{\\Error}_{\\SpaceLp{\\infty}(I; \\SpaceLp{2}(\\Omega))}$")
+
+
+    # Output.
+    output = open(filename + "linfl2.tex", "w")
+    output.write(text)
+    output.close()
