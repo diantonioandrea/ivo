@@ -1,0 +1,17 @@
+\begin{tikzpicture}[scale=.9]
+\begin{loglogaxis}[
+xlabel={$DoFs$},
+% xtick={},
+% xticklabels={},
+% ylabel={ _LABERROR },
+ylabel={Error},
+grid=both,
+legend pos=north east
+]
+\addplot[color=black] coordinates { _H_COMPARISON };
+\addplot[color=black] coordinates { _T_COMPARISON };
+\addplot[color=black] coordinates { _HT_COMPARISON };
+\addplot[color=black] coordinates { _ERROR };
+\legend{ _LHP , _LTQ , _LHPTQ , _LERROR }
+\end{loglogaxis}
+\end{tikzpicture}
