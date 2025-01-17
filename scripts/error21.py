@@ -110,7 +110,7 @@ filename: str = f"output/{p[0]}_{q[0]}_" + ("par" if sum(l2h1) > 0.0 else "hyp")
 # Plot flag.
 pflag: bool = False
 
-if "--l2l2" in sys.argv: # l2l2 only.
+if "--l2l2" in sys.argv: # l2l2.
 
     # Figure and axes.
     fig_l2l2 = plt.figure(0)
