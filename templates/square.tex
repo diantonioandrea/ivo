@@ -1,0 +1,14 @@
+\begin{tikzpicture}[scale=5.0, line join=round]
+
+    % Domain.
+    \draw[thick]
+        (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
+    
+    % Cells.
+    \foreach \polygon in {
+_POLYGONS
+    } {
+        \draw[thin] \polygon -- cycle;
+    }
+
+\end{tikzpicture}
