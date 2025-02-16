@@ -105,9 +105,9 @@ int main(int argc, char **argv) {
             output << error << "\n" << std::endl;
 
             #ifndef NVERBOSE
-            std::cout << "\n\t[TEST] Progress: " << (j + 1) * (k + 1) << "/" << tests * tests << ", " << elapsed << "s\n" << std::endl;
+            std::cout << "\n\t[TEST] Progress: " << j * tests + k + 1 << "/" << tests * tests << ", " << elapsed << "s\n" << std::endl;
             #else
-            std::cout << "\t[TEST] Progress: " << (j + 1) * (k + 1) << "/" << tests * tests << ", " << elapsed << "s" << std::endl;
+            std::cout << "\t[TEST] Progress: " << j * tests + k + 1 << "/" << tests * tests << ", " << elapsed << "s" << std::endl;
             #endif
         }
     }
