@@ -1,5 +1,5 @@
 /**
- * @file Test_hConvergence.cpp
+ * @file Test_thConvergence.cpp
  * @author Andrea Di Antonio (github.com/diantonioandrea)
  * @brief th convergence test.
  * @date 2024-10-19
