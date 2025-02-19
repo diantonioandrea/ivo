@@ -129,10 +129,9 @@ if "--l2l2" in sys.argv: # l2l2 only.
     text = text.replace(" _ERROR ", " ".join(str(_) for _ in zip(dofs, l2l2)))
 
     # Legend.
-    text = text.replace(" _LHP ", f"$h^{p[0] + 1}$", 1)
-    text = text.replace(" _LTQ ", f"$\\tau^{q[0] + 1}$")
-    text = text.replace(" _LHPTQ ", f"$h^{p[0] + 1} + \\tau^{q[0] + 1}$")
-    text = text.replace(" _LERROR ", "$\\Norm{\\Error}_{\\SpaceLp{2}(I; \\SpaceLp{2}(\\Omega))}$")
+    text = text.replace(" _LHP ", f"h^{p[0] + 1}", 1)
+    text = text.replace(" _LTQ ", f"\\tau^{q[0] + 1}")
+    text = text.replace(" _LHPTQ ", f"h^{p[0] + 1} + \\tau^{q[0] + 1}")
 
 
     # Output.
@@ -159,10 +158,9 @@ if "--l2T" in sys.argv: # l2T.
     text = text.replace(" _ERROR ", " ".join(str(_) for _ in zip(dofs, l2T)))
 
     # Legend.
-    text = text.replace(" _LHP ", f"$h^{p[0] + 1}$", 1)
-    text = text.replace(" _LTQ ", f"$\\tau^{q[0] + 1}$")
-    text = text.replace(" _LHPTQ ", f"$h^{p[0] + 1} + \\tau^{q[0] + 1}$")
-    text = text.replace(" _LERROR ", "$\\Norm{\\Error}_{\\SpaceLp{2}(\\left\\{ T \\right\\} \\times \\Omega)}$")
+    text = text.replace(" _LHP ", f"h^{p[0] + 1}", 1)
+    text = text.replace(" _LTQ ", f"\\tau^{q[0] + 1}")
+    text = text.replace(" _LHPTQ ", f"h^{p[0] + 1} + \\tau^{q[0] + 1}")
 
 
     # Output.
@@ -189,10 +187,9 @@ if "--l2h1" in sys.argv: # l2h1.
     text = text.replace(" _ERROR ", " ".join(str(_) for _ in zip(dofs, l2h1)))
 
     # Legend.
-    text = text.replace(" _LHP ", f"$h^{p[0]}$", 1)
-    text = text.replace(" _LTQ ", f"$\\tau^{q[0]}$")
-    text = text.replace(" _LHPTQ ", f"$h^{p[0]} + \\tau^{q[0]}$")
-    text = text.replace(" _LERROR ", "$\\Norm{\\Error}_{\\SpaceLp{2}(I; \\SpaceHk{1}(\\Omega))}$")
+    text = text.replace(" _LHP ", f"h^{p[0]}", 1)
+    text = text.replace(" _LTQ ", f"\\tau^{q[0]}")
+    text = text.replace(" _LHPTQ ", f"h^{p[0]} + \\tau^{q[0]}")
 
 
     # Output.
