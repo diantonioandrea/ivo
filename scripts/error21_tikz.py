@@ -104,6 +104,12 @@ linfl2 = np.array(linfl2).ravel()
 # Output filename.
 filename: str = f"output/{p[0]}_{q[0]}_" + ("par" if sum(l2h1) > 0.0 else "hyp") + "_"
 
+if "tSaturation" in sys.argv[1]:
+    filename += "t_sat_"
+
+if "hSaturation" in sys.argv[1]:
+    filename += "h_sat_"
+
 if "--l2l2" in sys.argv: # l2l2 only.
 
     # Text.
@@ -213,11 +219,9 @@ if "--linfl2" in sys.argv: # linfl2.
     text = text.replace(" _ERROR ", " ".join(str(_) for _ in zip(dofs, linfl2)))
 
     # Legend.
-    text = text.replace(" _LHP ", f"$h^{p[0] + 1}$", 1)
-    text = text.replace(" _LTQ ", f"$\\tau^{q[0] + 1}$")
-    text = text.replace(" _LHPTQ ", f"$h^{p[0] + 1} + \\tau^{q[0] + 1}$")
-    text = text.replace(" _LERROR ", "$\\Norm{\\Error}_{\\SpaceLp{\\infty}(I; \\SpaceLp{2}(\\Omega))}$")
-
+    text = text.replace(" _LHP ", f"h^{p[0] + 1}", 1)
+    text = text.replace(" _LTQ ", f"\\tau^{q[0] + 1}")
+    text = text.replace(" _LHPTQ ", f"h^{p[0] + 1} + \\tau^{q[0] + 1}")
 
     # Output.
     output = open(filename + "linfl2.tex", "w")
