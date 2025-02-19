@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
     const ivo::Natural tests = diagrams.size();
 
     // Time elements.
-    ivo::Natural Nt = 8;
+    ivo::Natural Nt = 2;
 
     // Main loops.
     for(ivo::Natural j = 0; j < tests; ++j) {
